@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Rule</title>
+</head>
+
+<body>
+    <h1>Are you sure you want to delete "{{ rule.name }}"?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Confirm Delete">
+        <a href="{% url 'rules:list_rules' %}">Cancel</a>
+    </form>
+</body>
+
+</html>
