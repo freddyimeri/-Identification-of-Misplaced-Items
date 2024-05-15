@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h1>Admin Dashboard</h1>
+            <div class="list-group">
+                <a href="{% url 'admin_users' %}" class="list-group-item list-group-item-action">Users Activity</a>
+                <!-- Add other admin links here -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

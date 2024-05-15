@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rules.apps.RulesConfig',
     'authentication.apps.AuthenticationConfig',
     'core.apps.CoreConfig',
-
+    'admin_app.apps.AdminAppConfig',
 ]
 
 MIDDLEWARE = [
