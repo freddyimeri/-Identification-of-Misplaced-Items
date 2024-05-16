@@ -1,50 +1,5 @@
-# # TensorFlow and essential machine learning libraries
-# tensorflow==2.10.1
-# tensorflow-addons==0.22.0
-# tensorflow-datasets==4.9.0
-# tensorflow-estimator==2.10.0
-# tensorflow-hub==0.16.1
-# tensorflow-io==0.31.0
-# tensorflow-io-gcs-filesystem==0.31.0
-# tensorflow-metadata==1.13.0
-# tensorflow-model-optimization==0.8.0
-# tensorflow-object-detection-api==0.1.1
-# tensorflow-text==2.10.0
-
-# # Other essential libraries
-# numpy==1.24.4
-# pandas==2.2.0
-# scikit-learn==1.4.1.post1
-# scipy==1.12.0
-# matplotlib==3.8.3
-# seaborn==0.12.2
-# pillow==10.2.0
-# opencv-python==4.9.0.80
-# h5py==3.10.0
-# protobuf==3.19.6
-
-# # Additional useful libraries
-# absl-py==1.4.0
-# six==1.16.0
-# wrapt==1.16.0
-# termcolor==2.4.0
-# tqdm==4.66.2
-# requests==2.31.0
-
-# # Flask for web applications
-# flask==2.2.5
-
-# # PyYAML for configuration files
-# pyyaml==6.0
-
-# # Essential Python utilities
-# ipython==8.15.0
-# setuptools==68.2.2
-# wheel==0.41.2
-
-##
 Django==3.2
 mysqlclient==2.1.0
-
-
-
+Pillow==9.3.0
+tensorflow
+opencv-python==4.5.5.64 

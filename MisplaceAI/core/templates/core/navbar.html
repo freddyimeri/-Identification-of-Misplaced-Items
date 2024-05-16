@@ -9,8 +9,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
+            <!-- Add link to the image upload page -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'process_misplaced_manager:upload_image' %}">Upload Image</a>
+            </li>
             {% if user.is_authenticated %}
-            {% if user.is_staff %} {# Check if the user is a staff member (admin) #}
+            {% if user.is_staff %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
             </li>

@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Detected Objects</h2>
+<div class="image-container">
+    <img src="{{ output_image_url }}" alt="Uploaded Image with Detected Objects" class="responsive-image">
+</div>
+<ul>
+    {% for obj in detected_objects %}
+    <li>{{ obj.class_name }}: [{{ obj.ymin }}, {{ obj.xmin }}, {{ obj.ymax }}, {{ obj.xmax }}]</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+<style>
+    .image-container {
+        text-align: center;
+    }
+
+    .responsive-image {
+        max-width: 100%;
+        height: auto;
+    }
+</style>

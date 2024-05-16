@@ -1,0 +1,12 @@
+<!-- display_image.html in process_misplaced_manager/templates/process_misplaced_manager -->
+
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Uploaded Image</h2>
+{% if image %}
+<img src="{{ image.image.url }}" alt="Uploaded Image">
+{% else %}
+<p>No image found.</p>
+{% endif %}
+{% endblock %}
