@@ -1,25 +1,27 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
+{% block title %}Visualize Results{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
-    <h1>Detected Objects</h1>
-    <img src="{{ output_image_url }}" alt="Detected Objects" class="img-fluid">
-    <h2>Details</h2>
+    <h1>Visualization Results</h1>
+    <img src="{{ output_image_url }}" alt="Visualization Results" class="img-fluid">
+    <h2>Detected Objects</h2>
     <ul>
         {% for obj in detected_objects %}
         <li>{{ obj.class_name }}: [{{ obj.ymin }}, {{ obj.xmin }}, {{ obj.ymax }}, {{ obj.xmax }}]</li>
         {% endfor %}
     </ul>
-    {% if misplaced_objects %}
     <h2>Misplaced Objects</h2>
+    {% if misplaced_objects %}
     <ul>
         {% for obj in misplaced_objects %}
         <li>{{ obj.class_name }} is misplaced. It should be on {{ obj.allowed_locations|join:", " }}.</li>
         {% endfor %}
     </ul>
+    {% else %}
+    <p>No misplaced objects detected.</p>
     {% endif %}
-    <h2>Annotated Image with Misplaced Items</h2>
-    <img src="{{ annotated_image_url }}" alt="Annotated Image" class="img-fluid">
 </div>
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Check Placement{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Check Placement</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="dataLocation">Data Location</label>
+            <textarea id="dataLocation" name="dataLocation" class="form-control" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Check Placement</button>
+    </form>
+</div>
+{% endblock %}
