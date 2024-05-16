@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Confirm Delete{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Are you sure you want to delete "{{ item.name }}"?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'rules:admin_add_item' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

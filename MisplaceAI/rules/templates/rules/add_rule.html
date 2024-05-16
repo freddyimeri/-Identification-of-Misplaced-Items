@@ -1,11 +1,15 @@
-<h1>Add Rule</h1>
-<form method="post">
-    {% csrf_token %}
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name"><br>
-    <label for="condition">Condition:</label>
-    <textarea id="condition" name="condition"></textarea><br>
-    <label for="action">Action:</label>
-    <textarea id="action" name="action"></textarea><br>
-    <input type="submit" value="Submit">
-</form>
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Add Rule{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Add Rule</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save Rule</button>
+    </form>
+</div>
+{% endblock %}

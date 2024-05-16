@@ -1,28 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'core/base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>List of Rules</title>
-</head>
+{% block title %}List of Rules{% endblock %}
 
-<body>
+{% block content %}
+<div class="container mt-5">
     <h1>List of Rules</h1>
-    <ul>
-        {% for rule in rules %}
-        <li>
-            {{ rule.name }}
-            {% if rule.name %}
-            : <a href="{% url 'rules:get_rule' rule.name %}">View</a>
-            | <a href="{% url 'rules:update_rule' rule.name %}">Edit</a>
-            | <a href="{% url 'rules:remove_rule' rule.name %}">Delete</a>
-            {% else %}
-            : Name unavailable
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'rules:add_rule' %}">Add New Rule</a>
-</body>
-
-</html>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Locations</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rule in rules %}
+            <tr>
+                <td>{{ rule.item.name }}</td>
+                <td>
+                    {% for location in rule.locations.all %}
+                    {{ location.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'rules:get_rule' rule.id %}" class="btn btn-info">View</a>
+                    <a href="{% url 'rules:update_rule' rule.id %}" class="btn btn-warning">Edit</a>
+                    <form action="{% url 'rules:remove_rule' rule.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No rules available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'rules:add_rule' %}" class="btn btn-primary">Add New Rule</a>
+</div>
+{% endblock %}

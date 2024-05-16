@@ -1,25 +1,17 @@
 from django import forms
-from .models import Rule
+from .models import Rule, Location, Item
 
 class RuleForm(forms.ModelForm):
     class Meta:
         model = Rule
-        fields = ['name', 'condition', 'action']  # Include all the fields you want from the model
+        fields = ['user', 'item', 'locations']
 
-    def clean_name(self):
-        name = self.cleaned_data.get('name')
-        if not name:
-            raise forms.ValidationError("The name field cannot be left blank.")
-        return name
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = ['name']
 
-    def clean_condition(self):
-        condition = self.cleaned_data.get('condition')
-        if not condition:
-            raise forms.ValidationError("The condition field cannot be left blank.")
-        return condition
-
-    def clean_action(self):
-        action = self.cleaned_data.get('action')
-        if not action:
-            raise forms.ValidationError("The action field cannot be left blank.")
-        return action
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ['name']

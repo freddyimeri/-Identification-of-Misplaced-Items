@@ -10,7 +10,10 @@
             <h1>Admin Dashboard</h1>
             <div class="list-group">
                 <a href="{% url 'admin_users' %}" class="list-group-item list-group-item-action">Users Activity</a>
-                <!-- Add other admin links here -->
+                <a href="{% url 'rules:list_rules' %}" class="list-group-item list-group-item-action">Manage Rules</a>
+                <a href="{% url 'rules:admin_add_location' %}" class="list-group-item list-group-item-action">Add
+                    Location</a>
+                <a href="{% url 'rules:admin_add_item' %}" class="list-group-item list-group-item-action">Add Item</a>
             </div>
         </div>
     </div>

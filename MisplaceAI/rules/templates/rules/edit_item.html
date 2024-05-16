@@ -1,15 +1,16 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Update Rule{% endblock %}
+{% block title %}Edit Item{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1>Update Rule</h1>
+    <h1>Edit Item</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-success">Save Changes</button>
+        <a href="{% url 'rules:admin_add_item' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}

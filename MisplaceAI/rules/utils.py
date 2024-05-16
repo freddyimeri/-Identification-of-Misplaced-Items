@@ -1,40 +1,38 @@
+from django.core.exceptions import ValidationError
 from .models import Rule
 
-class RulesManager:
-    def __init__(self):
-        self.rules = self.load_rules()
+def validate_rule(rule):
+    """
+    Validates a rule to ensure there are no conflicting rules.
+    """
+    existing_rules = Rule.objects.filter(item=rule.item).exclude(id=rule.id)
+    for existing_rule in existing_rules:
+        if set(existing_rule.locations.all()) & set(rule.locations.all()):
+            raise ValidationError(f"A rule for {rule.item.name} already exists for one or more of the selected locations.")
+    
+def check_item_location(item, location):
+    """
+    Checks if the given item is allowed at the given location based on the existing rules.
+    """
+    rules = Rule.objects.filter(item=item, locations=location)
+    if not rules.exists():
+        return False
+    return True
 
-    def load_rules(self):
-        """Load the rules from the database."""
-        return {rule.name: {'condition': rule.condition, 'action': rule.action} for rule in Rule.objects.all()}
+def get_item_location_rules(item):
+    """
+    Retrieves all the locations where the given item is allowed based on the existing rules.
+    """
+    rules = Rule.objects.filter(item=item)
+    allowed_locations = set()
+    for rule in rules:
+        allowed_locations.update(rule.locations.all())
+    return allowed_locations
 
-    def save_rule(self, name, condition, action):
-        """Save a rule to the database."""
-        rule, created = Rule.objects.update_or_create(name=name, defaults={'condition': condition, 'action': action})
-        self.rules[name] = {'condition': condition, 'action': action}
-
-    def add_rule(self, rule):
-        """Add a new rule to the database."""
-        self.save_rule(rule["name"], rule["condition"], rule["action"])
-
-    def get_rule(self, rule_name):
-        """Retrieve a rule by its name."""
-        rule = self.rules.get(rule_name)
-        if not rule:
-            try:
-                rule_obj = Rule.objects.get(name=rule_name)
-                rule = {'condition': rule_obj.condition, 'action': rule_obj.action}
-                self.rules[rule_name] = rule
-            except Rule.DoesNotExist:
-                return None
-        return rule
-
-    def remove_rule(self, rule_name):
-        """Remove a rule by its name."""
-        if rule_name in self.rules:
-            del self.rules[rule_name]
-            Rule.objects.filter(name=rule_name).delete()
-
-    def list_rules(self):
-        """List all rules."""
-        return list(self.rules.values())
+def notify_user_of_misplacement(user, item, location):
+    """
+    Notifies the user that the given item is misplaced at the given location.
+    """
+    # This function can be implemented to send notifications to the user.
+    # For now, we will just print a message.
+    print(f"User {user.username}, the item '{item.name}' is misplaced at '{location.name}'.")

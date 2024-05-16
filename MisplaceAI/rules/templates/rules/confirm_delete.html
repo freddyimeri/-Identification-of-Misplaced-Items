@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'core/base.html' %}
+{% block title %}Delete Rule{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Delete Rule</title>
-</head>
-
-<body>
+{% block content %}
+<div class="container mt-5">
     <h1>Are you sure you want to delete "{{ rule.name }}"?</h1>
     <form method="post">
         {% csrf_token %}
-        <input type="submit" value="Confirm Delete">
-        <a href="{% url 'rules:list_rules' %}">Cancel</a>
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'rules:list_rules' %}" class="btn btn-secondary">Cancel</a>
     </form>
-</body>
-
-</html>
+</div>
+{% endblock %}

@@ -1,6 +1,84 @@
 # Identification of Misplaced Items
 
 
+## DATABASE
+
+### Connect though terminal
+
+```bash
+docker exec -it misplaceai-db-1 mysql -u root -p
+```
+<br>
+Then enter password
+
+```bash
+Enter password: rootpassword
+```
+
+<br>
+Select Database:
+```bash
+mysql> USE misplaceai;
+```
+
+### Drop all tables 
+
+Disable foreign key checks:
+
+``bash
+SET FOREIGN_KEY_CHECKS = 0;
+```
+
+Generate and execute the drop script:
+
+```bash
+SET @tables = NULL;
+SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables
+FROM information_schema.tables
+WHERE table_schema = (SELECT DATABASE());
+
+SET @tables = CONCAT('DROP TABLE IF EXISTS ', @tables);
+PREPARE stmt FROM @tables;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+```
+
+Enable foreign key checks:
+
+```bash
+SET FOREIGN_KEY_CHECKS = 1;
+
+```
+
+Verify that all tables are dropped:
+
+```sql
+SHOW TABLES;
+```
+
+exir
+
+```bash
+mysql> EXIT;
+Bye
+```
+
+
+## 
+migrations 
+```bash
+docker-compose exec web python manage.py makemigrations 
+ docker-compose exec web python manage.py migrate 
+```
+
+create superuser:
+
+``` bash
+
+ docker-compose exec web python manage.py createsuperusers
+```
+
 
 ## Getting started
 
