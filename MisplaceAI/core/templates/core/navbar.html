@@ -11,7 +11,8 @@
             </li>
             <!-- Add link to the image upload page -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'process_misplaced_manager:upload_image' %}">Upload Image</a>
+                <a class="nav-link" href="{% url 'process_misplaced_manager:detection_options' %}">Detect Misplaced
+                    Items</a>
             </li>
             {% if user.is_authenticated %}
             {% if user.is_staff %}

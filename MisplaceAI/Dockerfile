@@ -34,8 +34,8 @@ ENV PYTHONPATH=$PYTHONPATH:/app/models:/app/models/research:/app/models/research
 # Create the media directory
 RUN mkdir -p /app/media
 
-# Expose port 8000 for the Django app
-EXPOSE 8000
+# Expose port 8080 for the Django app
+EXPOSE 8080
 
 # Run the Django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]

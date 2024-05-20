@@ -6,8 +6,8 @@
 <h2>Misplaced Objects</h2>
 <ul>
     {% for obj in misplaced_objects %}
-    <li>{{ obj.class_name }} is misplaced. Allowed locations: {{ obj.allowed_locations }}</li>
+    <li>{{ obj.class_name }} is misplaced. Allowed locations: {{ obj.allowed_locations|join:", " }}</li>
     {% endfor %}
 </ul>
-<a href="{% url 'process_misplaced_manager:upload_image' %}">Upload another image</a>
+<a href="{% url 'process_misplaced_manager:detection_options' %}">Try another detection</a>
 {% endblock %}

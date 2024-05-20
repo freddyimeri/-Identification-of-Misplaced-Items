@@ -1,0 +1,6 @@
+version: "2"
+authtoken: 2gjASz2oymOKoIZiuEWvPHog4MB_4q4if5LATt17Vc1hbsvnC
+tunnels:
+  django:
+    proto: http
+    addr: web:8080 # Use the service name defined in docker-compose.yml

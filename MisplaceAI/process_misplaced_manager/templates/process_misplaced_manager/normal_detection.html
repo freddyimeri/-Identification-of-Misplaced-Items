@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Upload Image for Normal Detection</h1>
+<!-- Include WebcamJS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+
+<form method="post" enctype="multipart/form-data" id="uploadForm">
+    {% csrf_token %}
+    <label for="id_image">Image:</label>
+    <input type="file" id="id_image" name="image" accept="image/*">
+    <button type="submit">Upload</button>
+</form>
+
+<!-- Button to open the camera interface -->
+<button id="openCameraBtn">Capture Image from Camera</button>
+
+<!-- Container for the camera feed -->
+<div id="camera" style="display: none;"></div>
+<!-- Container for the captured image -->
+<div id="capturedImage" style="display: none;">
+    <img id="imagePreview" src="" alt="Captured Image">
+    <input type="hidden" id="capturedImageData" name="capturedImageData">
+</div>
+
+<a href="{% url 'process_misplaced_manager:detection_options' %}">Back to Detection Options</a>
+
+<script>
+    document.getElementById('openCameraBtn').addEventListener('click', function () {
+        // Show the camera interface
+        document.getElementById('camera').style.display = 'block';
+
+        // Configure and attach the camera
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#camera');
+
+        // Capture the image
+        Webcam.snap(function (data_uri) {
+            // Show the captured image
+            document.getElementById('capturedImage').style.display = 'block';
+            document.getElementById('imagePreview').src = data_uri;
+
+            // Save the captured image data to the hidden input field
+            document.getElementById('capturedImageData').value = data_uri;
+
+            // Hide the camera interface
+            Webcam.reset();
+            document.getElementById('camera').style.display = 'none';
+        });
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function (event) {
+        // If an image is captured from the camera, prevent the default form submission
+        const capturedImageData = document.getElementById('capturedImageData').value;
+        if (capturedImageData) {
+            event.preventDefault();
+
+            // Create a FormData object
+            const formData = new FormData();
+
+            // Append the CSRF token
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            // Append the captured image data
+            formData.append('capturedImageData', capturedImageData);
+
+            // Send the form data via AJAX
+            fetch('{% url "process_misplaced_manager:normal_detection" %}', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response (e.g., redirect to the results page)
+                    window.location.href = data.redirect_url;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+</script>
+{% endblock %}

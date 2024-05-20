@@ -34,8 +34,9 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = []
+ 
+ALLOWED_HOSTS = ['*']  # This allows all hosts. Use with caution.
 
 
 # Application definition
@@ -153,3 +154,11 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+if DEBUG:
+    import requests
+    try:
+        ngrok_tunnel = requests.get('http://localhost:4040/api/tunnels').json()['tunnels'][0]['public_url']
+        ngrok_hostname = ngrok_tunnel.split("//")[-1].split(":")[0]
+        ALLOWED_HOSTS.append(ngrok_hostname)
+    except requests.exceptions.RequestException:
+        pass

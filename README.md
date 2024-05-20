@@ -1,6 +1,14 @@
 # Identification of Misplaced Items
 
+ngrok http 8080  
 
+
+
+
+docker-compose down
+docker-compose up -d 
+
+docker-compose up --build
 ## DATABASE
 
 ### Connect though terminal
@@ -74,9 +82,9 @@ docker-compose exec web python manage.py migrate
 
 create superuser:
 
-``` bash
+``` bashhttps://wrb.uwe.ac.uk/Scientia/Portal/Login.aspx?ReturnUrl=%2fScientia%2fPortal%2fMain.aspx
 
- docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py createsuperuser
 ```
 
 

@@ -1,10 +1,11 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1>Upload Image</h1>
+<h1>Upload Image for Segmentation Detection</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <label for="id_image">Image:</label>
+    <input type="file" name="image" accept="image/*" capture="camera" required>
     <button type="submit">Upload</button>
 </form>
 <a href="{% url 'process_misplaced_manager:detection_options' %}">Back to Detection Options</a>
