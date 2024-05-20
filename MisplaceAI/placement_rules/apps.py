@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 class PlacementRulesConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
     name = 'placement_rules'
-    verbose_name = 'Placement Rules'

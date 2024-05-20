@@ -76,7 +76,7 @@ create superuser:
 
 ``` bash
 
- docker-compose exec web python manage.py createsuperusers
+ docker-compose exec web python manage.py createsuperuser
 ```
 
 

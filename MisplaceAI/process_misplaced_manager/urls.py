@@ -1,11 +1,9 @@
-# process_misplaced_manager/urls.py
-
 from django.urls import path
-from .views import upload_image, display_image
+from .views import upload_image, display_results
 
-app_name = 'process_misplaced_manager' 
+app_name = 'process_misplaced_manager'
 
 urlpatterns = [
-    path('upload-image/', upload_image, name='upload_image'),
-    path('display-image/<int:image_id>/', display_image, name='display_image'),
+    path('upload/', upload_image, name='upload_image'),
+    path('results/<int:image_id>/', display_results, name='display_results'),
 ]

@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>Detection Results</h1>
+<img src="{{ output_image_url }}" alt="Detected Objects">
+<h2>Misplaced Objects</h2>
+<ul>
+    {% for obj in misplaced_objects %}
+    <li>{{ obj.class_name }} is misplaced. Allowed locations: {{ obj.allowed_locations }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'process_misplaced_manager:upload_image' %}">Upload another image</a>
+{% endblock %}

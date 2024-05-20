@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 class ResultsViewerConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
     name = 'results_viewer'
-    verbose_name = 'Results Viewer'

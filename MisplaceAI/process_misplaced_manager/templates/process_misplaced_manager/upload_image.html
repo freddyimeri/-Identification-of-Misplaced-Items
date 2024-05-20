@@ -1,9 +1,7 @@
-<!-- upload_image.html in process_misplaced_manager/templates/process_misplaced_manager -->
-
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h2>Upload an Image</h2>
+<h1>Upload Image</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
