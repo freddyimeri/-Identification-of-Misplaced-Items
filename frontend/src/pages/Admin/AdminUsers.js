@@ -14,17 +14,17 @@ const AdminUsers = () => {
     }, []);
 
     const handleDeactivate = async (userId) => {
-        await api.post(`/admin-app/users/deactivate/${userId}/`);
+        await api.post(`/api/admin-app/users/deactivate/${userId}/`);
         setUsers(users.map(user => user.id === userId ? { ...user, is_active: false } : user));
     };
 
     const handleActivate = async (userId) => {
-        await api.post(`/admin-app/users/activate/${userId}/`);
+        await api.post(`/api/admin-app/users/activate/${userId}/`);
         setUsers(users.map(user => user.id === userId ? { ...user, is_active: true } : user));
     };
 
     const handleDelete = async (userId) => {
-        await api.post(`/admin-app/users/delete/${userId}/`);
+        await api.post(`/api/admin-app/users/delete/${userId}/`);
         setUsers(users.filter(user => user.id !== userId));
     };
 

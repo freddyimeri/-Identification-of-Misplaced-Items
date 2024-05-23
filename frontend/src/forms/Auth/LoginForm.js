@@ -16,7 +16,7 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/auth/login/', { username, password });
+            const response = await api.post('/api/auth/login/', { username, password });
             localStorage.setItem('token', response.data.access);
             localStorage.setItem('isAuthenticated', true); // Set the authentication flag
             navigate('/');

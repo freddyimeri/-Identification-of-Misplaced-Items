@@ -2,7 +2,7 @@
 import api from './api';
 
 export const login = async (credentials) => {
-    const response = await api.post('/auth/login/', credentials);
+    const response = await api.post('/api/auth/login/', credentials);
     if (response.data.access) {
         localStorage.setItem('token', response.data.access);
     }
@@ -10,7 +10,7 @@ export const login = async (credentials) => {
 };
 
 export const register = async (userData) => {
-    const response = await api.post('/auth/register/', userData);
+    const response = await api.post('/api/auth/register/', userData);
     return response.data;
 };
 
@@ -19,6 +19,6 @@ export const logout = () => {
 };
 
 export const getCurrentUser = async () => {
-    const response = await api.get('/auth/user/');
+    const response = await api.get('/api/auth/user/');
     return response.data;
 };

@@ -2,7 +2,7 @@ import api, { getCsrfToken } from './api';
 
 export const addLocation = async (locationData) => {
     const csrfToken = getCsrfToken();
-    const response = await api.post('/rules/admin_manage_location/', locationData, {
+    const response = await api.post('/api/rules/admin_manage_location/', locationData, {
         headers: {
             'X-CSRFToken': csrfToken,
         }
@@ -12,7 +12,7 @@ export const addLocation = async (locationData) => {
 
 export const getLocations = async () => {
     const csrfToken = getCsrfToken();
-    const response = await api.get('/rules/admin_manage_location/', {
+    const response = await api.get('/api/rules/admin_manage_location/', {
         headers: {
             'X-CSRFToken': csrfToken,
         }
@@ -22,7 +22,7 @@ export const getLocations = async () => {
 
 export const updateLocation = async (locationId, locationData) => {
     const csrfToken = getCsrfToken();
-    const response = await api.put(`/rules/admin_manage_location/${locationId}/`, locationData, {
+    const response = await api.put(`/api/rules/admin_manage_location/${locationId}/`, locationData, {
         headers: {
             'X-CSRFToken': csrfToken,
         }
@@ -32,7 +32,7 @@ export const updateLocation = async (locationId, locationData) => {
 
 export const deleteLocation = async (locationId) => {
     const csrfToken = getCsrfToken();
-    const response = await api.delete(`/rules/admin_manage_location/${locationId}/`, {
+    const response = await api.delete(`/api/rules/admin_manage_location/${locationId}/`, {
         headers: {
             'X-CSRFToken': csrfToken,
         }

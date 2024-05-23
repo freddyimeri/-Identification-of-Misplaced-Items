@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'process_misplaced_manager.apps.ProcessMisplacedManagerConfig',
     'rest_framework',
     'corsheaders',
-    'live_testing_object',
+ 
     'rest_framework_simplejwt',
  
 ]

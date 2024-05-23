@@ -15,7 +15,7 @@ const AdminLoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/admin-app/login/', { username, password });
+            const response = await api.post('/api/admin-app/login/', { username, password });
             localStorage.setItem('adminToken', response.data.access);
             localStorage.setItem('isAdmin', true);
             localStorage.setItem('isAuthenticated', true);

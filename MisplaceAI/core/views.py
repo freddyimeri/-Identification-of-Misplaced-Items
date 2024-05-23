@@ -1,4 +1,5 @@
-from django.shortcuts import render
+# core/views.py
+from django.http import JsonResponse
 
-def home_view(request):
-    return render(request, 'core/home.html')
+def root_view(request):
+    return JsonResponse({"message": "Welcome to the MisplaceAI API"})

@@ -10,10 +10,12 @@ import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import ManageLocationsPage from './pages/Locations/ManageLocationsPage';
 import ManageItems from './pages/Items/ManageItemsPage';
+import ManageRulesPage from './pages/Rules/ManageRulesPage';
+import DetectionOptionsPage from './pages/DetectionOptions/DetectionOptionsPage';
+import NormalDetectionPage from './pages/NormalDetection/NormalDetectionPage';
 
 import ProtectedRoute from './firewall/ProtectedRoute';
 import RouteProtection from './firewall/RouteProtection';
-import ManageRulesPage from './pages/Rules/ManageRulesPage';
 
 import './App.css';
 
@@ -49,7 +51,7 @@ function App() {
                 <ManageItems />
               </ProtectedRoute>
             } />
-            <Route path="/admin/Manage-Locations" element={
+            <Route path="/admin/manage-locations" element={
               <ProtectedRoute isAdminRoute={true}>
                 <ManageLocationsPage />
               </ProtectedRoute>
@@ -59,6 +61,17 @@ function App() {
                 <ManageRulesPage />
               </ProtectedRoute>
             } />
+            <Route path="/detection-options" element={
+              <ProtectedRoute>
+                <DetectionOptionsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/normal-detection" element={
+              <ProtectedRoute>
+                <NormalDetectionPage />
+              </ProtectedRoute>
+            } />
+            <Route path="*" element={<HomePage />} /> {/* Catch-all route */}
           </Routes>
         </div>
       </div>

@@ -1,10 +1,13 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from placement_rules.utils import PlacementRules
 import json
-from django.shortcuts import render
 
 @csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def check_placement(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -12,11 +15,3 @@ def check_placement(request):
         misplaced_items = placement_rules.check_placement(data)
         return JsonResponse({'misplaced_items': misplaced_items})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
-
-def live_detection(request):
-    return render(request, 'process_misplaced_manager/live_detection.html')
-
-
-
-
-####################################################################

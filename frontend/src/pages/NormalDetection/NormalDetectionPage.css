@@ -1,0 +1,9 @@
+/* src/pages/NormalDetection/NormalDetectionPage.css */
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.btn-lg i {
+    margin-right: 8px;
+}

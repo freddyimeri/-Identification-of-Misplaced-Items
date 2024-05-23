@@ -2,6 +2,6 @@
 import api from './api';
 
 export const getUsers = async () => {
-    const response = await api.get('/rules/users/');
+    const response = await api.get('/api/rules/users/');
     return response.data;
 };

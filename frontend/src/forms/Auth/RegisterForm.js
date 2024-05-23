@@ -77,7 +77,7 @@ const RegisterForm = () => {
             return;
         }
         try {
-            const response = await api.post('/auth/register/', { username, email, password, password2 });
+            const response = await api.post('/api/auth/register/', { username, email, password, password2 });
             localStorage.setItem('token', response.data.access);
             localStorage.setItem('isAuthenticated', true);
             navigate('/');
