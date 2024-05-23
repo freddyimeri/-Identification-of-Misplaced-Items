@@ -1,0 +1,28 @@
+/* frontend/src/components/Navbar/Navbar.css */
+.navbar {
+    width: 100%;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav {
+    margin-left: auto;
+}
+
+.nav-link {
+    color: #333 !important;
+    margin-left: 1rem;
+}
+
+.nav-link.btn {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}

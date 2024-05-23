@@ -1,0 +1,29 @@
+.home-container {
+    padding: 4rem 2rem;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
+    /* Adjust for navbar height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-container h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
+.home-container p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    max-width: 600px;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    margin-top: 1rem;
+}

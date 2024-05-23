@@ -1,124 +1,117 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Rule, Location, Item
-from .forms import RuleForm, LocationForm, ItemForm
-from django.core.paginator import Paginator
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
+from .models import Location, Item, Rule
+from .serializers import LocationSerializer, ItemSerializer, RuleSerializer, UserSerializer
+from django.shortcuts import get_object_or_404
 
-from django.urls import reverse
+class UserListView(APIView):
+    permission_classes = [IsAuthenticated]
 
-def list_rules(request):
-    rules = Rule.objects.all()
-    return render(request, 'rules/list_rules.html', {'rules': rules})
+    def get(self, request, *args, **kwargs):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-def add_rule(request):
-    if request.method == 'POST':
-        form = RuleForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('rules:list_rules')
-    else:
-        form = RuleForm()
-    return render(request, 'rules/add_rule.html', {'form': form})
+class AdminManageItemView(APIView):
+    permission_classes = [IsAuthenticated]
 
-def get_rule(request, rule_id):
-    rule = get_object_or_404(Rule, id=rule_id)
-    return render(request, 'rules/rule_detail.html', {'rule': rule})
+    def get(self, request, *args, **kwargs):
+        items = Item.objects.all().order_by('name')
+        serializer = ItemSerializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-def remove_rule(request, rule_id):
-    rule = get_object_or_404(Rule, id=rule_id)
-    if request.method == 'POST':
-        rule.delete()
-        return redirect('rules:list_rules')
-    return render(request, 'rules/confirm_delete.html', {'rule': rule})
+    def post(self, request, *args, **kwargs):
+        serializer = ItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def update_rule(request, rule_id):
-    rule = get_object_or_404(Rule, id=rule_id)
-    if request.method == 'POST':
-        form = RuleForm(request.POST, instance=rule)
-        if form.is_valid():
-            form.save()
-            return redirect('rules:get_rule', rule_id=rule.id)
-    else:
-        form = RuleForm(instance=rule)
-    return render(request, 'rules/update_rule.html', {'form': form, 'rule': rule})
+    def put(self, request, item_id, *args, **kwargs):
+        item = get_object_or_404(Item, id=item_id)
+        serializer = ItemSerializer(item, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@login_required
-def admin_add_location(request):
-    locations = Location.objects.all().order_by('name')
-    paginator = Paginator(locations, 10)  # Show 10 locations per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    if request.method == 'POST':
-        form = LocationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Location added successfully.')
-            return redirect('rules:admin_add_location')
-    else:
-        form = LocationForm()
-    return render(request, 'rules/admin_add_location.html', {'form': form, 'page_obj': page_obj})
-
-
-@login_required
-def admin_add_item(request):
-    items = Item.objects.all().order_by('name')
-    paginator = Paginator(items, 10)  # Show 10 items per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    if request.method == 'POST':
-        form = ItemForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Item added successfully.')
-            return redirect('rules:admin_add_item')
-    else:
-        form = ItemForm()
-    return render(request, 'rules/admin_add_item.html', {'form': form, 'page_obj': page_obj})
-
-
-
-def edit_item(request, item_id):
-    item = get_object_or_404(Item, id=item_id)
-    if request.method == 'POST':
-        form = ItemForm(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-            return redirect('rules:admin_add_item')
-    else:
-        form = ItemForm(instance=item)
-    return render(request, 'rules/edit_item.html', {'form': form})
-
-def delete_item(request, item_id):
-    item = get_object_or_404(Item, id=item_id)
-    if request.method == 'POST':
+    def delete(self, request, item_id, *args, **kwargs):
+        item = get_object_or_404(Item, id=item_id)
         item.delete()
-        return redirect('rules:admin_add_item')
-    return render(request, 'rules/confirm_delete_item.html', {'item': item})
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
+class AdminManageLocationView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request, *args, **kwargs):
+        locations = Location.objects.all().order_by('name')
+        serializer = LocationSerializer(locations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
- 
+    def post(self, request, *args, **kwargs):
+        serializer = LocationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def edit_location(request, location_id):
-    location = get_object_or_404(Location, id=location_id)
-    if request.method == 'POST':
-        form = LocationForm(request.POST, instance=location)
-        if form.is_valid():
-            form.save()
-            # Use the 'reverse' to correctly use named URLs with namespaces
-            return redirect(reverse('rules:admin_add_location'))
-    else:
-        form = LocationForm(instance=location)
-    return render(request, 'rules/edit_location.html', {'form': form})
+    def put(self, request, location_id, *args, **kwargs):
+        location = get_object_or_404(Location, id=location_id)
+        serializer = LocationSerializer(location, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-def delete_location(request, location_id):
-    location = get_object_or_404(Location, id=location_id)
-    if request.method == 'POST':
+    def delete(self, request, location_id, *args, **kwargs):
+        location = get_object_or_404(Location, id=location_id)
         location.delete()
-        return redirect('rules:admin_add_location')
-    return render(request, 'rules/confirm_delete_location.html', {'location': location})
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+class AdminManageRuleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        rules = Rule.objects.all().order_by('id')
+        serializer = RuleSerializer(rules, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        item_id = data.get('item')
+        location_ids = data.get('locations', [])
+
+        user = request.user
+        item = get_object_or_404(Item, id=item_id)
+        locations = Location.objects.filter(id__in=location_ids)
+
+        if not locations.exists():
+            return Response({'error': 'One or more locations are invalid.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        rule = Rule(user=user, item=item)
+        rule.save()
+        rule.locations.set(locations)
+        rule.save()
+
+        serializer = RuleSerializer(rule)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, rule_id, *args, **kwargs):
+        rule = get_object_or_404(Rule, id=rule_id)
+        serializer = RuleSerializer(rule, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, rule_id, *args, **kwargs):
+        rule = get_object_or_404(Rule, id=rule_id)
+        rule.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

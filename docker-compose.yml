@@ -1,0 +1,58 @@
+version: '3.7'
+
+services:
+  web:
+    build:
+      context: ./MisplaceAI
+      dockerfile: Dockerfile
+    command: ./docker-web-entrypoint.sh python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - ./MisplaceAI:/app
+      - ./MisplaceAI/media:/app/media
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/ || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: misplaceai
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  ngrok:
+    image: wernight/ngrok
+    volumes:
+      - ./MisplaceAI/ngrok.yml:/home/ngrok/.ngrok2/ngrok.yml
+    command: ngrok start --all
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "4040:4040" # Expose Ngrok's web interface
+      - "8080" # Expose Ngrok's tunnel
+
+  react:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react-container
+    stdin_open: true
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:80"
+
+volumes:
+  mysql_data:

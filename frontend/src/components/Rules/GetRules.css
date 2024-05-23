@@ -1,0 +1,13 @@
+.rules-list {
+    margin-top: 20px;
+}
+
+.rules-list .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rules-list .list-group-item .btn {
+    margin-left: 5px;
+}

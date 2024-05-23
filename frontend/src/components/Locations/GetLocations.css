@@ -1,0 +1,15 @@
+/* src/components/Locations/GetLocations.css */
+
+.locations-list {
+    margin-top: 20px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    margin-right: 5px;
+}

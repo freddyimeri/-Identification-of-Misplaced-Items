@@ -1,3 +1,5 @@
+# MisplaceAI/rules/forms.py
+
 from django import forms
 from .models import Rule, Location, Item
 

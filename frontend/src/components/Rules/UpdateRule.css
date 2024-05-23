@@ -1,0 +1,15 @@
+.update-rule-container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.update-rule-container .form-group {
+    margin-bottom: 15px;
+}
+
+.update-rule-container .error {
+    color: red;
+}

@@ -1,4 +1,3 @@
-# misplaceai/settings.py
 """
 Django settings for MisplaceAI project.
 
@@ -17,27 +16,21 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-34gsb7^)t!ltchc4#2^sn_#+$(4i=ts107$(2yjy#ung+%mrn2'
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-
 # ALLOWED_HOSTS = []
- 
-ALLOWED_HOSTS = ['*']  # This allows all hosts. Use with caution.
 
+ALLOWED_HOSTS = ['*']  # This allows all hosts. Use with caution.
 
 # Application definition
 
@@ -56,18 +49,34 @@ INSTALLED_APPS = [
     'placement_rules.apps.PlacementRulesConfig',
     'results_viewer.apps.ResultsViewerConfig',
     'process_misplaced_manager.apps.ProcessMisplacedManagerConfig',
-
+    'rest_framework',
+    'corsheaders',
+    'live_testing_object',
+    'rest_framework_simplejwt',
+ 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+# Note: CORS_ORIGIN_ALLOW_ALL is set to False for security reasons
+CORS_ORIGIN_ALLOW_ALL = False
 
 ROOT_URLCONF = 'MisplaceAI.urls'
 
@@ -89,6 +98,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MisplaceAI.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -103,7 +122,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -126,7 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -138,7 +155,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_URL = '/static/'
@@ -146,8 +162,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR / "authentication/static",
 ]
-
- 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

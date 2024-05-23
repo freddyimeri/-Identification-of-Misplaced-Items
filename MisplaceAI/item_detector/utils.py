@@ -21,23 +21,21 @@ def create_category_index_from_labelmap(label_map_path, use_display_name=True):
     """Create a category index from a label map file."""
     return label_map_util.create_category_index_from_labelmap(label_map_path, use_display_name=use_display_name)
 
-def load_image_into_numpy_array(path):
-    """Load an image from file into a numpy array."""
-    img_data = tf.io.gfile.GFile(path, "rb").read()
-    image = Image.open(BytesIO(img_data))
+def load_image_into_numpy_array(image):
+    """Load an image from file or PIL image into a numpy array."""
+    if isinstance(image, str):  # image is a path
+        img_data = tf.io.gfile.GFile(image, "rb").read()
+        image = Image.open(BytesIO(img_data))
     (im_width, im_height) = image.size
     return np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
 
-def run_inference(model, category_index, image_path):
+def run_inference(model, category_index, image):
     """Run inference on a single image."""
-    print("-----------------------------------")
-    print("DEBUG-MESSAGE--FROM-BATCH-INTERFACE")
-
-    image_np = load_image_into_numpy_array(image_path)
+    image_np = load_image_into_numpy_array(image)
     output_dict = run_inference_for_single_image(model, image_np)
 
     dataLocation = []
-    print(f"Detected objects in {image_path}:")
+    print(f"Detected objects in {image if isinstance(image, str) else 'provided image'}:")
     for i, box in enumerate(output_dict["detection_boxes"]):
         if output_dict["detection_scores"][i] > 0.5:
             ymin, xmin, ymax, xmax = box
@@ -53,7 +51,6 @@ def run_inference(model, category_index, image_path):
                 "xmax": xmax,
             })
 
-    print("-----------------------------------")
     return dataLocation
 
 def run_inference_for_single_image(model, image):

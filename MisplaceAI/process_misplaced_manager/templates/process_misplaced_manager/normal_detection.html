@@ -1,88 +1,72 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1>Upload Image for Normal Detection</h1>
-<!-- Include WebcamJS library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header text-center bg-primary text-white py-4">
+                    <h1 class="mb-0">Upload Image for Normal Detection</h1>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post" enctype="multipart/form-data" id="uploadForm" class="text-center">
+                        {% csrf_token %}
 
-<form method="post" enctype="multipart/form-data" id="uploadForm">
-    {% csrf_token %}
-    <label for="id_image">Image:</label>
-    <input type="file" id="id_image" name="image" accept="image/*">
-    <button type="submit">Upload</button>
-</form>
+                        <!-- Camera Button -->
+                        <div class="form-group">
+                            <label class="h5 d-block">
+                                <button type="button" id="openCameraBtn" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-camera-retro fa-3x mb-3"></i> Take Photo
+                                </button>
+                            </label>
+                            <input type="file" id="cameraInput" name="image" accept="image/*" capture="environment"
+                                class="form-control-file d-none">
+                        </div>
 
-<!-- Button to open the camera interface -->
-<button id="openCameraBtn">Capture Image from Camera</button>
+                        <!-- Gallery Button -->
+                        <div class="form-group">
+                            <label class="h5 d-block">
+                                <button type="button" id="openGalleryBtn" class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-folder-open fa-3x mb-3"></i> Choose from Gallery
+                                </button>
+                            </label>
+                            <input type="file" id="galleryInput" name="image" accept="image/*"
+                                class="form-control-file d-none">
+                        </div>
 
-<!-- Container for the camera feed -->
-<div id="camera" style="display: none;"></div>
-<!-- Container for the captured image -->
-<div id="capturedImage" style="display: none;">
-    <img id="imagePreview" src="" alt="Captured Image">
-    <input type="hidden" id="capturedImageData" name="capturedImageData">
+                        <button type="submit" class="btn btn-success btn-lg mt-4">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <a href="{% url 'process_misplaced_manager:detection_options' %}" class="btn btn-link">
+                            <i class="fas fa-arrow-left"></i> Back to Detection Options
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<a href="{% url 'process_misplaced_manager:detection_options' %}">Back to Detection Options</a>
 
 <script>
     document.getElementById('openCameraBtn').addEventListener('click', function () {
-        // Show the camera interface
-        document.getElementById('camera').style.display = 'block';
-
-        // Configure and attach the camera
-        Webcam.set({
-            width: 320,
-            height: 240,
-            image_format: 'jpeg',
-            jpeg_quality: 90
-        });
-        Webcam.attach('#camera');
-
-        // Capture the image
-        Webcam.snap(function (data_uri) {
-            // Show the captured image
-            document.getElementById('capturedImage').style.display = 'block';
-            document.getElementById('imagePreview').src = data_uri;
-
-            // Save the captured image data to the hidden input field
-            document.getElementById('capturedImageData').value = data_uri;
-
-            // Hide the camera interface
-            Webcam.reset();
-            document.getElementById('camera').style.display = 'none';
-        });
+        document.getElementById('cameraInput').click();
     });
 
-    document.getElementById('uploadForm').addEventListener('submit', function (event) {
-        // If an image is captured from the camera, prevent the default form submission
-        const capturedImageData = document.getElementById('capturedImageData').value;
-        if (capturedImageData) {
-            event.preventDefault();
-
-            // Create a FormData object
-            const formData = new FormData();
-
-            // Append the CSRF token
-            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-
-            // Append the captured image data
-            formData.append('capturedImageData', capturedImageData);
-
-            // Send the form data via AJAX
-            fetch('{% url "process_misplaced_manager:normal_detection" %}', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle the response (e.g., redirect to the results page)
-                    window.location.href = data.redirect_url;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
+    document.getElementById('openGalleryBtn').addEventListener('click', function () {
+        document.getElementById('galleryInput').click();
     });
 </script>
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .btn-lg i {
+        margin-right: 8px;
+    }
+</style>
 {% endblock %}

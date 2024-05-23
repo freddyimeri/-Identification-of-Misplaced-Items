@@ -1,0 +1,13 @@
+/* src/pages/Items/ManageItemsPage.css */
+.manage-items-container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    margin: 0;
+}

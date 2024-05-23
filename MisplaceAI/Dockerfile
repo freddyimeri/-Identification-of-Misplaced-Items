@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libatlas-base-dev \
     protobuf-compiler \
     git \
+    default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -37,5 +38,9 @@ RUN mkdir -p /app/media
 # Expose port 8080 for the Django app
 EXPOSE 8080
 
+# Add an entrypoint script to wait for db
+COPY docker-web-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-web-entrypoint.sh
+
 # Run the Django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["docker-web-entrypoint.sh", "python", "manage.py", "runserver", "0.0.0.0:8080"]

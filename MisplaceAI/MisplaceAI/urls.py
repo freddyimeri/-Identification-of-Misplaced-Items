@@ -9,12 +9,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('rules/', include('rules.urls')),
-    path('auth/', include('authentication.urls')), 
+    path('auth/', include('authentication.urls')),
     path('admin-app/', include('admin_app.urls')),
-    path('process_misplaced_manager/', include('process_misplaced_manager.urls', namespace='process_misplaced_manager')),  # Ensure namespace is included correctly
+    path('process_misplaced_manager/', include('process_misplaced_manager.urls', namespace='process_misplaced_manager')),
+    path('results_viewer/', include('results_viewer.urls', namespace='results_viewer')),
+    path('placement_rules/', include('placement_rules.urls')),  # Ensure placement_rules URLs are included
  
- 
-    path('results_viewer/', include('results_viewer.urls', namespace='results_viewer')),  # Include results_viewer URLs with namespace
 ]
 
 if settings.DEBUG:
