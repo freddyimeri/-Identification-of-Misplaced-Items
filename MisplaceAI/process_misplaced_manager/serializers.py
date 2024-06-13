@@ -1,4 +1,5 @@
-# process_misplaced_manager/serializers.py
+# MisplaceAI/process_misplaced_manager/serializers.py
+
 from rest_framework import serializers
 from .models import UploadedImage, UploadedVideo
 

@@ -1,3 +1,5 @@
+#MisplaceAI/placement_rules/models.py
+
 from django.db import models
 
 class PlacementRule(models.Model):

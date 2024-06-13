@@ -1,3 +1,5 @@
+# MisplaceAI/process_misplaced_manager/forms.py
+
 from django import forms
 from .models import UploadedImage, UploadedVideo
 

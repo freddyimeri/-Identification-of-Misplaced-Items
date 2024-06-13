@@ -1,3 +1,4 @@
+# MisplaceAi/placement_rules/urls.py
 from django.urls import path
 from . import views
 

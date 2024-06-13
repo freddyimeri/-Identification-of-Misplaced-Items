@@ -1,3 +1,5 @@
+# MisplaceAI/process_misplaced_manager/models.py
+
 from django.db import models
 
 class UploadedImage(models.Model):

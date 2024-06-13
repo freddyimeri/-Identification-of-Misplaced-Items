@@ -1,4 +1,4 @@
-# results_viewer/views.py
+# MisplaceAi/results_viewer/views.py
 
 from django.http import JsonResponse
 from .utils import visualize_misplaced_objects

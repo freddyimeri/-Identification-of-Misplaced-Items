@@ -1,3 +1,5 @@
+# MisplaceAI/results_viewer/urls.py
+
 from django.urls import path
 from .views import generate_annotated_image
 
