@@ -31,9 +31,14 @@ const Navbar = () => {
                             <Link className="nav-link" to="/">Home</Link>
                         </li>
                         {isAuthenticated && (
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/detection-options">Detect Misplaced Items</Link>
-                            </li>
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/detection-options">Detect Misplaced Items</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/user/dashboard">User Dashboard</Link>
+                                </li>
+                            </>
                         )}
                         {!isAuthenticated && (
                             <>

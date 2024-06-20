@@ -14,6 +14,8 @@ urlpatterns = [
     path('api/process_misplaced_manager/', include('process_misplaced_manager.urls', namespace='process_misplaced_manager')),
     path('api/results_viewer/', include('results_viewer.urls', namespace='results_viewer')),
     path('api/placement_rules/', include('placement_rules.urls')),
+    path('api/user_dashboard/', include('user_dashboard.urls')),   
+
 ]
 
 if settings.DEBUG:

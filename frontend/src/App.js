@@ -13,6 +13,7 @@ import ManageItems from './pages/Items/ManageItemsPage';
 import ManageRulesPage from './pages/Rules/ManageRulesPage';
 import DetectionOptionsPage from './pages/DetectionOptions/DetectionOptionsPage';
 import NormalDetectionPage from './pages/NormalDetection/NormalDetectionPage';
+import UserDashboard from './pages/UserDashboard/UserDashboard';
 
 import ProtectedRoute from './firewall/ProtectedRoute';
 import RouteProtection from './firewall/RouteProtection';
@@ -69,6 +70,11 @@ function App() {
             <Route path="/normal-detection" element={
               <ProtectedRoute>
                 <NormalDetectionPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/user/dashboard" element={
+              <ProtectedRoute>
+                <UserDashboard />
               </ProtectedRoute>
             } />
             <Route path="*" element={<HomePage />} /> {/* Catch-all route */}
