@@ -1,13 +1,30 @@
 // src/pages/UserDashboard/UserDashboard.js
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import '../../styles/main.css';
+import '../../styles/dashboard.css';
+import ButtonLink from '../../components/Common/buttons/ButtonLink';
 
 const UserDashboard = () => {
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        // Simulate fetching user data from localStorage or an API
+        const user = localStorage.getItem('username');
+        if (user) {
+            setUsername(user);
+        } else {
+            setUsername('User'); // Default if no username found
+        }
+    }, []);
+
     return (
-        <div className="user-dashboard-container">
-            <h1>User Dashboard</h1>
-            <Link to="/user/profile" className="btn btn-primary">User Profile</Link>
+        <div className="pages-container-center">
+            <h1 className="dashboard-title">User Dashboard</h1>
+            <h2 className="dashboard-greeting">Hello, {username}</h2>
+            <div className="dashboard-buttons-container">
+                <ButtonLink to="/user/profile" label="User Profile" />
+                {/* Add more ButtonLink components here as needed */}
+            </div>
         </div>
     );
 };

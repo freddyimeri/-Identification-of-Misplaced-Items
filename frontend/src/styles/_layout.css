@@ -1,31 +1,48 @@
 /* src/styles/_layout.css */
 
+/* General container styles */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
 }
 
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    background-color: var(--light-color);
-    padding-top: 10vh;
-    width: 100%;
+.form-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
 
-.admin-container {
+
+
+
+.full-height-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.manage-content-container {
+    max-width: 900px;
+    margin: 0 auto;
     padding: 2rem;
 }
 
-.admin-container .list-group {
-    max-width: 600px;
-    margin: 0 auto;
+.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    /* Adjust based on your layout needs */
 }
 
-.table-striped th,
-.table-striped td {
-    text-align: center;
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
 }

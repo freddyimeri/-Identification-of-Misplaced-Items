@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getImageResults } from '../../services/processMisplacedManagerApi';
+import '../../styles/main.css';
 
 const DisplayResultsPage = () => {
     const { imageId } = useParams();
@@ -20,7 +21,7 @@ const DisplayResultsPage = () => {
     }
 
     return (
-        <div className="container mt-5">
+        <div className="pages-container-center">
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <h1 className="text-center">Detection Results</h1>

@@ -4,27 +4,30 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import FormContainer from '../../components/Common/Form/FormContainer';
 import FormField from '../../components/Common/Form/FormField';
-import SubmitButton from '../../components/Common/Form/SubmitButton';
+import SubmitButton from '../../components/Common/buttons/SubmitButton';
 import '../../styles/main.css';
 
 const ItemForm = ({ initialData = {}, onSubmit }) => {
     const [name, setName] = useState(initialData.name || '');
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent the default form submission
         onSubmit({ name });
     };
 
     return (
-        <FormContainer onSubmit={handleSubmit}>
-            <FormField
-                label="Name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-            />
-            <SubmitButton label="Submit" />
-        </FormContainer>
+        <div className="form-container">
+            <FormContainer onSubmit={handleSubmit}>
+                <FormField
+                    label="Name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <SubmitButton label="Submit" />
+            </FormContainer>
+        </div>
     );
 };
 

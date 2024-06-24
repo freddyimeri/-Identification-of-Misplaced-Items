@@ -1,6 +1,7 @@
+// src/components/Rules/GetRules.js
 import React, { useEffect, useState } from 'react';
 import { getRules, deleteRule } from '../../services/ruleApi';
-import '../../styles/main.css';
+import '../../styles/main.css'; // Ensure this is the correct path to main.css
 
 const GetRules = ({ onEditRule, onDeleteRule, refresh }) => {
     const [rules, setRules] = useState([]);

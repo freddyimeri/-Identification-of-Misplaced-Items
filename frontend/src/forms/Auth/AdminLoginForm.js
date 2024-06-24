@@ -1,11 +1,12 @@
 // src/forms/Auth/AdminLoginForm.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import InputField from '../../components/Common/Form/InputField';
+import FormContainer from '../../components/Common/Form/FormContainer';
+import FormField from '../../components/Common/Form/FormField';
+import PasswordInputField from '../../components/Common/Password/PasswordInputField';
+import SubmitButton from '../../components/Common/buttons/SubmitButton';
 import ErrorMessage from '../../components/Common/Form/ErrorMessage';
-import SubmitButton from '../../components/Common/Form/SubmitButton';
 import '../../styles/main.css';
 
 const AdminLoginForm = () => {
@@ -20,6 +21,7 @@ const AdminLoginForm = () => {
             const response = await api.post('/api/admin-app/login/', { username, password });
             localStorage.setItem('adminToken', response.data.access);
             localStorage.setItem('isAdmin', true);
+            localStorage.setItem('username', username);
             localStorage.setItem('isAuthenticated', true);
             navigate('/admin/dashboard');
             window.location.reload(); // Refresh to update Navbar
@@ -29,29 +31,23 @@ const AdminLoginForm = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-form">
-                <h2 className="text-center">Admin Login</h2>
-                {error && <ErrorMessage message={error} />}
-                <form onSubmit={handleSubmit}>
-                    <InputField
-                        label="Username"
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                    <InputField
-                        label="Password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <SubmitButton label="Login" />
-                </form>
-            </div>
-        </div>
+        <FormContainer onSubmit={handleSubmit}>
+            <h2 className="text-center">Admin Login</h2>
+            {error && <ErrorMessage message={error} />}
+            <FormField
+                label="Username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+            />
+            <PasswordInputField
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <SubmitButton label="Login" />
+        </FormContainer>
     );
 };
 

@@ -1,11 +1,10 @@
 // src/pages/Home/Home.js
-
 import React from 'react';
 import '../../styles/main.css';
 
 const Home = () => {
     return (
-        <div className="container">
+        <div className="pages-container-center">
             <div className="card">
                 <div className="card-body">
                     <h1 className="card-title">Welcome to MisplaceAI</h1>

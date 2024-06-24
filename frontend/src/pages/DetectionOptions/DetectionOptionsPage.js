@@ -1,10 +1,11 @@
 // src/pages/DetectionOptions/DetectionOptionsPage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../styles/main.css';
 
 const DetectionOptionsPage = () => {
     return (
-        <div className="container mt-5">
+        <div className="pages-container-center">
             <h1 className="text-center">Select Detection Method</h1>
             <div className="row justify-content-center mt-4">
                 <div className="col-md-6 text-center">

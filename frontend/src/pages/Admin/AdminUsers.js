@@ -1,6 +1,7 @@
+// src/pages/Admin/AdminUsers.js
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
-
+import '../../styles/main.css'; // Ensure this is the correct path to main.css
 
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
@@ -29,7 +30,7 @@ const AdminUsers = () => {
     };
 
     return (
-        <div className="admin-container">
+        <div className="pages-container-center">
             <h1>Users Activity</h1>
             <table className="table table-striped">
                 <thead>

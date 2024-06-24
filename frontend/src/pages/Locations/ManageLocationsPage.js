@@ -1,9 +1,10 @@
+// src/pages/Locations/ManageLocationsPage.js
 import React, { useState } from 'react';
 import AddLocation from '../../components/Locations/AddLocation';
 import GetLocations from '../../components/Locations/GetLocations';
 import UpdateLocation from '../../components/Locations/UpdateLocation';
 import { deleteLocation } from '../../services/locationApi';
-import '../../styles/main.css';
+import '../../styles/main.css'; // Ensure this is the correct path to main.css
 
 const ManageLocationsPage = () => {
     const [editingLocation, setEditingLocation] = useState(null);
@@ -28,12 +29,16 @@ const ManageLocationsPage = () => {
     };
 
     return (
-        <div className="manage-locations-page">
-            <h1>Manage Locations</h1>
+        <div className="pages-container-center">
+            <h1 className="text-center mb-4">Manage Locations</h1>
             <AddLocation onLocationAdded={handleLocationAdded} />
             {editingLocation && (
-                <UpdateLocation location={editingLocation} onUpdateCompleted={handleUpdateCompleted} />
+                <>
+                    <h2 className="text-center mb-4">Edit Location</h2>
+                    <UpdateLocation location={editingLocation} onUpdateCompleted={handleUpdateCompleted} />
+                </>
             )}
+            <h2 className="text-center mb-4">Locations List</h2>
             <GetLocations onEditLocation={handleEditLocation} onDeleteLocation={handleDeleteLocation} refresh={refreshLocations} />
         </div>
     );

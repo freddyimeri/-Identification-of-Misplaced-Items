@@ -1,12 +1,12 @@
 // src/forms/Auth/RegisterForm.js
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import InputField from '../../components/Common/Form/InputField';
-import ErrorMessage from '../../components/Common/Form/ErrorMessage';
-import SubmitButton from '../../components/Common/Form/SubmitButton';
+import FormContainer from '../../components/Common/Form/FormContainer';
+import FormField from '../../components/Common/Form/FormField';
 import PasswordInputField from '../../components/Common/Password/PasswordInputField';
+import ErrorMessage from '../../components/Common/Form/ErrorMessage';
+import SubmitButton from '../../components/Common/buttons/SubmitButton';
 import '../../styles/main.css';
 
 const RegisterForm = () => {
@@ -81,6 +81,7 @@ const RegisterForm = () => {
         try {
             const response = await api.post('/api/auth/register/', { username, email, password, password2 });
             localStorage.setItem('token', response.data.access);
+            localStorage.setItem('username', username);
             localStorage.setItem('isAuthenticated', true);
             navigate('/');
             window.location.reload(); // Refresh to update Navbar
@@ -90,43 +91,39 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-form">
-                <h2 className="text-center">Register</h2>
-                {error && <ErrorMessage message={error} />}
-                <form onSubmit={handleSubmit}>
-                    <InputField
-                        label="Username"
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                    <InputField
-                        label="Email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <PasswordInputField
-                        label="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        showRequirements={true}
-                    />
-                    <PasswordInputField
-                        label="Confirm Password"
-                        value={password2}
-                        onChange={(e) => setPassword2(e.target.value)}
-                    />
-                    <small id="passwordMatchMessage" className={`form-text ${passwordMatchMessage.includes('match') ? 'text-success' : 'text-danger'}`}>
-                        {passwordMatchMessage}
-                    </small>
-                    <SubmitButton label="Register" disabled={!isFormValid} />
-                </form>
-            </div>
-        </div>
+        <FormContainer onSubmit={handleSubmit}>
+            <h2 className="text-center">Register</h2>
+            {error && <ErrorMessage message={error} />}
+            <FormField
+                label="Username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+            />
+            <FormField
+                label="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+            />
+            <PasswordInputField
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                showRequirements={true}
+            />
+            <PasswordInputField
+                label="Confirm Password"
+                value={password2}
+                onChange={(e) => setPassword2(e.target.value)}
+            />
+            <small id="passwordMatchMessage" className={`form-text ${passwordMatchMessage.includes('match') ? 'text-success' : 'text-danger'}`}>
+                {passwordMatchMessage}
+            </small>
+            <SubmitButton label="Register" disabled={!isFormValid} />
+        </FormContainer>
     );
 };
 

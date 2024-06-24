@@ -23,9 +23,9 @@ const UpdateLocation = ({ location, onUpdateCompleted }) => {
     };
 
     return (
-        <div className="update-location-container">
+        <div className="form-container">
             <h3>Update Location</h3>
-            {error && <p className="error">{error}</p>}
+            {error && <p className="text-danger">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Name</label>
@@ -39,7 +39,6 @@ const UpdateLocation = ({ location, onUpdateCompleted }) => {
                 </div>
                 <button type="submit" className="btn btn-primary">Update</button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
 };

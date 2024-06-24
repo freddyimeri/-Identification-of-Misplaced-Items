@@ -1,3 +1,4 @@
+// src/components/Locations/AddLocation.js
 import React, { useState } from 'react';
 import { addLocation } from '../../services/locationApi';
 import '../../styles/main.css';
@@ -13,7 +14,7 @@ const AddLocation = ({ onLocationAdded }) => {
     };
 
     return (
-        <div className="add-location-container">
+        <div className="form-container">
             <h3>Add Location</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

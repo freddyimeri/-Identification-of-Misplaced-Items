@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLoginForm from '../../forms/Auth/AdminLoginForm';
-
+import '../../styles/main.css';
 
 const AdminLoginPage = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const AdminLoginPage = () => {
     }, [navigate]);
 
     return (
-        <div className="auth-container">
+        <div className="pages-container-center">
             <AdminLoginForm />
         </div>
     );

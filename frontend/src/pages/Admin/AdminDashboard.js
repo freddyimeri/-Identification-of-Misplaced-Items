@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
     return (
-        <div className="admin-container">
+        <div className="pages-container-center">
             <h1>Admin Dashboard</h1>
             <div className="list-group">
                 <Link to="/admin/users" className="list-group-item list-group-item-action">Users Activity</Link>

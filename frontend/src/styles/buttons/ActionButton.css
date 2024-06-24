@@ -1,0 +1,34 @@
+/* src/styles/buttons/ActionButton.css */
+.action-button {
+    cursor: pointer;
+    font-weight: 700;
+    font-family: Helvetica, "sans-serif";
+    transition: all .2s;
+    padding: 15px 40px;
+    /* Increased padding to make the button wider */
+    border-radius: 100px;
+    background: #cfef00;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.action-button:hover {
+    background: #c4e201;
+}
+
+.action-button>svg {
+    width: 24px;
+    /* Adjusted size for better alignment */
+    margin-left: 10px;
+    transition: transform .3s ease-in-out;
+}
+
+.action-button:hover svg {
+    transform: translateX(5px);
+}
+
+.action-button:active {
+    transform: scale(0.95);
+}

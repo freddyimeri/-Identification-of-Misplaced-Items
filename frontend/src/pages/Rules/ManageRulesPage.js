@@ -26,7 +26,7 @@ const ManageRulesPage = () => {
     };
 
     return (
-        <div className="manage-rules-page">
+        <div className="pages-container-center">
             <h1>Manage Rules</h1>
             <AddRule onRuleAdded={handleRuleAdded} />
             {editingRule && (

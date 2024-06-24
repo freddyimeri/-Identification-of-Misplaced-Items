@@ -1,5 +1,6 @@
 /* src/styles/_responsive.css */
 
+/* Responsive utilities */
 @media (max-width: 768px) {
     .auth-container {
         padding: 10px;

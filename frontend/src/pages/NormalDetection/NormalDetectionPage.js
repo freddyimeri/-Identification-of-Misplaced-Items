@@ -55,7 +55,7 @@ const NormalDetectionPage = () => {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="pages-container-center">
             <div className="row justify-content-center">
                 <div className="col-12 col-md-10 col-lg-8">
                     <div className="card shadow-lg border-0">

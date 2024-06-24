@@ -1,0 +1,68 @@
+/* src/styles/buttons/SubmitButton.css */
+.submit-button {
+    width: 300px;
+    /* Increased width to double the size */
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: green;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    background: #28a745;
+    position: relative;
+    /* Added position relative for proper alignment of children */
+}
+
+.submit-button,
+.submit-button span {
+    transition: 200ms;
+}
+
+.submit-button .text {
+    transform: translateX(75px);
+    /* Adjusted to match new width */
+    color: white;
+    font-weight: bold;
+}
+
+.submit-button .icon {
+    position: absolute;
+    border-left: 1px solid #218838;
+    transform: translateX(220px);
+    /* Adjusted to match new width */
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-button svg {
+    width: 15px;
+    fill: #eee;
+}
+
+.submit-button:hover {
+    background: #218838;
+}
+
+.submit-button:hover .text {
+    color: transparent;
+}
+
+.submit-button:hover .icon {
+    width: 300px;
+    /* Adjusted to match new width */
+    border-left: none;
+    transform: translateX(0);
+}
+
+.submit-button:focus {
+    outline: none;
+}
+
+.submit-button:active .icon svg {
+    transform: scale(0.8);
+}

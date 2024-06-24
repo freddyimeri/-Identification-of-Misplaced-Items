@@ -1,10 +1,10 @@
-// src/pages/Items/ManageItemsPage.js
+// src/pages/Items/p
 import React, { useState } from 'react';
 import AddItem from '../../components/Items/AddItem';
 import GetItems from '../../components/Items/GetItems';
 import UpdateItem from '../../components/Items/UpdateItem';
 import { deleteItem } from '../../services/itemApi';
-import '../../styles/main.css';
+import '../../styles/main.css'; // Ensure this is the correct path to main.css
 
 const ManageItemsPage = () => {
     const [editingItem, setEditingItem] = useState(null);
@@ -29,7 +29,7 @@ const ManageItemsPage = () => {
     };
 
     return (
-        <div className="manage-items-container container mt-5">
+        <div className="pages-container-center">
             <h1 className="text-center mb-4">Manage Items</h1>
             <h2 className="text-center mb-4">Add Item</h2>
             <AddItem onItemAdded={handleItemAdded} />

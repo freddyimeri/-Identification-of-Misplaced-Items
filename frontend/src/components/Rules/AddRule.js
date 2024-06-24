@@ -1,3 +1,4 @@
+// src/components/Rules/AddRule.js
 import React, { useState, useEffect } from 'react';
 import { addRule } from '../../services/ruleApi';
 import { getItems } from '../../services/itemApi';
@@ -39,9 +40,9 @@ const AddRule = ({ onRuleAdded }) => {
     };
 
     return (
-        <div className="add-rule-container">
+        <div className="form-container">
             <h3>Add Rule</h3>
-            {error && <p className="error">{error}</p>}
+            {error && <p className="text-danger">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Item</label>

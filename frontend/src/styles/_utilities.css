@@ -1,19 +1,30 @@
 /* src/styles/_utilities.css */
 
-.text-center {
-    text-align: center;
+/* Utility classes */
+.m-0 {
+    margin: 0 !important;
 }
 
-.text-danger {
-    color: var(--danger-color);
-    text-align: center;
-    margin-top: 1rem;
+.p-0 {
+    padding: 0 !important;
 }
 
-.m-1 {
-    margin: var(--spacing-unit);
+.mt-1 {
+    margin-top: 0.25rem !important;
 }
 
-.p-1 {
-    padding: var(--spacing-unit);
+.mt-2 {
+    margin-top: 0.5rem !important;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
 }

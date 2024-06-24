@@ -1,8 +1,9 @@
+// src/components/Rules/UpdateRule.js
 import React, { useState, useEffect } from 'react';
 import { updateRule } from '../../services/ruleApi';
 import { getItems } from '../../services/itemApi';
 import { getLocations } from '../../services/locationApi';
-import '../../styles/main.css';
+import '../../styles/main.css'; // Ensure this is the correct path to main.css
 
 const UpdateRule = ({ rule, onUpdateCompleted }) => {
     const [items, setItems] = useState([]);
@@ -38,9 +39,9 @@ const UpdateRule = ({ rule, onUpdateCompleted }) => {
     };
 
     return (
-        <div className="update-rule-container">
+        <div className="form-container">
             <h3>Update Rule</h3>
-            {error && <p className="error">{error}</p>}
+            {error && <p className="text-danger">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Item</label>
