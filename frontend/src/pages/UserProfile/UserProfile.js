@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import ChangeEmailForm from '../../forms/UserProfile/ChangeEmailForm';
 import ChangeUsernameForm from '../../forms/UserProfile/ChangeUsernameForm';
+import ChangePasswordForm from '../../forms/UserProfile/ChangePasswordForm';
 import { getCurrentUserEmail, getCurrentUserUsername } from '../../services/userApi';
 import '../../styles/main.css';
 import '../../styles/dashboard.css';
@@ -32,6 +33,11 @@ const UserProfile = () => {
 
     const handleUpdateUsername = async (data) => {
         setCurrentUsername(data.newInfo);
+        localStorage.setItem('username', data.newInfo); // Update localStorage
+    };
+
+    const handleUpdatePassword = () => {
+        console.log('Password updated successfully');
     };
 
     return (
@@ -44,6 +50,9 @@ const UserProfile = () => {
             <ChangeUsernameForm
                 currentUsername={currentUsername}
                 onUpdateUsername={handleUpdateUsername}
+            />
+            <ChangePasswordForm
+                onUpdatePassword={handleUpdatePassword}
             />
         </div>
     );

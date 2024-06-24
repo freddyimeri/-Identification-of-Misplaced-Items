@@ -3,7 +3,7 @@
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateEmailSerializer, UserUpdateUsernameSerializer
+from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateEmailSerializer, UserUpdateUsernameSerializer, UserUpdatePasswordSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -78,3 +78,28 @@ class CurrentUserUsernameView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
         return Response({'username': user.username}, status=status.HTTP_200_OK)
+
+
+class UpdatePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        serializer = UserUpdatePasswordSerializer(data=request.data)
+
+        if serializer.is_valid():
+            current_password = serializer.validated_data.get('current_password')
+            new_password = serializer.validated_data.get('new_password')
+            confirm_password = serializer.validated_data.get('confirm_password')
+
+            if not user.check_password(current_password):
+                return Response({'error': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if new_password != confirm_password:
+                return Response({'error': 'New passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(new_password)
+            user.save()
+            return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

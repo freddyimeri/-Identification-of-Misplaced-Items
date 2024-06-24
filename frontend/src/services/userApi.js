@@ -26,3 +26,8 @@ export const getCurrentUserUsername = async () => {
     const response = await api.get('/api/user_dashboard/username/');
     return response.data;
 };
+
+export const updatePassword = async (passwordData) => {
+    const response = await api.put('/api/user_dashboard/update_password/', passwordData);
+    return response.data;
+};

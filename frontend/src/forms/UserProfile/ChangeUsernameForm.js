@@ -26,6 +26,7 @@ const ChangeUsernameForm = ({ currentUsername, onUpdateUsername }) => {
         try {
             const response = await updateUsername({ username: newInfo, password });
             console.log('Username updated:', response);
+            localStorage.setItem('username', newInfo); // Update localStorage
             onUpdateUsername({ newInfo }); // Update the parent state
             setShowForm(false);
         } catch (err) {
