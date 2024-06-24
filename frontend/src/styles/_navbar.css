@@ -1,7 +1,8 @@
-/* frontend/src/components/Navbar/Navbar.css */
+/* src/styles/_navbar.css */
+
 .navbar {
     width: 100%;
-    background-color: #f8f9fa;
+    background-color: var(--light-color);
     margin-bottom: 20px;
 }
 

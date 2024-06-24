@@ -4,7 +4,7 @@ import AddItem from '../../components/Items/AddItem';
 import GetItems from '../../components/Items/GetItems';
 import UpdateItem from '../../components/Items/UpdateItem';
 import { deleteItem } from '../../services/itemApi';
-import './ManageItemsPage.css';
+import '../../styles/main.css';
 
 const ManageItemsPage = () => {
     const [editingItem, setEditingItem] = useState(null);

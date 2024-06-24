@@ -1,0 +1,22 @@
+/* src/styles/_responsive.css */
+
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 10px;
+    }
+
+    .auth-form {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .card-body {
+        padding: 3rem;
+    }
+
+    .btn-lg {
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
+    }
+}

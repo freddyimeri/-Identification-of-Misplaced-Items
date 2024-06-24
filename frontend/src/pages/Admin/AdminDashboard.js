@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Admin.css';  // Import the CSS file
+
 
 const AdminDashboard = () => {
     return (

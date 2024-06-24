@@ -1,7 +1,7 @@
 // src/components/Items/UpdateItem.js
 import React, { useState, useEffect } from 'react';
 import { updateItem } from '../../services/itemApi';
-import './UpdateItem.css';
+import '../../styles/main.css';
 
 const UpdateItem = ({ item, onUpdateCompleted }) => {
     const [itemName, setItemName] = useState(item.name);

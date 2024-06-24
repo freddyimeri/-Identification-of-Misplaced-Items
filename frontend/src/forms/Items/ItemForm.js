@@ -1,20 +1,22 @@
 // src/forms/Items/ItemForm.js
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import InputField from '../../components/Common/Form/InputField';
+import FormContainer from '../../components/Common/Form/FormContainer';
+import FormField from '../../components/Common/Form/FormField';
 import SubmitButton from '../../components/Common/Form/SubmitButton';
+import '../../styles/main.css';
 
 const ItemForm = ({ initialData = {}, onSubmit }) => {
     const [name, setName] = useState(initialData.name || '');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         onSubmit({ name });
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <InputField
+        <FormContainer onSubmit={handleSubmit}>
+            <FormField
                 label="Name"
                 type="text"
                 value={name}
@@ -22,7 +24,7 @@ const ItemForm = ({ initialData = {}, onSubmit }) => {
                 required
             />
             <SubmitButton label="Submit" />
-        </form>
+        </FormContainer>
     );
 };
 

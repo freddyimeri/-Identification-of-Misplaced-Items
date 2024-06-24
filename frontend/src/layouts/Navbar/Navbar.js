@@ -1,7 +1,7 @@
 // src/layouts/Navbar/Navbar.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Navbar.css';
+import '../../styles/main.css';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/">Home</Link>
                         </li>
-                        {isAuthenticated && (
+                        {isAuthenticated && !isAdmin && (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/detection-options">Detect Misplaced Items</Link>
@@ -50,7 +50,7 @@ const Navbar = () => {
                                 </li>
                             </>
                         )}
-                        {isAuthenticated && !isAdmin && (
+                        {isAuthenticated && (
                             <li className="nav-item">
                                 <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
                             </li>
@@ -59,9 +59,6 @@ const Navbar = () => {
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/admin/dashboard">Admin Dashboard</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
                                 </li>
                             </>
                         )}

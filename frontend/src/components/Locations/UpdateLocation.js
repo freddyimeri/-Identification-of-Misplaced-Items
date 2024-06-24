@@ -1,7 +1,7 @@
 // src/components/Locations/UpdateLocation.js
 import React, { useState, useEffect } from 'react';
 import { updateLocation } from '../../services/locationApi';
-import './UpdateLocation.css';
+import '../../styles/main.css';
 
 const UpdateLocation = ({ location, onUpdateCompleted }) => {
     const [locationName, setLocationName] = useState(location.name);

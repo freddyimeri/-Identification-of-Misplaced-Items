@@ -14,11 +14,12 @@ import ManageRulesPage from './pages/Rules/ManageRulesPage';
 import DetectionOptionsPage from './pages/DetectionOptions/DetectionOptionsPage';
 import NormalDetectionPage from './pages/NormalDetection/NormalDetectionPage';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
+import UserProfile from './pages/UserProfile/UserProfile';
 
 import ProtectedRoute from './firewall/ProtectedRoute';
 import RouteProtection from './firewall/RouteProtection';
 
-import './App.css';
+
 
 function App() {
   return (
@@ -77,6 +78,12 @@ function App() {
                 <UserDashboard />
               </ProtectedRoute>
             } />
+            <Route path="/user/profile" element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            } />
+
             <Route path="*" element={<HomePage />} /> {/* Catch-all route */}
           </Routes>
         </div>

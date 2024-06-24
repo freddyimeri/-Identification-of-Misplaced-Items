@@ -1,0 +1,12 @@
+/* src/styles/main.css */
+
+/* Import all CSS files */
+@import './_variables.css';
+@import './_global.css';
+@import './_layout.css';
+@import './_components.css';
+@import './_responsive.css';
+@import './_utilities.css';
+@import './_typography.css';
+@import './_forms.css';
+@import './_navbar.css';

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { normalDetection } from '../../services/processMisplacedManagerApi';
-import './NormalDetectionPage.css';
+import '../../styles/main.css';
 import loadingGif from '../../assets/loading.gif'; // Import your downloaded GIF
 
 const NormalDetectionPage = () => {

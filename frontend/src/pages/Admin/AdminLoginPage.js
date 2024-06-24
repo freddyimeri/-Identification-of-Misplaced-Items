@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLoginForm from '../../forms/Auth/AdminLoginForm';
-import './Admin.css';
+
 
 const AdminLoginPage = () => {
     const navigate = useNavigate();

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { addRule } from '../../services/ruleApi';
 import { getItems } from '../../services/itemApi';
 import { getLocations } from '../../services/locationApi';
-import './AddRule.css';
+import '../../styles/main.css';
 
 const AddRule = ({ onRuleAdded }) => {
     const [items, setItems] = useState([]);

@@ -1,7 +1,7 @@
 // src/components/Items/AddItem.js
 import React, { useState } from 'react';
 import { addItem } from '../../services/itemApi';
-import './AddItem.css';
+import '../../styles/main.css';
 
 const AddItem = ({ onItemAdded }) => {
     const [itemName, setItemName] = useState('');

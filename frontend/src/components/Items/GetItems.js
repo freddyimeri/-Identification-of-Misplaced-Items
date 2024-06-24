@@ -1,7 +1,7 @@
 // src/components/Items/GetItems.js
 import React, { useEffect, useState } from 'react';
 import { getItems } from '../../services/itemApi';
-import './GetItems.css';
+import '../../styles/main.css';
 
 const GetItems = ({ onEditItem, onDeleteItem, refresh }) => {
     const [items, setItems] = useState([]);

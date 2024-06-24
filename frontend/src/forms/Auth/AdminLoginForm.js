@@ -1,10 +1,12 @@
 // src/forms/Auth/AdminLoginForm.js
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import InputField from '../../components/Common/Form/InputField';
 import ErrorMessage from '../../components/Common/Form/ErrorMessage';
 import SubmitButton from '../../components/Common/Form/SubmitButton';
+import '../../styles/main.css';
 
 const AdminLoginForm = () => {
     const [username, setUsername] = useState('');
@@ -27,26 +29,28 @@ const AdminLoginForm = () => {
     };
 
     return (
-        <div className="auth-form">
-            <h2 className="text-center">Admin Login</h2>
-            {error && <ErrorMessage message={error} />}
-            <form onSubmit={handleSubmit}>
-                <InputField
-                    label="Username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                <InputField
-                    label="Password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <SubmitButton label="Login" />
-            </form>
+        <div className="auth-container">
+            <div className="auth-form">
+                <h2 className="text-center">Admin Login</h2>
+                {error && <ErrorMessage message={error} />}
+                <form onSubmit={handleSubmit}>
+                    <InputField
+                        label="Username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                    <InputField
+                        label="Password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <SubmitButton label="Login" />
+                </form>
+            </div>
         </div>
     );
 };

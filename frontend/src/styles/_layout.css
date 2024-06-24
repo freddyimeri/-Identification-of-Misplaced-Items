@@ -1,0 +1,31 @@
+/* src/styles/_layout.css */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    background-color: var(--light-color);
+    padding-top: 10vh;
+    width: 100%;
+}
+
+.admin-container {
+    padding: 2rem;
+}
+
+.admin-container .list-group {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.table-striped th,
+.table-striped td {
+    text-align: center;
+}

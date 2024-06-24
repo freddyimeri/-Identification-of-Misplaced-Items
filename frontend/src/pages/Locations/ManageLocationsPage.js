@@ -3,7 +3,7 @@ import AddLocation from '../../components/Locations/AddLocation';
 import GetLocations from '../../components/Locations/GetLocations';
 import UpdateLocation from '../../components/Locations/UpdateLocation';
 import { deleteLocation } from '../../services/locationApi';
-import './ManageLocationsPage.css';
+import '../../styles/main.css';
 
 const ManageLocationsPage = () => {
     const [editingLocation, setEditingLocation] = useState(null);

@@ -1,4 +1,4 @@
-// src/components/Common/InputField.js
+// src/components/Common/Form/InputField.js
 import React from 'react';
 import PropTypes from 'prop-types';
 

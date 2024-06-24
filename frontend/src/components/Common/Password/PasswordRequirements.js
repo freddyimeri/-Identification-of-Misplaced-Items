@@ -1,4 +1,4 @@
-// src/components/Common/PasswordRequirements.js
+// src/components/Common/Password/PasswordRequirements.js
 import React from 'react';
 import PropTypes from 'prop-types';
 

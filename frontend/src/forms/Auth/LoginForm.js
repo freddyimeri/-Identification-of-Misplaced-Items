@@ -1,11 +1,14 @@
 // src/forms/Auth/LoginForm.js
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import InputField from '../../components/Common/Form/InputField';
-import ErrorMessage from '../../components/Common/Form/ErrorMessage';
-import SubmitButton from '../../components/Common/Form/SubmitButton';
+import FormContainer from '../../components/Common/Form/FormContainer';
+import FormField from '../../components/Common/Form/FormField';
 import PasswordInputField from '../../components/Common/Password/PasswordInputField';
+import SubmitButton from '../../components/Common/Form/SubmitButton';
+import ErrorMessage from '../../components/Common/Form/ErrorMessage';
+import '../../styles/main.css';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -18,7 +21,7 @@ const LoginForm = () => {
         try {
             const response = await api.post('/api/auth/login/', { username, password });
             localStorage.setItem('token', response.data.access);
-            localStorage.setItem('isAuthenticated', true); // Set the authentication flag
+            localStorage.setItem('isAuthenticated', true);
             navigate('/');
             window.location.reload(); // Refresh to update Navbar
         } catch (error) {
@@ -27,11 +30,11 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="auth-form">
-            <h2 className="text-center">Login</h2>
-            {error && <ErrorMessage message={error} />}
-            <form onSubmit={handleSubmit}>
-                <InputField
+        <div className="auth-container">
+            <FormContainer onSubmit={handleSubmit}>
+                <h2 className="text-center responsive-text">Login</h2>
+                {error && <ErrorMessage message={error} />}
+                <FormField
                     label="Username"
                     type="text"
                     value={username}
@@ -44,7 +47,7 @@ const LoginForm = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <SubmitButton label="Login" />
-            </form>
+            </FormContainer>
         </div>
     );
 };

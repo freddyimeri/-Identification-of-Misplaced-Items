@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getLocations } from '../../services/locationApi';
-import './GetLocations.css';
+import '../../styles/main.css';
 
 const GetLocations = ({ onEditLocation, onDeleteLocation, refresh }) => {
     const [locations, setLocations] = useState([]);

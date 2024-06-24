@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AddRule from '../../components/Rules/AddRule';
 import GetRules from '../../components/Rules/GetRules';
 import UpdateRule from '../../components/Rules/UpdateRule';
-import './ManageRulesPage.css';
+import '../../styles/main.css';
 
 const ManageRulesPage = () => {
     const [editingRule, setEditingRule] = useState(null);

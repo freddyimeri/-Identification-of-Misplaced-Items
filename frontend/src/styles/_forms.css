@@ -1,0 +1,27 @@
+/* src/styles/_forms.css */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    border-radius: 5px;
+    padding: 12px;
+    border-right: none;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+.input-group-append {
+    cursor: pointer;
+}
+
+.input-group-text {
+    background: transparent;
+    border-left: none;
+    cursor: pointer;
+}

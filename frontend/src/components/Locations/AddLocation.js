@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { addLocation } from '../../services/locationApi';
-import './AddLocation.css';
+import '../../styles/main.css';
 
 const AddLocation = ({ onLocationAdded }) => {
     const [locationName, setLocationName] = useState('');
