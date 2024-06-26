@@ -11,4 +11,4 @@ class UploadedImageSerializer(serializers.ModelSerializer):
 class UploadedVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedVideo
-        fields = ['id', 'video', 'uploaded_at']
+        fields = ['id', 'video', 'uploaded_at', 'user', 'user_video_frame_preference']

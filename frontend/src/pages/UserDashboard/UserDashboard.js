@@ -23,6 +23,7 @@ const UserDashboard = () => {
             <h2 className="dashboard-greeting">Hello, {username}</h2>
             <div className="dashboard-buttons-container">
                 <ButtonLink to="/user/profile" label="User Profile" />
+                <ButtonLink to="/user/manage-rules" label="Manage Rules" />
                 {/* Add more ButtonLink components here as needed */}
             </div>
         </div>

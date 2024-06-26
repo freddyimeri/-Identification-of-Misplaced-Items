@@ -4,14 +4,17 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { normalDetection } from '../../services/processMisplacedManagerApi';
 import '../../styles/main.css';
-import loadingGif from '../../assets/loading.gif'; // Import your downloaded GIF
+import LoadingIndicator from '../../components/detection/LoadingIndicator';
+import DetectionResults from '../../components/detection/DetectionResults';
+import UploadForm from '../../components/detection/UploadForm';
+import DetectionContainer from '../../components/detection/DetectionContainer';
 
 const NormalDetectionPage = () => {
     const [imageFile, setImageFile] = useState(null);
     const [resultImageUrl, setResultImageUrl] = useState(null);
     const [misplacedObjects, setMisplacedObjects] = useState([]);
-    const [isLoading, setIsLoading] = useState(false); // Add loading state
-    const [showModal, setShowModal] = useState(false); // State to control modal visibility
+    const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const handleCameraClick = () => {
         document.getElementById('cameraInput').click();
@@ -28,7 +31,7 @@ const NormalDetectionPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (imageFile) {
-            setIsLoading(true); // Set loading to true when processing starts
+            setIsLoading(true);
             const formData = new FormData();
             formData.append('image', imageFile);
 
@@ -39,7 +42,7 @@ const NormalDetectionPage = () => {
             } catch (error) {
                 console.error('Upload failed', error);
             } finally {
-                setIsLoading(false); // Set loading to false when processing is complete
+                setIsLoading(false);
             }
         } else {
             alert('Please select an image to upload.');
@@ -55,76 +58,23 @@ const NormalDetectionPage = () => {
     };
 
     return (
-        <div className="pages-container-center">
-            <div className="row justify-content-center">
-                <div className="col-12 col-md-10 col-lg-8">
-                    <div className="card shadow-lg border-0">
-                        <div className="card-header text-center bg-primary text-white py-4">
-                            <h1 className="mb-0">Upload Image for Normal Detection</h1>
-                        </div>
-                        <div className="card-body p-5">
-                            {isLoading ? ( // Show loading GIF or message while loading
-                                <div className="text-center">
-                                    <img src={loadingGif} alt="Loading..." className="img-fluid" />
-                                    <p>Your photo is being processed, please wait...</p>
-                                </div>
-                            ) : (
-                                <form id="uploadForm" className="text-center" onSubmit={handleSubmit}>
-                                    <div className="form-group">
-                                        <label className="h5 d-block">
-                                            <button type="button" id="openCameraBtn" className="btn btn-primary btn-lg" onClick={handleCameraClick}>
-                                                <i className="fas fa-camera-retro fa-3x mb-3"></i> Take Photo
-                                            </button>
-                                        </label>
-                                        <input type="file" id="cameraInput" name="image" accept="image/*" capture="environment"
-                                            className="form-control-file d-none" onChange={handleFileChange} />
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label className="h5 d-block">
-                                            <button type="button" id="openGalleryBtn" className="btn btn-secondary btn-lg" onClick={handleGalleryClick}>
-                                                <i className="fas fa-folder-open fa-3x mb-3"></i> Choose from Gallery
-                                            </button>
-                                        </label>
-                                        <input type="file" id="galleryInput" name="image" accept="image/*"
-                                            className="form-control-file d-none" onChange={handleFileChange} />
-                                    </div>
-
-                                    <button type="submit" className="btn btn-success btn-lg mt-4">
-                                        <i className="fas fa-upload"></i> Upload
-                                    </button>
-                                </form>
-                            )}
-                            {resultImageUrl && !isLoading && ( // Show results if not loading
-                                <div className="mt-5">
-                                    <h2>Detection Results</h2>
-                                    <img
-                                        src={resultImageUrl}
-                                        alt="Detected Objects"
-                                        className="img-fluid"
-                                        onClick={handleImageClick}
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                    <h3 className="mt-4">Misplaced Objects</h3>
-                                    <ul className="list-group">
-                                        {misplacedObjects.map((obj, index) => (
-                                            <li key={index} className="list-group-item">
-                                                {obj.class_name} is misplaced. Allowed locations: {obj.allowed_locations.join(", ")}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                            <div className="text-center mt-4">
-                                <a href="/detection-options" className="btn btn-link">
-                                    <i className="fas fa-arrow-left"></i> Back to Detection Options
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <DetectionContainer title="Upload Image for Normal Detection">
+            <LoadingIndicator isLoading={isLoading} message="Your photo is being processed, please wait..." />
+            {!isLoading && (
+                <UploadForm
+                    handleFileChange={handleFileChange}
+                    handleSubmit={handleSubmit}
+                    handleCameraClick={handleCameraClick}
+                    handleGalleryClick={handleGalleryClick}
+                    isLoading={isLoading}
+                />
+            )}
+            <DetectionResults result={{ output_image_url: resultImageUrl, misplaced_objects: misplacedObjects }} />
+            <div className="text-center mt-4">
+                <a href="/detection-options" className="btn btn-link">
+                    <i className="fas fa-arrow-left"></i> Back to Detection Options
+                </a>
             </div>
-            {/* Modal for full-size image */}
             <Modal show={showModal} onHide={handleCloseModal} size="xl" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Full-Size Image</Modal.Title>
@@ -138,7 +88,7 @@ const NormalDetectionPage = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </DetectionContainer>
     );
 };
 

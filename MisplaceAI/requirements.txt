@@ -6,3 +6,5 @@ opencv-python==4.5.5.64
 djangorestframework==3.12.4
 django-cors-headers==3.10.0
 djangorestframework-simplejwt==4.6.0
+channels==3.0.3
+moviepy==1.0.3

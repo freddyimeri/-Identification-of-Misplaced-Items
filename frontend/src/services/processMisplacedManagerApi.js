@@ -96,10 +96,14 @@ export const segmentationDetection = async (data) => {
 // Function to upload a video
 export const uploadVideo = async (data) => {
     try {
-        const response = await api.post('/api/process_misplaced_manager/upload-video/', data);
+        const response = await api.post('/api/process_misplaced_manager/upload-video/', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response.data;
     } catch (error) {
-        console.error("Error uploading video:", error);
+        console.error('Error uploading video:', error);
         throw error;
     }
 };
@@ -111,6 +115,18 @@ export const checkPlacement = async (data) => {
         return response.data;
     } catch (error) {
         console.error("Error in checking placement:", error);
+        throw error;
+    }
+};
+
+
+// Function to get video results
+export const getVideoResults = async (id) => {
+    try {
+        const response = await api.get(`/api/process_misplaced_manager/video-results/${id}/`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching video results with ID ${id}:`, error);
         throw error;
     }
 };

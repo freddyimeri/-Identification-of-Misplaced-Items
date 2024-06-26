@@ -15,6 +15,8 @@ import DetectionOptionsPage from './pages/DetectionOptions/DetectionOptionsPage'
 import NormalDetectionPage from './pages/NormalDetection/NormalDetectionPage';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
 import UserProfile from './pages/UserProfile/UserProfile';
+import VideoDetectionPage from './pages/Video/VideoDetectionPage'; // Import the new page
+
 
 import ProtectedRoute from './firewall/ProtectedRoute';
 import RouteProtection from './firewall/RouteProtection';
@@ -81,6 +83,16 @@ function App() {
             <Route path="/user/profile" element={
               <ProtectedRoute>
                 <UserProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/user/manage-rules" element={
+              <ProtectedRoute>
+                <ManageRulesPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/upload-video" element={ // Add the new route
+              <ProtectedRoute>
+                <VideoDetectionPage />
               </ProtectedRoute>
             } />
 

@@ -5,6 +5,7 @@ import matplotlib.patches as patches
 import os
 from item_detector.utils import run_inference
 from placement_rules.utils import PlacementRules
+from PIL import Image, ImageDraw, ImageFont
 
 import cv2
 
@@ -58,6 +59,30 @@ def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
     return output_image_path
 
 
+
+
+
+
+def visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objects):
+    """Visualize misplaced objects with annotations on a PIL image."""
+    draw = ImageDraw.Draw(image_pil)
+    width, height = image_pil.size
+
+    misplaced_names = [obj["class_name"] for obj in misplaced_objects]
+
+    for obj in detected_objects:
+        ymin, xmin, ymax, xmax = [
+            obj["ymin"] * height,
+            obj["xmin"] * width,
+            obj["ymax"] * height,
+            obj["xmax"] * width,
+        ]
+
+        color = "green" if obj["class_name"] not in misplaced_names else "red"
+        draw.rectangle([xmin, ymin, xmax, ymax], outline=color, width=2)
+        draw.text((xmin, ymin), f"{'Misplaced: ' if obj['class_name'] in misplaced_names else ''}{obj['class_name']}", fill=color)
+
+    return image_pil
 
 def visualize_video_misplaced_objects(video_path, detection_model, category_index):
     cap = cv2.VideoCapture(video_path)

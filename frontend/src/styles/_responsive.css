@@ -1,6 +1,6 @@
 /* src/styles/_responsive.css */
 
-/* Responsive utilities */
+/* General responsive styles */
 @media (max-width: 768px) {
     .auth-container {
         padding: 10px;
@@ -8,6 +8,42 @@
 
     .auth-form {
         padding: 20px;
+    }
+
+    .pages-container-center {
+        padding: 10px;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .card-wide {
+        width: 90%;
+    }
+
+    .checkbox-container {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .checkbox-wrapper-12 {
+        flex: 1 1 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+    .card-wide {
+        width: 80%;
+    }
+
+    .checkbox-container {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .checkbox-wrapper-12 {
+        flex: 1 1 48%;
     }
 }
 
@@ -19,5 +55,38 @@
     .btn-lg {
         font-size: 1.25rem;
         padding: 0.75rem 1.5rem;
+    }
+
+    .card-wide {
+        width: 60%;
+        max-width: 900px;
+    }
+
+    .checkbox-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .checkbox-wrapper-12 {
+        flex: 1 1 30%;
+    }
+}
+
+/* Specific adjustments for the form container */
+.form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .form-container {
+        max-width: 800px;
     }
 }
