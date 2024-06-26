@@ -30,16 +30,13 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    /* Adds space between checkboxes */
 }
 
 .checkbox-wrapper-12 {
     display: flex;
     align-items: center;
     gap: 5px;
-    /* Adds space between checkbox and text */
     border: 1px solid #ddd;
-    /* Adds a small border around each checkbox */
     padding: 5px;
     border-radius: 4px;
 }

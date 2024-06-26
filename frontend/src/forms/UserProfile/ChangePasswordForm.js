@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
-import FormContainer from '../../components/Common/Form/FormContainer';
+
 import PasswordInputField from '../../components/Common/Password/PasswordInputField';
 import ErrorMessage from '../../components/Common/Form/ErrorMessage';
 import SubmitButton from '../../components/Common/buttons/SubmitButton';
@@ -118,7 +118,7 @@ const ChangePasswordForm = ({ onUpdatePassword }) => {
             {showForm && (
                 <div className="card card-wide">
                     <div className="card-body">
-                        <FormContainer onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} >
                             {error && <ErrorMessage message={error} />}
                             <PasswordInputField
                                 label="Current Password"
@@ -146,7 +146,7 @@ const ChangePasswordForm = ({ onUpdatePassword }) => {
                                 <SubmitButton className="submit-button" label={loading ? 'Updating...' : 'Update Password'} disabled={!isFormValid || loading} />
                                 <CancelButton className="action-button" label="Cancel" onClick={handleCancel} />
                             </div>
-                        </FormContainer>
+                        </form>
                     </div>
                 </div>
             )}

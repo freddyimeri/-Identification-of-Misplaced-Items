@@ -2,8 +2,15 @@
 
 /* Shared styles for cards */
 .card {
-    width: 100%;
-    max-width: 600px;
+    margin: 1rem 0;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+
+.card-wide {
+    width: 95%;
     margin: 1rem 0;
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -12,6 +19,14 @@
 
 .card-body {
     padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center items horizontally */
+    justify-content: center;
+    /* Center items vertically */
+    text-align: center;
+    /* Ensure text is centered */
 }
 
 .card-title {
@@ -19,11 +34,14 @@
 }
 
 /* Button styles */
+.btn {
+    transition: background-color 0.3s ease;
+}
+
 .btn-primary {
     background-color: var(--primary-color);
     border: none;
     color: #fff;
-    transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
@@ -34,7 +52,6 @@
     background-color: var(--secondary-color);
     border: none;
     color: #fff;
-    transition: background-color 0.3s ease;
 }
 
 .btn-secondary:hover {
@@ -45,7 +62,6 @@
     background-color: var(--danger-color);
     border: none;
     color: #fff;
-    transition: background-color 0.3s ease;
 }
 
 .btn-danger:hover {
@@ -68,12 +84,64 @@
     margin-right: 0.5rem;
 }
 
-/* List styles */
+
+/* List group styles */
+.list-group {
+    padding-left: 0;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    width: 100%;
+    /* Make the list group take full width */
+}
+
+.list-group-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    background-color: #f8f9fa;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: bold;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
 .list-group-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1.25rem;
+    background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25rem;
+    border-top: none;
+    /* Remove top border to avoid double borders */
+}
+
+.list-group-item span {
+    flex: 1;
+    margin-right: 1rem;
+    /* Adds space between text and buttons */
+}
+
+.list-group-item .button-group {
+    display: flex;
+    flex-direction: column;
+    /* Arrange buttons in a column */
+    gap: 0.5rem;
+    /* Adds space between buttons */
+    margin-left: 1rem;
+    /* Adds space between text and buttons */
+}
+
+.item-label {
+    width: 35%;
+    /* Adjust width as needed */
+    text-align: left;
+    /* Align text to the left */
+}
+
+.location-label {
+    width: 35%;
+    /* Adjust width as needed */
+    text-align: left;
+    /* Align text to the left */
 }

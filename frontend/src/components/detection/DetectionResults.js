@@ -1,4 +1,5 @@
-// src/components/detection/DetectionResults.js
+/* src/components/detection/DetectionResults.js */
+
 import React from 'react';
 import '../../styles/main.css';
 

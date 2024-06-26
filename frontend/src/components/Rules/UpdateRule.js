@@ -1,4 +1,5 @@
 // src/components/Rules/UpdateRule.js
+
 import React, { useState, useEffect } from 'react';
 import { updateRule } from '../../services/ruleApi';
 import { getItems } from '../../services/itemApi';
@@ -45,35 +46,51 @@ const UpdateRule = ({ rule, onUpdateCompleted }) => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Item</label>
-                    <select
-                        className="form-control"
-                        value={selectedItem}
-                        onChange={(e) => setSelectedItem(e.target.value)}
-                        required
-                    >
-                        <option value="" disabled>Select an item</option>
+                    <div className="checkbox-container">
                         {items.map((item) => (
-                            <option key={item.id} value={item.id}>
-                                {item.name}
-                            </option>
+                            <label key={item.id} className="checkbox-wrapper-12">
+                                <div className="cbx">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItem === item.id}
+                                        onChange={() => setSelectedItem(item.id)}
+                                    />
+                                    <label></label>
+                                    <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+                                <span>{item.name}</span>
+                            </label>
                         ))}
-                    </select>
+                    </div>
                 </div>
                 <div className="form-group">
                     <label>Locations</label>
-                    <select
-                        className="form-control"
-                        multiple
-                        value={selectedLocations}
-                        onChange={(e) => setSelectedLocations(Array.from(e.target.selectedOptions, option => option.value))}
-                        required
-                    >
+                    <div className="checkbox-container">
                         {locations.map((location) => (
-                            <option key={location.id} value={location.id}>
-                                {location.name}
-                            </option>
+                            <label key={location.id} className="checkbox-wrapper-12">
+                                <div className="cbx">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedLocations.includes(location.id)}
+                                        onChange={() => setSelectedLocations((prev) => {
+                                            if (prev.includes(location.id)) {
+                                                return prev.filter(id => id !== location.id);
+                                            } else {
+                                                return [...prev, location.id];
+                                            }
+                                        })}
+                                    />
+                                    <label></label>
+                                    <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+                                <span>{location.name}</span>
+                            </label>
                         ))}
-                    </select>
+                    </div>
                 </div>
                 <button type="submit" className="btn btn-primary">Update Rule</button>
             </form>

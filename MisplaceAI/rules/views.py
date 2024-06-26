@@ -106,11 +106,22 @@ class AdminManageRuleView(APIView):
 
     def put(self, request, rule_id, *args, **kwargs):
         rule = get_object_or_404(Rule, id=rule_id)
-        serializer = RuleSerializer(rule, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        data = request.data
+        item_id = data.get('item')
+        location_ids = data.get('locations', [])
+
+        item = get_object_or_404(Item, id=item_id)
+        locations = Location.objects.filter(id__in=location_ids)
+
+        if not locations.exists():
+            return Response({'error': 'One or more locations are invalid.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        rule.item = item
+        rule.locations.set(locations)
+        rule.save()
+
+        serializer = RuleSerializer(rule)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, rule_id, *args, **kwargs):
         rule = get_object_or_404(Rule, id=rule_id)

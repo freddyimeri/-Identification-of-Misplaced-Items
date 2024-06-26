@@ -1,3 +1,5 @@
+//src/services/ruleApi.js
+
 import api, { getCsrfToken } from './api';
 
 export const addRule = async (ruleData) => {

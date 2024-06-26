@@ -1,4 +1,5 @@
-// src/components/detection/FileUploadForm.js
+/* src/components/detection/FileUploadForm.js */
+
 import React from 'react';
 import '../../styles/main.css';
 

@@ -1,8 +1,7 @@
-// src/components/UserProfile/EditableInfoForm.js
+/* src/components/UserProfile/EditableInfoForm.js */
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FormContainer from '../Common/Form/FormContainer';
 import FormField from '../Common/Form/FormField';
 import PasswordInputField from '../Common/Password/PasswordInputField';
 import SubmitButton from '../Common/buttons/SubmitButton';
@@ -20,7 +19,7 @@ const EditableInfoForm = ({ label, type, onSubmit, onCancel, loading, error }) =
     };
 
     return (
-        <FormContainer onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
             <FormField
                 label={label}
                 type={type}
@@ -39,7 +38,7 @@ const EditableInfoForm = ({ label, type, onSubmit, onCancel, loading, error }) =
                 <SubmitButton className="submit-button" label={loading ? 'Updating...' : `Update ${label}`} disabled={loading} />
                 <CancelButton className="action-button" label="Cancel" onClick={onCancel} />
             </div>
-        </FormContainer>
+        </form>
     );
 };
 

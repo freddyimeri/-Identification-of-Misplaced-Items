@@ -1,4 +1,4 @@
-// src/pages/NormalDetection/NormalDetectionPage.js
+/* src/pages/NormalDetection/NormalDetectionPage.js */
 
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';

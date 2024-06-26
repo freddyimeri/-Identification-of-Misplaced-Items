@@ -1,13 +1,12 @@
 /* src/styles/_auth.css */
 
-
 .auth-form {
-    background-color: #ffffff;
+    background-color: var(--light-color);
     padding: 3rem;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
+    width: 95%;
+
 }
 
 .auth-form h2 {
@@ -28,8 +27,8 @@
 }
 
 .auth-form .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -37,6 +36,6 @@
 }
 
 .auth-form .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
+    background-color: darken(var(--primary-color), 10%);
+    border-color: darken(var(--primary-color), 15%);
 }

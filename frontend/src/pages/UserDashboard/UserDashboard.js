@@ -19,12 +19,18 @@ const UserDashboard = () => {
 
     return (
         <div className="pages-container-center">
-            <h1 className="dashboard-title">User Dashboard</h1>
-            <h2 className="dashboard-greeting">Hello, {username}</h2>
-            <div className="dashboard-buttons-container">
-                <ButtonLink to="/user/profile" label="User Profile" />
-                <ButtonLink to="/user/manage-rules" label="Manage Rules" />
-                {/* Add more ButtonLink components here as needed */}
+            <div className="row justify-content-center">
+                <div className="card shadow-lg border-0">
+                    <div className="card-body p-5">
+                        <h1 className="dashboard-title">User Dashboard</h1>
+                        <h2 className="dashboard-greeting">Hello, {username}</h2>
+                        <div className="dashboard-buttons-container">
+                            <ButtonLink to="/user/profile" label="User Profile" />
+                            <ButtonLink to="/user/manage-rules" label="Manage Rules" />
+                            {/* Add more ButtonLink components here as needed */}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

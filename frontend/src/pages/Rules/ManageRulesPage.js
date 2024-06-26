@@ -32,10 +32,8 @@ const ManageRulesPage = () => {
         <div className="pages-container-center">
             <h1 className="dashboard-title">Manage Rules</h1>
             <div className="dashboard-card">
-                <AddRule onRuleAdded={handleRuleAdded} />
-                {editingRule && (
-                    <UpdateRule rule={editingRule} onUpdateCompleted={handleUpdateCompleted} />
-                )}
+                {!editingRule && <AddRule onRuleAdded={handleRuleAdded} />}
+                {editingRule && <UpdateRule rule={editingRule} onUpdateCompleted={handleUpdateCompleted} />}
                 <GetRules onEditRule={handleEditRule} onDeleteRule={handleDeleteRule} refresh={refreshRules} />
             </div>
         </div>

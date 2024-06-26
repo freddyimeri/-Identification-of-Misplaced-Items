@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ErrorMessage = ({ message }) => (
-    <p className="text-danger text-center">{message}</p>
+    <p className="text-danger">{message}</p>
 );
 
 ErrorMessage.propTypes = {

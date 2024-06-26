@@ -57,54 +57,60 @@ const AddRule = ({ onRuleAdded }) => {
     };
 
     return (
-        <div className="form-container">
-            <h3>Add Rule</h3>
-            {error && <p className="text-danger">{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Item</label>
-                    <div className="checkbox-container">
-                        {items.map((item) => (
-                            <label key={item.id} className="checkbox-wrapper-12">
-                                <div className="cbx">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedItem === item.id}
-                                        onChange={() => handleItemChange(item.id)}
-                                    />
-                                    <label></label>
-                                    <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
-                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
-                                    </svg>
-                                </div>
-                                <span>{item.name}</span>
-                            </label>
-                        ))}
-                    </div>
+
+        <div className="dashboard-card">
+            <div className="card card-wide">
+                <div className="card-body">
+                    <h3 className="card-title">Add Rule</h3>
+
+                    {error && <p className="text-danger">{error}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Item</label>
+                            <div className="checkbox-container">
+                                {items.map((item) => (
+                                    <label key={item.id} className="checkbox-wrapper-12">
+                                        <div className="cbx">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedItem === item.id}
+                                                onChange={() => handleItemChange(item.id)}
+                                            />
+                                            <label></label>
+                                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                                <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                            </svg>
+                                        </div>
+                                        <span>{item.name}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label>Locations</label>
+                            <div className="checkbox-container">
+                                {locations.map((location) => (
+                                    <label key={location.id} className="checkbox-wrapper-12">
+                                        <div className="cbx">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedLocations.includes(location.id)}
+                                                onChange={() => handleLocationChange(location.id)}
+                                            />
+                                            <label></label>
+                                            <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                                <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                            </svg>
+                                        </div>
+                                        <span>{location.name}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                        <button type="submit" className="btn btn-primary">Add Rule</button>
+                    </form>
                 </div>
-                <div className="form-group">
-                    <label>Locations</label>
-                    <div className="checkbox-container">
-                        {locations.map((location) => (
-                            <label key={location.id} className="checkbox-wrapper-12">
-                                <div className="cbx">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedLocations.includes(location.id)}
-                                        onChange={() => handleLocationChange(location.id)}
-                                    />
-                                    <label></label>
-                                    <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
-                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
-                                    </svg>
-                                </div>
-                                <span>{location.name}</span>
-                            </label>
-                        ))}
-                    </div>
-                </div>
-                <button type="submit" className="btn btn-primary">Add Rule</button>
-            </form>
+            </div>
         </div>
     );
 };

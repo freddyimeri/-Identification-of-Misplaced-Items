@@ -1,4 +1,4 @@
-// src/components/detection/UploadForm.js
+/* src/components/detection/UploadForm.js */
 
 import React from 'react';
 

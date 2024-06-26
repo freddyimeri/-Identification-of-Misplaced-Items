@@ -1,4 +1,4 @@
-// src/pages/UserProfile/UserProfile.js
+/* src/pages/UserProfile/UserProfile.js */
 
 import React, { useState, useEffect } from 'react';
 import ChangeEmailForm from '../../forms/UserProfile/ChangeEmailForm';
@@ -41,19 +41,21 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="pages-container-center">
+        <div className="pages-container-center text-center">
             <h1 className="dashboard-title">User Profile</h1>
-            <ChangeEmailForm
-                currentEmail={currentEmail}
-                onUpdateEmail={handleUpdateEmail}
-            />
-            <ChangeUsernameForm
-                currentUsername={currentUsername}
-                onUpdateUsername={handleUpdateUsername}
-            />
-            <ChangePasswordForm
-                onUpdatePassword={handleUpdatePassword}
-            />
+            <div className="dashboard-card">
+                <ChangeEmailForm
+                    currentEmail={currentEmail}
+                    onUpdateEmail={handleUpdateEmail}
+                />
+                <ChangeUsernameForm
+                    currentUsername={currentUsername}
+                    onUpdateUsername={handleUpdateUsername}
+                />
+                <ChangePasswordForm
+                    onUpdatePassword={handleUpdatePassword}
+                />
+            </div>
         </div>
     );
 };

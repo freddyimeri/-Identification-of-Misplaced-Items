@@ -17,11 +17,15 @@ const FormContainer = ({ children, onSubmit }) => {
     };
 
     return (
-        <div className="auth-form">
-            {error && <ErrorMessage message={error} />}
-            <form onSubmit={handleSubmit}>
-                {children}
-            </form>
+        <div className="row justify-content-center">
+            <div className="auth-form">
+                <div className="card-body">
+                    {error && <ErrorMessage message={error} />}
+                    <form onSubmit={handleSubmit}>
+                        {children}
+                    </form>
+                </div>
+            </div>
         </div>
     );
 };

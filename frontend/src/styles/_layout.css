@@ -8,7 +8,7 @@
 }
 
 .form-container {
-    background-color: #ffffff;
+    background-color: var(--light-color);
     padding: 2rem;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -18,31 +18,13 @@
 
 
 
-.full-height-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.manage-content-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.centered-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    /* Adjust based on your layout needs */
-}
-
-.page-container {
+/* Updated for wider container */
+.pages-container-center {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    justify-content: center;
-    align-items: center;
+    /* Centers content horizontally */
+    justify-content: flex-start;
+    /* Aligns content to the top vertically */
+    padding-top: 2rem;
+    margin: 0 auto;
 }
