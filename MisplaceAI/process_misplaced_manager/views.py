@@ -319,3 +319,24 @@ def download_image(request, file_path):
         raise Http404
     
 
+ 
+ 
+
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def download_media(request, file_path):
+    # Determine if the file is in the 'videos' directory
+    video_path = os.path.join(settings.MEDIA_ROOT, 'videos', file_path)
+    if os.path.exists(video_path):
+        file_path = video_path
+    else:
+        # Otherwise, treat it as if it's in the root of MEDIA_ROOT (for images)
+        file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+    
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/force-download")
+            response['Content-Disposition'] = f'attachment; filename="{os.path.basename(file_path)}"'
+            return response
+    else:
+        raise Http404

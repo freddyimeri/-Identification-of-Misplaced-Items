@@ -156,3 +156,14 @@ export const deleteVideo = async (videoName) => {
     }
 };
 
+export const downloadMedia = async (filePath) => {
+    try {
+        const response = await api.get(`/api/process_misplaced_manager/download_video/${filePath}/`, {
+            responseType: 'blob' // Important for handling file downloads
+        });
+        return response;
+    } catch (error) {
+        console.error('Error downloading media:', error);
+        throw error;
+    }
+};
