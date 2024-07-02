@@ -16,6 +16,7 @@ const AdminDashboard = () => {
                             <Link to="/admin/Manage-Locations" className="list-group-item list-group-item-action">Manage Locations</Link>
                             <Link to="/admin/manage-items" className="list-group-item list-group-item-action">Manage Items</Link>
                             <Link to="/admin/manage-rules" className="list-group-item list-group-item-action">Manage Rules</Link>
+                            <Link to="/admin/manage-daily-limit" className="list-group-item list-group-item-action">Manage Daily Detection Limit</Link>
                         </div>
                     </div>
                 </div>

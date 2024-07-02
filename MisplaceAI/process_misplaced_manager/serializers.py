@@ -6,7 +6,8 @@ from .models import UploadedImage, UploadedVideo
 class UploadedImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedImage
-        fields = ['id', 'image', 'uploaded_at']
+        fields = ['id', 'image', 'uploaded_at', 'user']
+
 
 class UploadedVideoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -2,10 +2,10 @@
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import UploadedImage, UploadedVideo, UserVideoFramePreference
+from .models import UploadedImage, UploadedVideo, UserVideoFramePreference,DetectionLimitSetting, DailyDetectionLimit
 from .serializers import UploadedImageSerializer, UploadedVideoSerializer
 from item_detector.utils import run_inference, load_model, create_category_index_from_labelmap
 from placement_rules.utils import PlacementRules
@@ -20,6 +20,8 @@ from django.conf import settings
 from django.http import JsonResponse,  HttpResponse, Http404
 import numpy as np  
 from moviepy.editor import VideoFileClip, ImageSequenceClip
+from .utils import increment_detection_count
+
 
 logger = logging.getLogger(__name__)
 
@@ -340,3 +342,67 @@ def download_media(request, file_path):
             return response
     else:
         raise Http404
+
+#################################################################################################
+####################################### LIMITS PER USER #########################################
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_daily_limits(request):
+    limit_setting = DetectionLimitSetting.objects.first()
+    if not limit_setting:
+        limit_setting = DetectionLimitSetting.objects.create(daily_image_limit=10, daily_video_limit=5)
+    return Response({
+        'daily_image_limit': limit_setting.daily_image_limit,
+        'daily_video_limit': limit_setting.daily_video_limit
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def set_daily_limits(request):
+    daily_image_limit = request.data.get('daily_image_limit', 10)
+    daily_video_limit = request.data.get('daily_video_limit', 5)
+    limit_setting, created = DetectionLimitSetting.objects.get_or_create(id=1)
+    limit_setting.daily_image_limit = daily_image_limit
+    limit_setting.daily_video_limit = daily_video_limit
+    limit_setting.save()
+    return Response({
+        'daily_image_limit': limit_setting.daily_image_limit,
+        'daily_video_limit': limit_setting.daily_video_limit
+    })
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_daily_limit(request):
+    user = request.user
+    detection_type = request.GET.get('type')
+    
+    if detection_type not in ['image', 'video']:
+        return Response({'error': 'Invalid detection type'}, status=400)
+
+    limit_setting = DetectionLimitSetting.objects.first()
+    detection_limit, created = DailyDetectionLimit.objects.get_or_create(user=user)
+    detection_limit.reset_limits()  # Ensure limits are reset if the day has changed
+
+    if detection_type == 'image':
+        remaining = limit_setting.daily_image_limit - detection_limit.image_detection_count
+    else:
+        remaining = limit_setting.daily_video_limit - detection_limit.video_detection_count
+
+    return Response({
+        'remaining': remaining,
+        'limit': limit_setting.daily_image_limit if detection_type == 'image' else limit_setting.daily_video_limit
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def increment_detection(request):
+    user = request.user
+    detection_type = request.data.get('type')
+
+    if detection_type not in ['image', 'video']:
+        return Response({'error': 'Invalid detection type'}, status=400)
+    
+    increment_detection_count(user, detection_type)
+    return Response({'status': 'success'})

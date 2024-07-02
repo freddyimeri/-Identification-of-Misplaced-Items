@@ -16,6 +16,7 @@ import NormalDetectionPage from './pages/NormalDetection/NormalDetectionPage';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
 import UserProfile from './pages/UserProfile/UserProfile';
 import VideoDetectionPage from './pages/Video/VideoDetectionPage';
+import ManageDailyLimit from './pages/Admin/ManageDailyLimit';
 
 import Error500 from './pages/Error/Error500/Error500';
 import ProtectedRoute from './firewall/ProtectedRoute';
@@ -62,6 +63,11 @@ function App() {
           <Route path="/admin/manage-rules" element={
             <ProtectedRoute isAdminRoute={true}>
               <ManageRulesPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/manage-daily-limit" element={
+            <ProtectedRoute isAdminRoute={true}>
+              <ManageDailyLimit />
             </ProtectedRoute>
           } />
           <Route path="/detection-options" element={

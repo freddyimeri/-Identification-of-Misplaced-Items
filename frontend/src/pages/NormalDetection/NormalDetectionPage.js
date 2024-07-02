@@ -1,8 +1,10 @@
 // src/pages/NormalDetection/NormalDetectionPage.js
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import { normalDetection, downloadImage, deleteImageByName } from '../../services/processMisplacedManagerApi';
+import { checkDailyLimit, incrementDetection } from '../../services/dailyLimitApi';
 import '../../styles/main.css';
 import LoadingIndicator from '../../components/detection/LoadingIndicator';
 import DetectionResults from '../../components/detection/DetectionResults';
@@ -17,8 +19,17 @@ const NormalDetectionPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [detectionComplete, setDetectionComplete] = useState(false);
     const [imageName, setImageName] = useState(null);
+    const [limitInfo, setLimitInfo] = useState({ remaining: 0, limit: 0 });
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        const fetchLimitInfo = async () => {
+            const data = await checkDailyLimit('image');
+            setLimitInfo(data);
+        };
+        fetchLimitInfo();
+    }, []);
 
     useEffect(() => {
         const handleBeforeUnload = async () => {
@@ -74,6 +85,11 @@ const NormalDetectionPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (limitInfo.remaining <= 0) {
+            alert('You have reached your daily limit for image detection.');
+            return;
+        }
+
         if (imageFile) {
             setIsLoading(true);
             const formData = new FormData();
@@ -86,6 +102,9 @@ const NormalDetectionPage = () => {
                 setMisplacedObjects(response.misplaced_objects);
                 setDetectionComplete(true);
                 setImageName(response.output_image_url.split('/').pop()); // Set the image name
+                await incrementDetection('image'); // Increment the detection count
+                const data = await checkDailyLimit('image'); // Fetch updated limit info
+                setLimitInfo(data);
             } catch (error) {
                 console.error('Upload failed', error);
             } finally {
@@ -132,13 +151,16 @@ const NormalDetectionPage = () => {
         <DetectionContainer title="Upload Image for Normal Detection">
             <LoadingIndicator isLoading={isLoading} message="Your photo is being processed, please wait..." />
             {!isLoading && !detectionComplete && (
-                <ImageUploadForm
-                    handleFileChange={handleFileChange}
-                    handleSubmit={handleSubmit}
-                    handleCameraClick={handleCameraClick}
-                    handleGalleryClick={handleGalleryClick}
-                    isLoading={isLoading}
-                />
+                <>
+                    <p>You have {limitInfo.remaining} out of {limitInfo.limit} image detections remaining today.</p>
+                    <ImageUploadForm
+                        handleFileChange={handleFileChange}
+                        handleSubmit={handleSubmit}
+                        handleCameraClick={handleCameraClick}
+                        handleGalleryClick={handleGalleryClick}
+                        isLoading={isLoading}
+                    />
+                </>
             )}
             {!isLoading && detectionComplete && (
                 <>
