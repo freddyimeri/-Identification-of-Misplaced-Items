@@ -82,16 +82,6 @@ export const normalDetection = async (data) => {
     }
 };
 
-// Function for segmentation detection
-export const segmentationDetection = async (data) => {
-    try {
-        const response = await api.post('/api/process_misplaced_manager/segmentation-detection/', data);
-        return response.data;
-    } catch (error) {
-        console.error("Error in segmentation detection:", error);
-        throw error;
-    }
-};
 
 // Function to upload a video
 export const uploadVideo = async (data) => {

@@ -1,0 +1,23 @@
+/* src/styles/buttons/uploadButton.css */
+
+.upload-btn i {
+    margin-right: 10px;
+}
+
+
+.upload-btn {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+    height: auto;
+
+}
+
+.btn-lg {
+    width: 100%;
+    max-width: 250px;
+    margin: 10px 0;
+    height: auto;
+
+}

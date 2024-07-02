@@ -12,15 +12,10 @@ const DetectionOptionsPage = () => {
                     <Link to="/normal-detection">
                         <button className="btn btn-primary btn-lg mb-3 w-100">Misplaced Items using Normal Object Detection</button>
                     </Link>
-                    <Link to="/segmentation-detection">
-                        <button className="btn btn-secondary btn-lg mb-3 w-100">Misplaced Items using Segmentation</button>
-                    </Link>
                     <Link to="/upload-video">
                         <button className="btn btn-success btn-lg mb-3 w-100">Misplaced Items using Video Detection</button>
                     </Link>
-                    <Link to="/live-detection">
-                        <button className="btn btn-info btn-lg mb-3 w-100">Misplaced Items using Live Detection</button>
-                    </Link>
+
                 </div>
             </div>
         </div>

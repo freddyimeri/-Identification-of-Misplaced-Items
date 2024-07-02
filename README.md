@@ -14,7 +14,7 @@ docker-compose up --build
 ### Connect though terminal
 
 ```bash
-docker exec -it misplaceai-db-1 mysql -u root -p
+docker exec -it identification-of-misplaced-items-db-1 mysql -u root -p
 ```
 <br>
 Then enter password

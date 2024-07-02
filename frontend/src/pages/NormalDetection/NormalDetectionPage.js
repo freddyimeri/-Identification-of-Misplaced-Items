@@ -1,12 +1,11 @@
 /* src/pages/NormalDetection/NormalDetectionPage.js */
-
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { normalDetection } from '../../services/processMisplacedManagerApi';
 import '../../styles/main.css';
 import LoadingIndicator from '../../components/detection/LoadingIndicator';
 import DetectionResults from '../../components/detection/DetectionResults';
-import UploadForm from '../../components/detection/UploadForm';
+import ImageUploadForm from '../../components/detection/image/ImageUploadForm';
 import DetectionContainer from '../../components/detection/DetectionContainer';
 
 const NormalDetectionPage = () => {
@@ -61,7 +60,7 @@ const NormalDetectionPage = () => {
         <DetectionContainer title="Upload Image for Normal Detection">
             <LoadingIndicator isLoading={isLoading} message="Your photo is being processed, please wait..." />
             {!isLoading && (
-                <UploadForm
+                <ImageUploadForm
                     handleFileChange={handleFileChange}
                     handleSubmit={handleSubmit}
                     handleCameraClick={handleCameraClick}
