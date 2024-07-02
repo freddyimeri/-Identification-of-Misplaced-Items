@@ -144,3 +144,15 @@ export const deleteImageByName = async (imageName) => {
         throw error;
     }
 };
+
+// Function to delete a video
+export const deleteVideo = async (videoName) => {
+    try {
+        const response = await api.delete(`/api/process_misplaced_manager/delete-video/${videoName}/`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting video ${videoName}:`, error);
+        throw error;
+    }
+};
+

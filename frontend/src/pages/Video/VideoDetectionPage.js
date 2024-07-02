@@ -1,7 +1,8 @@
 // src/pages/VideoDetection/VideoDetectionPage.js
 
-import React, { useState } from 'react';
-import { uploadVideo, getVideoResults } from '../../services/processMisplacedManagerApi';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { uploadVideo, getVideoResults, deleteVideo } from '../../services/processMisplacedManagerApi';
 import '../../styles/main.css';
 import LoadingIndicator from '../../components/detection/LoadingIndicator';
 import DetectionResults from '../../components/detection/DetectionResults';
@@ -10,9 +11,58 @@ import DetectionContainer from '../../components/detection/DetectionContainer';
 
 const VideoDetectionPage = () => {
     const [videoFile, setVideoFile] = useState(null);
-    const [frameInterval, setFrameInterval] = useState(1); // Added state for frame interval
+    const [frameInterval, setFrameInterval] = useState(1);
     const [result, setResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [videoName, setVideoName] = useState(null);
+    const [annotatedVideoName, setAnnotatedVideoName] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        const handleUnload = async () => {
+            if (annotatedVideoName && !isDeleting) {
+                setIsDeleting(true);
+                console.log('Navigation event detected:');
+                console.log('Annotated video name detected:', annotatedVideoName);
+                try {
+                    const response = await deleteVideo(annotatedVideoName);
+                    console.log('Delete video response:', response);
+                } catch (error) {
+                    console.error('Error deleting video:', error);
+                }
+                setIsDeleting(false);
+            }
+        };
+
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    }, [annotatedVideoName, isDeleting]);
+
+    useEffect(() => {
+        const handleRouteChange = async () => {
+            if (annotatedVideoName && !isDeleting) {
+                setIsDeleting(true);
+                console.log('Route change detected:');
+                console.log('Annotated video name detected:', annotatedVideoName);
+                try {
+                    const response = await deleteVideo(annotatedVideoName);
+                    console.log('Delete video response:', response);
+                } catch (error) {
+                    console.error('Error deleting video:', error);
+                }
+                setIsDeleting(false);
+            }
+        };
+
+        return () => {
+            handleRouteChange();
+        };
+    }, [annotatedVideoName, isDeleting, location]);
 
     const handleFileChange = (event) => {
         setVideoFile(event.target.files[0]);
@@ -28,9 +78,7 @@ const VideoDetectionPage = () => {
             setIsLoading(true);
             const formData = new FormData();
             formData.append('video', videoFile);
-            formData.append('frame_interval', frameInterval); // Added frame interval to form data
-
-            console.log('Uploading video file:', videoFile);
+            formData.append('frame_interval', frameInterval);
 
             try {
                 const uploadResponse = await uploadVideo(formData);
@@ -38,8 +86,10 @@ const VideoDetectionPage = () => {
 
                 if (uploadResponse.id) {
                     const videoResults = await getVideoResults(uploadResponse.id);
-                    console.log('Video results:', videoResults); // Added log for video results
+                    console.log('Video results:', videoResults);
                     setResult(videoResults);
+                    setVideoName(uploadResponse.video.split('/').pop()); // Extract original video name from the response
+                    setAnnotatedVideoName(videoResults.output_video_url.split('/').pop()); // Extract annotated video name from the results
                 } else {
                     throw new Error('Upload response did not contain video ID.');
                 }

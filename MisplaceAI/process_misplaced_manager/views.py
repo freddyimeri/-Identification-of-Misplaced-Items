@@ -170,7 +170,10 @@ def display_video_results(request, video_id):
         print("Processing video at path:", video_path)
         frame_interval = video.user_video_frame_preference.frame_interval if video.user_video_frame_preference else 1
         detected_objects, misplaced_objects, output_video_path = process_video_for_misplaced_objects(video_path, frame_interval)
-        print
+        
+        # Delete the original uploaded video
+        if os.path.exists(video_path):
+            os.remove(video_path)
 
         response_data = {
             'video_url': request.build_absolute_uri(video.video.url),
@@ -185,7 +188,6 @@ def display_video_results(request, video_id):
     except Exception as e:
         print(f"Error processing video results: {e}")
         return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 
 def process_video_for_misplaced_objects(video_path, frame_interval):
@@ -254,21 +256,9 @@ def process_video_for_misplaced_objects(video_path, frame_interval):
 
 
 
-
 #################################################################################################
-####################################### Download Results ########################################
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def download_image(request, file_path):
-    file_path = os.path.join(settings.MEDIA_ROOT, file_path)
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as f:
-            response = HttpResponse(f.read(), content_type="application/force-download")
-            response['Content-Disposition'] = f'attachment; filename="{os.path.basename(file_path)}"'
-            return response
-    else:
-        raise Http404
-    
+################################## Delete Video/Images ##########################################
+
 
 
 @api_view(['DELETE'])
@@ -291,3 +281,41 @@ def delete_image(request, image_name):
     except Exception as e:
         print(f"Error deleting image {image_name}: {str(e)}")
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_video(request, video_name):
+    try:
+        print(f"Attempting to delete video: {video_name}")
+        video_path = os.path.join(settings.MEDIA_ROOT, 'videos', video_name)
+        if os.path.exists(video_path):
+            os.remove(video_path)
+            print(f"Video {video_name} deleted successfully.")
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            print(f"Video {video_name} not found.")
+            return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error deleting video {video_name}: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+#################################################################################################
+####################################### Download Results ########################################
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def download_image(request, file_path):
+    file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/force-download")
+            response['Content-Disposition'] = f'attachment; filename="{os.path.basename(file_path)}"'
+            return response
+    else:
+        raise Http404
+    
+
