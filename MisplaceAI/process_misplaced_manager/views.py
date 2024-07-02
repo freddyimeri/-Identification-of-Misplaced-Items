@@ -39,33 +39,43 @@ class UploadedImageViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def normal_detection(request):
-    if 'capturedImageData' in request.data:
-        captured_image_data = request.data['capturedImageData']
-        format, imgstr = captured_image_data.split(';base64,')
-        ext = format.split('/')[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+    try:
+        if 'capturedImageData' in request.data:
+            captured_image_data = request.data['capturedImageData']
+            format, imgstr = captured_image_data.split(';base64,')
+            ext = format.split('/')[-1]
+            image_data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
 
-        new_image = UploadedImage.objects.create(image=image_data)
-    else:
-        serializer = UploadedImageSerializer(data=request.data)
-        if serializer.is_valid():
-            new_image = serializer.save()
+            new_image = UploadedImage.objects.create(image=image_data)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    image_path = new_image.image.path
-    correct_image_orientation(image_path)
-    detected_objects = run_inference(detection_model, category_index, image_path)
-    placement_rules = PlacementRules()
-    misplaced_objects = placement_rules.check_placement(detected_objects)
-    output_image_path = visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
+            serializer = UploadedImageSerializer(data=request.data)
+            if serializer.is_valid():
+                new_image = serializer.save()
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        image_path = new_image.image.path
+        correct_image_orientation(image_path)
+        detected_objects = run_inference(detection_model, category_index, image_path)
+        placement_rules = PlacementRules()
+        misplaced_objects = placement_rules.check_placement(detected_objects)
+        output_image_path = visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
 
-    response_data = {
-        'image_url': new_image.image.url,
-        'output_image_url': request.build_absolute_uri("/media/" + os.path.basename(output_image_path)),
-        'misplaced_objects': misplaced_objects
-    }
-    return Response(response_data, status=status.HTTP_200_OK)
+        # Delete the original uploaded image
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
+        response_data = {
+            'image_id': new_image.id,
+            'image_url': new_image.image.url,
+            'output_image_url': request.build_absolute_uri("/media/" + os.path.basename(output_image_path)),
+            'misplaced_objects': misplaced_objects
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        print(f"Error processing image: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def correct_image_orientation(image_path):
     try:
@@ -258,3 +268,26 @@ def download_image(request, file_path):
             return response
     else:
         raise Http404
+    
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_image(request, image_name):
+    try:
+        print(f"Attempting to delete image: {image_name}")
+        # Construct the file path
+        file_path = os.path.join(settings.MEDIA_ROOT, image_name)
+        
+        # Check if the file exists
+        if os.path.exists(file_path):
+            # Delete the file
+            os.remove(file_path)
+            print(f"Image {image_name} deleted successfully.")
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            print(f"Image {image_name} not found.")
+            return Response({'error': 'Image not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error deleting image {image_name}: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

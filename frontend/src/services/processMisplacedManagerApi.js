@@ -134,3 +134,13 @@ export const downloadImage = async (filePath) => {
         throw error;
     }
 };
+
+export const deleteImageByName = async (imageName) => {
+    try {
+        const response = await api.delete(`/api/process_misplaced_manager/delete-image/${imageName}/`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting image with name ${imageName}:`, error);
+        throw error;
+    }
+};

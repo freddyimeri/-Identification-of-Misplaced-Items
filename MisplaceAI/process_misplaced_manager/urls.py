@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     UploadedImageViewSet, UploadedVideoViewSet,
     normal_detection, 
-    display_results, display_video_results,upload_video, download_image
+    display_results, display_video_results,upload_video, download_image, delete_image
 )
 
 router = DefaultRouter()
@@ -21,6 +21,10 @@ urlpatterns = [
     path('video-results/<int:video_id>/', display_video_results, name='display_video_results'),
     path('display-results/<int:image_id>/', display_results, name='display_results'),
     path('download/<path:file_path>/', download_image, name='download_image'),
+    path('delete-image/<str:image_name>/', delete_image, name='delete_image_by_name'),
+
+
+
 
 
 ]

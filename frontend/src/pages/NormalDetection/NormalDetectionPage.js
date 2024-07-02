@@ -1,7 +1,8 @@
 // src/pages/NormalDetection/NormalDetectionPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
-import { normalDetection, downloadImage } from '../../services/processMisplacedManagerApi';
+import { normalDetection, downloadImage, deleteImageByName } from '../../services/processMisplacedManagerApi';
 import '../../styles/main.css';
 import LoadingIndicator from '../../components/detection/LoadingIndicator';
 import DetectionResults from '../../components/detection/DetectionResults';
@@ -15,6 +16,49 @@ const NormalDetectionPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [detectionComplete, setDetectionComplete] = useState(false);
+    const [imageName, setImageName] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const handleBeforeUnload = async () => {
+            console.log('Navigation event detected:');
+            if (imageName) {
+                console.log('Image name detected:', imageName);
+                try {
+                    const response = await deleteImageByName(imageName);
+                    console.log('Delete image response:', response);
+                } catch (error) {
+                    console.error('Error deleting image:', error);
+                }
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            handleBeforeUnload(); // Trigger the cleanup function manually
+        };
+    }, [imageName]);
+
+    useEffect(() => {
+        const handleRouteChange = async () => {
+            console.log('Route change detected:');
+            if (imageName) {
+                try {
+                    const response = await deleteImageByName(imageName);
+                    console.log('Delete image response:', response);
+                } catch (error) {
+                    console.error('Error deleting image:', error);
+                }
+            }
+        };
+
+        return () => {
+            handleRouteChange();
+        };
+    }, [imageName, location]);
 
     const handleCameraClick = () => {
         document.getElementById('cameraInput').click();
@@ -37,9 +81,11 @@ const NormalDetectionPage = () => {
 
             try {
                 const response = await normalDetection(formData);
+                console.log('Normal detection response:', response);
                 setResultImageUrl(response.output_image_url);
                 setMisplacedObjects(response.misplaced_objects);
-                setDetectionComplete(true); // Set detection as complete
+                setDetectionComplete(true);
+                setImageName(response.output_image_url.split('/').pop()); // Set the image name
             } catch (error) {
                 console.error('Upload failed', error);
             } finally {
@@ -63,11 +109,12 @@ const NormalDetectionPage = () => {
         setResultImageUrl(null);
         setMisplacedObjects([]);
         setDetectionComplete(false);
+        setImageName(null);
     };
 
     const handleDownload = async () => {
         try {
-            const filePath = resultImageUrl.split('/').pop(); // Get the file name only
+            const filePath = resultImageUrl.split('/').pop();
             const response = await downloadImage(filePath);
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
