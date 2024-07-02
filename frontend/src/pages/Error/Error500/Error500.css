@@ -1,0 +1,232 @@
+/* General styling */
+.error500-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.error500-page {
+    background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.error500-container {
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 50px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    max-width: 90%;
+    z-index: 10;
+    /* Added z-index to ensure it's on top */
+}
+
+.error500-header h1 {
+    font-size: 180px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    background: -webkit-linear-gradient(#ff9a9e, #fad0c4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 1s infinite;
+}
+
+.error500-header h2 {
+    font-size: 36px;
+    font-weight: 300;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.error500-body .error500-message {
+    font-size: 18px;
+    color: #eee;
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.error500-body .error500-link {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #ff6f61;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+    animation: bounce 1s ease-in-out infinite;
+    z-index: 20;
+    /* Ensure link has higher z-index */
+    position: relative;
+    /* Ensure z-index is applied */
+}
+
+.error500-body .error500-link:hover {
+    background-color: #e55d50;
+}
+
+/* Animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.error500-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.7;
+    background-color: #ff6f61;
+    animation: float 3s infinite ease-in-out;
+}
+
+.circle-1 {
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    left: -50px;
+    animation-delay: 0s;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    right: -50px;
+    animation-delay: 1s;
+    background-color: #ff8566;
+}
+
+.circle-3 {
+    width: 150px;
+    height: 150px;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    animation-delay: 2s;
+    background-color: #ffb399;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .error500-header h1 {
+        font-size: 120px;
+    }
+
+    .error500-header h2 {
+        font-size: 28px;
+    }
+
+    .error500-body .error500-message {
+        font-size: 16px;
+    }
+
+    .error500-body .error500-link {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .error500-container {
+        padding: 30px;
+    }
+
+    .error500-header h1 {
+        font-size: 90px;
+    }
+
+    .error500-header h2 {
+        font-size: 24px;
+    }
+
+    .error500-body .error500-message {
+        font-size: 14px;
+    }
+
+    .error500-body .error500-link {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .circle-1,
+    .circle-2,
+    .circle-3 {
+        display: none;
+        /* Hide the circles on very small screens */
+    }
+}
