@@ -1,8 +1,7 @@
 // src/forms/Auth/LoginForm.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../services/api';
+import { login } from '../../services/auth';
 import FormContainer from '../../components/Common/Form/FormContainer';
 import FormField from '../../components/Common/Form/FormField';
 import PasswordInputField from '../../components/Common/Password/PasswordInputField';
@@ -19,10 +18,7 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/api/auth/login/', { username, password });
-            localStorage.setItem('token', response.data.access);
-            localStorage.setItem('username', username);
-            localStorage.setItem('isAuthenticated', true);
+            await login({ username, password });
             navigate('/');
             window.location.reload(); // Refresh to update Navbar
         } catch (error) {

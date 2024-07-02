@@ -1,7 +1,7 @@
 // src/forms/Auth/AdminLoginForm.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../services/api';
+import { adminLogin } from '../../services/auth';  // Import the adminLogin function
 import FormContainer from '../../components/Common/Form/FormContainer';
 import FormField from '../../components/Common/Form/FormField';
 import PasswordInputField from '../../components/Common/Password/PasswordInputField';
@@ -18,11 +18,7 @@ const AdminLoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/api/admin-app/login/', { username, password });
-            localStorage.setItem('adminToken', response.data.access);
-            localStorage.setItem('isAdmin', true);
-            localStorage.setItem('username', username);
-            localStorage.setItem('isAuthenticated', true);
+            await adminLogin({ username, password });
             navigate('/admin/dashboard');
             window.location.reload(); // Refresh to update Navbar
         } catch (error) {

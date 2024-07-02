@@ -1,4 +1,5 @@
 # MisplaceAI/authentication/views.py
+
 from django.contrib.auth import authenticate
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -6,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, LoginSerializer
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -29,5 +31,20 @@ class LoginView(APIView):
             }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
-
- 
+class AdminLoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = authenticate(
+            username=serializer.validated_data['username'],
+            password=serializer.validated_data['password']
+        )
+        if user and user.is_superuser:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'is_admin': True,
+                'is_authenticated': True
+            }, status=status.HTTP_200_OK)
+        return Response({'error': 'Invalid username or password or you do not have the necessary permissions to access this page.'}, status=status.HTTP_400_BAD_REQUEST)

@@ -12,22 +12,6 @@ from django.contrib.auth.decorators import login_required
 from .serializers import UserSerializer
 
 
-class AdminLoginView(APIView):
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_superuser:
-            login(request, user)
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'is_admin': True,
-                'is_authenticated': True
-            }, status=status.HTTP_200_OK)
-        return Response({'error': 'Invalid username or password or you do not have the necessary permissions to access this page.'}, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def admin_dashboard_view(request):
