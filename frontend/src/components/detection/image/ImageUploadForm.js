@@ -6,8 +6,22 @@ import '../../../styles/buttons/uploadButton.css';
 import UploadButton from '../../common/buttons/UploadButton';
 import TakePhotoButton from '../../common/buttons/TakePhotoButton';
 
-
 const ImageUploadForm = ({ handleFileChange, handleSubmit, handleCameraClick, handleGalleryClick, isLoading }) => {
+
+    const validateFileType = (file) => {
+        const validTypes = ['image/jpeg', 'image/png'];
+        return validTypes.includes(file.type);
+    };
+
+    const handleFileValidation = (event) => {
+        const file = event.target.files[0];
+        if (file && validateFileType(file)) {
+            handleFileChange(event);
+        } else {
+            alert('Invalid file type. Please select a PNG or JPG image.');
+        }
+    };
+
     return (
         <form id="uploadForm" className="text-center" onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="form-group">
@@ -17,7 +31,7 @@ const ImageUploadForm = ({ handleFileChange, handleSubmit, handleCameraClick, ha
                     accept="image/*"
                     id="cameraInput"
                     className="d-none"
-                    onChange={handleFileChange}
+                    onChange={handleFileValidation}
                 />
                 <button
                     type="button"
@@ -33,7 +47,7 @@ const ImageUploadForm = ({ handleFileChange, handleSubmit, handleCameraClick, ha
                     accept="image/*"
                     id="galleryInput"
                     className="d-none"
-                    onChange={handleFileChange}
+                    onChange={handleFileValidation}
                 />
             </div>
             <UploadButton handleClick={handleSubmit} isLoading={isLoading} />

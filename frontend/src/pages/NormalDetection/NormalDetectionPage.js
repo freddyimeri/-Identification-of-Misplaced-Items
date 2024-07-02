@@ -1,4 +1,4 @@
-/* src/pages/NormalDetection/NormalDetectionPage.js */
+// src/pages/NormalDetection/NormalDetectionPage.js
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { normalDetection } from '../../services/processMisplacedManagerApi';
@@ -14,6 +14,7 @@ const NormalDetectionPage = () => {
     const [misplacedObjects, setMisplacedObjects] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [detectionComplete, setDetectionComplete] = useState(false);
 
     const handleCameraClick = () => {
         document.getElementById('cameraInput').click();
@@ -38,6 +39,7 @@ const NormalDetectionPage = () => {
                 const response = await normalDetection(formData);
                 setResultImageUrl(response.output_image_url);
                 setMisplacedObjects(response.misplaced_objects);
+                setDetectionComplete(true); // Set detection as complete
             } catch (error) {
                 console.error('Upload failed', error);
             } finally {
@@ -56,10 +58,17 @@ const NormalDetectionPage = () => {
         setShowModal(false);
     };
 
+    const handleReset = () => {
+        setImageFile(null);
+        setResultImageUrl(null);
+        setMisplacedObjects([]);
+        setDetectionComplete(false);
+    };
+
     return (
         <DetectionContainer title="Upload Image for Normal Detection">
             <LoadingIndicator isLoading={isLoading} message="Your photo is being processed, please wait..." />
-            {!isLoading && (
+            {!isLoading && !detectionComplete && (
                 <ImageUploadForm
                     handleFileChange={handleFileChange}
                     handleSubmit={handleSubmit}
@@ -68,12 +77,16 @@ const NormalDetectionPage = () => {
                     isLoading={isLoading}
                 />
             )}
-            <DetectionResults result={{ output_image_url: resultImageUrl, misplaced_objects: misplacedObjects }} />
-            <div className="text-center mt-4">
-                <a href="/detection-options" className="btn btn-link">
-                    <i className="fas fa-arrow-left"></i> Back to Detection Options
-                </a>
-            </div>
+            {!isLoading && detectionComplete && (
+                <>
+                    <DetectionResults result={{ output_image_url: resultImageUrl, misplaced_objects: misplacedObjects }} />
+                    <div className="text-center mt-4">
+                        <Button onClick={handleReset} className="btn btn-primary">
+                            Detect Another Image
+                        </Button>
+                    </div>
+                </>
+            )}
             <Modal show={showModal} onHide={handleCloseModal} size="xl" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Full-Size Image</Modal.Title>
