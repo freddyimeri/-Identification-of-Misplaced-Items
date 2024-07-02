@@ -1,7 +1,7 @@
 // src/pages/NormalDetection/NormalDetectionPage.js
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { normalDetection } from '../../services/processMisplacedManagerApi';
+import { normalDetection, downloadImage } from '../../services/processMisplacedManagerApi';
 import '../../styles/main.css';
 import LoadingIndicator from '../../components/detection/LoadingIndicator';
 import DetectionResults from '../../components/detection/DetectionResults';
@@ -65,6 +65,22 @@ const NormalDetectionPage = () => {
         setDetectionComplete(false);
     };
 
+    const handleDownload = async () => {
+        try {
+            const filePath = resultImageUrl.split('/').pop(); // Get the file name only
+            const response = await downloadImage(filePath);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `detection_result${resultImageUrl.substring(resultImageUrl.lastIndexOf('.'))}`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading image:', error);
+        }
+    };
+
     return (
         <DetectionContainer title="Upload Image for Normal Detection">
             <LoadingIndicator isLoading={isLoading} message="Your photo is being processed, please wait..." />
@@ -81,6 +97,9 @@ const NormalDetectionPage = () => {
                 <>
                     <DetectionResults result={{ output_image_url: resultImageUrl, misplaced_objects: misplacedObjects }} />
                     <div className="text-center mt-4">
+                        <Button onClick={handleDownload} className="btn btn-success mr-2">
+                            Download Image
+                        </Button>
                         <Button onClick={handleReset} className="btn btn-primary">
                             Detect Another Image
                         </Button>

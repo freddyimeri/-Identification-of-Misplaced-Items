@@ -17,7 +17,7 @@ from PIL import Image, ExifTags
 import logging
 import cv2
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse,  HttpResponse, Http404
 import numpy as np  
 from moviepy.editor import VideoFileClip, ImageSequenceClip
 
@@ -245,21 +245,16 @@ def process_video_for_misplaced_objects(video_path, frame_interval):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
+#################################################################################################
+####################################### Download Results ########################################
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def download_image(request, file_path):
+    file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/force-download")
+            response['Content-Disposition'] = f'attachment; filename="{os.path.basename(file_path)}"'
+            return response
+    else:
+        raise Http404

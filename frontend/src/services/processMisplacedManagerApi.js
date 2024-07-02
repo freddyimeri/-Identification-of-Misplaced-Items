@@ -120,3 +120,17 @@ export const getVideoResults = async (id) => {
         throw error;
     }
 };
+
+
+// Function to download an image
+export const downloadImage = async (filePath) => {
+    try {
+        const response = await api.get(`/api/process_misplaced_manager/download/${filePath}/`, {
+            responseType: 'blob', // Important for handling file downloads
+        });
+        return response;
+    } catch (error) {
+        console.error('Error downloading image:', error);
+        throw error;
+    }
+};
