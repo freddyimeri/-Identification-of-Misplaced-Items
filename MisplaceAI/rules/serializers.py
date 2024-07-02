@@ -20,7 +20,7 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class RuleSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
     item = ItemSerializer()
     locations = LocationSerializer(many=True)
 

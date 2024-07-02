@@ -64,7 +64,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +166,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +182,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +228,7 @@ CREATE TABLE `process_misplaced_manager_uploadedimage` (
   `image` varchar(100) NOT NULL,
   `uploaded_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,8 +242,31 @@ CREATE TABLE `process_misplaced_manager_uploadedvideo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `video` varchar(100) NOT NULL,
   `uploaded_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `user_id` int(11) NOT NULL,
+  `user_video_frame_preference_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `process_misplaced_ma_user_id_f01b3449_fk_auth_user` (`user_id`),
+  KEY `process_misplaced_ma_user_video_frame_pre_9a42197b_fk_process_m` (`user_video_frame_preference_id`),
+  CONSTRAINT `process_misplaced_ma_user_id_f01b3449_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `process_misplaced_ma_user_video_frame_pre_9a42197b_fk_process_m` FOREIGN KEY (`user_video_frame_preference_id`) REFERENCES `process_misplaced_manager_uservideoframepreference` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `process_misplaced_manager_uservideoframepreference`
+--
+
+DROP TABLE IF EXISTS `process_misplaced_manager_uservideoframepreference`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `process_misplaced_manager_uservideoframepreference` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `frame_interval` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `process_misplaced_ma_user_id_c4fd8017_fk_auth_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +281,7 @@ CREATE TABLE `rules_item` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +296,7 @@ CREATE TABLE `rules_location` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,7 +315,7 @@ CREATE TABLE `rules_rule` (
   KEY `rules_rule_user_id_a3576cd9_fk_auth_user_id` (`user_id`),
   CONSTRAINT `rules_rule_item_id_e7fc9070_fk_rules_item_id` FOREIGN KEY (`item_id`) REFERENCES `rules_item` (`id`),
   CONSTRAINT `rules_rule_user_id_a3576cd9_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +334,7 @@ CREATE TABLE `rules_rule_locations` (
   KEY `rules_rule_locations_location_id_71e247a5_fk_rules_location_id` (`location_id`),
   CONSTRAINT `rules_rule_locations_location_id_71e247a5_fk_rules_location_id` FOREIGN KEY (`location_id`) REFERENCES `rules_location` (`id`),
   CONSTRAINT `rules_rule_locations_rule_id_2a81ba57_fk_rules_rule_id` FOREIGN KEY (`rule_id`) REFERENCES `rules_rule` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -323,4 +346,4 @@ CREATE TABLE `rules_rule_locations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-25 15:35:20
+-- Dump completed on 2024-07-01 16:22:46

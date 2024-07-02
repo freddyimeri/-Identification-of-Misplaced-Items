@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install TensorFlow Object Detection API (this assumes models directory is already present)
+# Install TensorFlow Object Detection API  
 RUN cd /app/models/research \
     && protoc object_detection/protos/*.proto --python_out=. \
     && cp object_detection/packages/tf2/setup.py . \

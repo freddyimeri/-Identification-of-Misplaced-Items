@@ -80,7 +80,8 @@ class AdminManageRuleView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        rules = Rule.objects.all().order_by('id')
+        # Filter rules based on the authenticated user
+        rules = Rule.objects.filter(user=request.user).order_by('id')
         serializer = RuleSerializer(rules, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

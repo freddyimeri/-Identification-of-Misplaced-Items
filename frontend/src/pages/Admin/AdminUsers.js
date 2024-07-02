@@ -1,4 +1,5 @@
-// src/pages/Admin/AdminUsers.js
+//src/pages/Admin/AdminUsers.js
+
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import '../../styles/main.css'; // Ensure this is the correct path to main.css
@@ -8,15 +9,18 @@ const AdminUsers = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const response = await api.get('/admin-app/users/');
+            const response = await api.get('api/admin-app/users/');
             setUsers(response.data);
         };
         fetchUsers();
     }, []);
 
     const handleDeactivate = async (userId) => {
-        await api.post(`/api/admin-app/users/deactivate/${userId}/`);
-        setUsers(users.map(user => user.id === userId ? { ...user, is_active: false } : user));
+        const confirmDeactivate = window.confirm('Are you sure you want to deactivate this user?');
+        if (confirmDeactivate) {
+            await api.post(`/api/admin-app/users/deactivate/${userId}/`);
+            setUsers(users.map(user => user.id === userId ? { ...user, is_active: false } : user));
+        }
     };
 
     const handleActivate = async (userId) => {
@@ -25,8 +29,11 @@ const AdminUsers = () => {
     };
 
     const handleDelete = async (userId) => {
-        await api.post(`/api/admin-app/users/delete/${userId}/`);
-        setUsers(users.filter(user => user.id !== userId));
+        const confirmDelete = window.confirm('Are you sure you want to delete this user?');
+        if (confirmDelete) {
+            await api.delete(`/api/admin-app/users/delete/${userId}/`);
+            setUsers(users.filter(user => user.id !== userId));
+        }
     };
 
     return (
