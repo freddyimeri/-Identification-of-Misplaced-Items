@@ -1,6 +1,7 @@
 // src/services/api.js
+
 import axios from 'axios';
-import { refreshToken } from './auth';
+import { refreshToken, logout } from './auth';
 
 export const getCsrfToken = () => {
     const cookies = document.cookie.split(';');
@@ -14,10 +15,11 @@ export const getCsrfToken = () => {
 };
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080',  // Ensure this URL is correct
+    baseURL: 'http://localhost:8080',
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true,  // Ensure credentials are sent with requests
 });
 
 api.interceptors.request.use(
@@ -34,16 +36,14 @@ api.interceptors.request.use(
                         localStorage.setItem('token', newTokens.access);
                         localStorage.setItem('tokenExpiry', newTokens.accessExpiry);
                     } else {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('refresh');
-                        localStorage.removeItem('tokenExpiry');
+                        console.log('Token refresh failed. Logging out...');
+                        logout();
                         window.location.href = '/login';
                         return Promise.reject('Session expired. Please log in again.');
                     }
                 } catch (err) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('refresh');
-                    localStorage.removeItem('tokenExpiry');
+                    console.log('Error during token refresh:', err);
+                    logout();
                     window.location.href = '/login';
                     return Promise.reject('Session expired. Please log in again.');
                 }
@@ -56,17 +56,20 @@ api.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => {
+        console.log('Request error:', error);
+        return Promise.reject(error);
+    }
 );
 
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        console.log('API error:', error);  // Debugging
+        console.log('API error:', error);
         if (error.response && error.response.status === 500) {
             window.location.href = '/error-500';
         } else if (error.request && !error.response) {
-            console.log('Network or server error');  // Debugging
+            console.log('Network or server error');
             window.location.href = '/error-500';
         }
         return Promise.reject(error);

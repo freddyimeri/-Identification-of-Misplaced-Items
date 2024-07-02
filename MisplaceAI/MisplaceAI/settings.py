@@ -80,7 +80,24 @@ CSRF_TRUSTED_ORIGINS = [
 # Note: CORS_ORIGIN_ALLOW_ALL is set to False for security reasons
 CORS_ORIGIN_ALLOW_ALL = False
 
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_HTTPONLY = True
 ROOT_URLCONF = 'MisplaceAI.urls'
+
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+
+# Do not expire the session when the browser closes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Optionally, secure the session cookie (recommended for production)
+SESSION_COOKIE_SECURE = False  # Set to True if using HTTPS
+
+# Save the session cookie on every request (optional, based on your needs)
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Configuration of the session engine 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 
 TEMPLATES = [
     {
