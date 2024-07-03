@@ -1,8 +1,8 @@
-/* src/components/detection/UploadForm.js */
+/* src/components/detection/VideoUploadForm.js */
 
 import React from 'react';
 
-const UploadForm = ({ handleFileChange, handleSubmit, handleFrameIntervalChange, handleCameraClick, handleGalleryClick, isLoading }) => {
+const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFrameIntervalChange, handleCameraClick, handleGalleryClick, isLoading }) => {
     return (
         <form id="uploadForm" className="text-center" onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="form-group">
@@ -30,4 +30,4 @@ const UploadForm = ({ handleFileChange, handleSubmit, handleFrameIntervalChange,
     );
 };
 
-export default UploadForm;
+export default VideoUploadForm;

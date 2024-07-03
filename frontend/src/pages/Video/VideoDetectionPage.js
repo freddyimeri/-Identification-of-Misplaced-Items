@@ -7,13 +7,15 @@ import { checkDailyLimit, incrementDetection } from '../../services/dailyLimitAp
 import '../../styles/main.css';
 import LoadingIndicator from '../../components/detection/LoadingIndicator';
 import DetectionResults from '../../components/detection/DetectionResults';
-import UploadForm from '../../components/detection/UploadForm';
+import VideoUploadForm from '../../components/detection/video/VideoUploadForm';
 import DetectionContainer from '../../components/detection/DetectionContainer';
 import { Button } from 'react-bootstrap';
+import { getVideoDuration, calculateMinimumDelay, calculateMaximumDelay, calculateExpectedLength, isValidVideoLength } from '../../components/detection/video/videoUtils';
 
 const VideoDetectionPage = () => {
     const [videoFile, setVideoFile] = useState(null);
-    const [frameInterval, setFrameInterval] = useState(1);
+    const [framesJump, setFramesJump] = useState(1);
+    const [frameDelay, setFrameDelay] = useState(1);
     const [result, setResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [videoName, setVideoName] = useState(null);
@@ -79,8 +81,12 @@ const VideoDetectionPage = () => {
         setVideoFile(event.target.files[0]);
     };
 
-    const handleFrameIntervalChange = (event) => {
-        setFrameInterval(event.target.value);
+    const handleFramesJumpChange = (event) => {
+        setFramesJump(parseInt(event.target.value));
+    };
+
+    const handleFrameDelayChange = (event) => {
+        setFrameDelay(parseInt(event.target.value));
     };
 
     const handleSubmit = async (event) => {
@@ -91,10 +97,28 @@ const VideoDetectionPage = () => {
         }
 
         if (videoFile) {
+            // Validate video duration here before proceeding
+            const videoDuration = await getVideoDuration(videoFile);
+            if (!isValidVideoLength(videoDuration)) {
+                alert('The video length must be between 3 seconds and 10 minutes.');
+                return;
+            }
+
+            // Calculate the minimum and maximum delay to ensure the output video is within the required length
+            const minDelay = calculateMinimumDelay(videoDuration, framesJump);
+            const maxDelay = calculateMaximumDelay(videoDuration, framesJump);
+            const expectedLength = calculateExpectedLength(videoDuration, framesJump, frameDelay);
+
+            if (frameDelay < minDelay || frameDelay > maxDelay || expectedLength < 30 || expectedLength > 600) {
+                alert(`The delay per frame must be between ${minDelay} and ${maxDelay} seconds, and the expected output video length must be between 30 seconds and 10 minutes.`);
+                return;
+            }
+
             setIsLoading(true);
             const formData = new FormData();
             formData.append('video', videoFile);
-            formData.append('frame_interval', frameInterval);
+            formData.append('frames_jump', framesJump);
+            formData.append('frame_delay', frameDelay);
 
             try {
                 const uploadResponse = await uploadVideo(formData);
@@ -145,12 +169,13 @@ const VideoDetectionPage = () => {
             {!isLoading && (
                 <>
                     <p>You have {limitInfo.remaining} out of {limitInfo.limit} video detections remaining today.</p>
-                    <UploadForm
+                    <VideoUploadForm
                         handleFileChange={handleFileChange}
                         handleSubmit={handleSubmit}
-                        handleFrameIntervalChange={handleFrameIntervalChange}
-                        handleCameraClick={() => { }}
-                        handleGalleryClick={() => { }}
+                        handleFramesJumpChange={handleFramesJumpChange}
+                        handleFrameDelayChange={handleFrameDelayChange}
+                        framesJump={framesJump}
+                        frameDelay={frameDelay}
                         isLoading={isLoading}
                     />
                 </>
