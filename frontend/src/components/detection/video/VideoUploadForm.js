@@ -77,7 +77,7 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="videoFile">
                 <FileInput
-                    label="Upload Video"
+
                     onChange={handleFileInputChange}
                     fileName={fileName}
                     disabled={isLoading}
