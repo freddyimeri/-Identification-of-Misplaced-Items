@@ -11,3 +11,5 @@ media/
 uploads/
 
 /uploads/
+
+/node_modules/

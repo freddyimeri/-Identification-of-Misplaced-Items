@@ -1,0 +1,80 @@
+.file-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    font-family: 'Arial', sans-serif;
+    width: 100%;
+    max-width: 400px;
+}
+
+.file-input-label {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+}
+
+.file-input-field {
+    display: none;
+}
+
+.file-input-upload-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.file-input-upload-button:hover {
+    background-color: #0056b3;
+}
+
+.file-details {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.file-remove-button {
+    padding: 5px 10px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.file-remove-button:hover {
+    background-color: #ff1a1a;
+}
+
+.upload-icon,
+.remove-icon {
+    font-size: 18px;
+}

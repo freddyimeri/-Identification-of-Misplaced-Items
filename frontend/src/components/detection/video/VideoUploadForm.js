@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { getVideoDuration, calculateMinimumDelay, calculateMaximumDelay, calculateExpectedLength, isValidVideoLength, calculateOptimalValues, calculateMaxFrameJump, isDelayPerFrameValid, calculateValidFramesJumpOptions, calculateMinimumValidFrameDelay } from './videoUtils';
+import VideoInputs from './VideoInputs';
+import { getVideoDuration, calculateMinimumValidFrameDelay, calculateMaximumDelay, calculateExpectedLength, calculateOptimalValues, calculateValidFramesJumpOptions, isDelayPerFrameValid } from './videoUtils';
 
 const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChange, handleFrameDelayChange, framesJump, frameDelay, isLoading }) => {
     const [videoFile, setVideoFile] = useState(null);
@@ -29,16 +30,6 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
         }
     }, [videoFile]);
 
-    const calculateValidFramesJumpOptions = (duration) => {
-        const options = [];
-        for (let i = 1; i <= duration; i++) {
-            if (duration % i === 0 && duration / i >= 2) {
-                options.push(i);
-            }
-        }
-        return options;
-    };
-
     const updateConstraintsAndExpectedLength = (duration, framesJump, frameDelay) => {
         const minDelay = calculateMinimumValidFrameDelay(duration, framesJump);
         const maxDelay = calculateMaximumDelay(duration, framesJump);
@@ -63,18 +54,6 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
         handleFileChange(event);
     };
 
-    const handleFramesJumpInputChange = (event) => {
-        const value = parseInt(event.target.value);
-        handleFramesJumpChange({ target: { value } });
-        updateConstraintsAndExpectedLength(videoDuration, value, frameDelay);
-    };
-
-    const handleFrameDelayInputChange = (event) => {
-        const value = Math.min(Math.max(parseInt(event.target.value), minFrameDelay), maxFrameDelay);
-        handleFrameDelayChange({ target: { value } });
-        setExpectedLength(calculateExpectedLength(videoDuration, framesJump, value));
-    };
-
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="videoFile">
@@ -82,35 +61,18 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
                 <Form.Control type="file" accept="video/*" onChange={handleFileInputChange} disabled={isLoading} />
             </Form.Group>
             {isVideoUploaded && (
-                <>
-                    <Form.Group controlId="framesJump">
-                        <Form.Label>Frames Jump Seconds</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={framesJump}
-                            onChange={handleFramesJumpInputChange}
-                            disabled={isLoading}
-                        >
-                            {validFramesJumpOptions.map(option => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId="frameDelay">
-                        <Form.Label>Delay per Frame (seconds)</Form.Label>
-                        <Form.Control
-                            type="number"
-                            value={frameDelay}
-                            onChange={handleFrameDelayInputChange}
-                            min={minFrameDelay}
-                            max={maxFrameDelay}
-                            step="1"
-                            disabled={isLoading}
-                        />
-                    </Form.Group>
-                </>
+                <VideoInputs
+                    framesJump={framesJump}
+                    frameDelay={frameDelay}
+                    handleFramesJumpChange={handleFramesJumpChange}
+                    handleFrameDelayChange={handleFrameDelayChange}
+                    validFramesJumpOptions={validFramesJumpOptions}
+                    minFrameDelay={minFrameDelay}
+                    maxFrameDelay={maxFrameDelay}
+                    isLoading={isLoading}
+                    videoDuration={videoDuration}
+                    updateConstraintsAndExpectedLength={updateConstraintsAndExpectedLength}
+                />
             )}
             {isVideoUploaded && <p>Expected output video length: {expectedLength} seconds</p>}
             <Button variant="primary" type="submit" disabled={isLoading || expectedLength > 600 || expectedLength < 30 || !isVideoUploaded}>
