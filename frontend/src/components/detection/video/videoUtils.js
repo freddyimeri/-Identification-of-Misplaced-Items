@@ -1,3 +1,4 @@
+// Src/Component/Detection/Video/VideoInputs.js
 export const getVideoDuration = (file) => {
     return new Promise((resolve) => {
         const video = document.createElement('video');

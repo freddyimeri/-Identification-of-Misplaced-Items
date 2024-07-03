@@ -1,3 +1,5 @@
+// src/components/Common/input/FileInput.js
+
 import React, { useRef } from 'react';
 import { FaUpload, FaTrash } from 'react-icons/fa';
 import '../../../styles/input/FileInput.css';

@@ -1,7 +1,18 @@
+// src/components/detection/video/VideoUploadForm.js
+
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import VideoInputs from './VideoInputs';
-import { getVideoDuration, calculateMinimumValidFrameDelay, calculateMaximumDelay, calculateExpectedLength, calculateOptimalValues, calculateValidFramesJumpOptions, isDelayPerFrameValid } from './videoUtils';
+import FileInput from '../../Common/input/FileInput';
+import {
+    getVideoDuration,
+    calculateMinimumValidFrameDelay,
+    calculateMaximumDelay,
+    calculateExpectedLength,
+    calculateOptimalValues,
+    calculateValidFramesJumpOptions,
+    isDelayPerFrameValid
+} from './videoUtils';
 
 const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChange, handleFrameDelayChange, framesJump, frameDelay, isLoading }) => {
     const [videoFile, setVideoFile] = useState(null);
@@ -11,6 +22,7 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
     const [minFrameDelay, setMinFrameDelay] = useState(1);
     const [isVideoUploaded, setIsVideoUploaded] = useState(false);
     const [validFramesJumpOptions, setValidFramesJumpOptions] = useState([]);
+    const [fileName, setFileName] = useState('');
 
     useEffect(() => {
         if (videoFile) {
@@ -24,6 +36,7 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
                 handleFrameDelayChange({ target: { value: frameDelay } });
                 setValidFramesJumpOptions(calculateValidFramesJumpOptions(duration));
                 setIsVideoUploaded(true);
+                setFileName(videoFile.name);
             }).catch(error => {
                 console.error('Error getting video duration:', error);
             });
@@ -54,11 +67,22 @@ const VideoUploadForm = ({ handleFileChange, handleSubmit, handleFramesJumpChang
         handleFileChange(event);
     };
 
+    const handleRemoveFile = () => {
+        setVideoFile(null);
+        setIsVideoUploaded(false);
+        setFileName('');
+    };
+
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="videoFile">
-                <Form.Label>Upload Video</Form.Label>
-                <Form.Control type="file" accept="video/*" onChange={handleFileInputChange} disabled={isLoading} />
+                <FileInput
+                    label="Upload Video"
+                    onChange={handleFileInputChange}
+                    fileName={fileName}
+                    disabled={isLoading}
+                    onRemove={handleRemoveFile}
+                />
             </Form.Group>
             {isVideoUploaded && (
                 <VideoInputs

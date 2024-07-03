@@ -1,3 +1,5 @@
+// Src/Component/Detection/Video/VideoInputs.js
+
 import React, { useEffect } from 'react';
 import Dropdown from '../../Common/input/Dropdown';
 import NumberInput from '../../Common/input/NumberInput';
