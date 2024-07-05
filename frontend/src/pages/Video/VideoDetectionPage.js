@@ -34,10 +34,10 @@ const VideoDetectionPage = () => {
     }, []);
 
     useEffect(() => {
-        const handleBeforeUnload = async () => {
+        const handleBeforeUnloadOrRouteChange = async () => {
             if (!isDeleting && annotatedVideoName) {
                 setIsDeleting(true);
-                console.log('Navigation event detected:');
+                console.log('Navigation or route change detected:');
                 console.log('Annotated video name detected:', annotatedVideoName);
                 try {
                     const response = await deleteVideo(annotatedVideoName);
@@ -49,31 +49,10 @@ const VideoDetectionPage = () => {
             }
         };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
+        window.addEventListener('beforeunload', handleBeforeUnloadOrRouteChange);
         return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-            handleBeforeUnload();
-        };
-    }, [annotatedVideoName, isDeleting]);
-
-    useEffect(() => {
-        const handleRouteChange = async () => {
-            if (!isDeleting && annotatedVideoName) {
-                setIsDeleting(true);
-                console.log('Route change detected:');
-                try {
-                    const response = await deleteVideo(annotatedVideoName);
-                    console.log('Delete video response:', response);
-                } catch (error) {
-                    console.error('Error deleting video:', error);
-                }
-                setIsDeleting(false);
-            }
-        };
-
-        return () => {
-            handleRouteChange();
+            window.removeEventListener('beforeunload', handleBeforeUnloadOrRouteChange);
+            handleBeforeUnloadOrRouteChange();
         };
     }, [annotatedVideoName, location, isDeleting]);
 

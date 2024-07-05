@@ -33,7 +33,7 @@ const NormalDetectionPage = () => {
 
     useEffect(() => {
         const handleBeforeUnload = async () => {
-            console.log('Navigation event detected:');
+            console.log('Navigation or route change detected:');
             if (imageName) {
                 console.log('Image name detected:', imageName);
                 try {
@@ -46,28 +46,9 @@ const NormalDetectionPage = () => {
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
-
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
-            handleBeforeUnload(); // Trigger the cleanup function manually
-        };
-    }, [imageName]);
-
-    useEffect(() => {
-        const handleRouteChange = async () => {
-            console.log('Route change detected:');
-            if (imageName) {
-                try {
-                    const response = await deleteImageByName(imageName);
-                    console.log('Delete image response:', response);
-                } catch (error) {
-                    console.error('Error deleting image:', error);
-                }
-            }
-        };
-
-        return () => {
-            handleRouteChange();
+            handleBeforeUnload();
         };
     }, [imageName, location]);
 

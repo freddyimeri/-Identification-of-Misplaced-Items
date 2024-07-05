@@ -279,33 +279,45 @@ def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay)
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_image(request, image_name):
-    print(f"Attempting to delete image: {image_name}")
-    # Construct the file path
-    file_path = os.path.join(settings.MEDIA_ROOT, image_name)
-    # Check if the file exists
-    if os.path.exists(file_path):
-        # Delete the file
-        os.remove(file_path)
-        print(f"Image {image_name} deleted successfully.")
-    else:
-        print(f"Image {image_name} not found. It may have already been deleted.")
-    return Response(status=status.HTTP_204_NO_CONTENT)
-
+    try:
+        print(f"Attempting to delete image: {image_name}")
+        # Construct the file path
+        file_path = os.path.join(settings.MEDIA_ROOT, image_name)
+        
+        # Check if the file exists
+        if os.path.exists(file_path):
+            # Delete the file
+            os.remove(file_path)
+            print(f"Image {image_name} deleted successfully.")
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            print(f"Image {image_name} not found.")
+            return Response({'error': 'Image not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error deleting image {image_name}: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_video(request, video_name):
-    print(f"Attempting to delete video: {video_name}")
-    video_path = os.path.join(settings.MEDIA_ROOT, 'videos', video_name)
-    if os.path.exists(video_path):
-        os.remove(video_path)
-        print(f"Video {video_name} deleted successfully.")
-    else:
-        print(f"Video {video_name} not found. It may have already been deleted.")
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    try:
+        print(f"Attempting to delete video: {video_name}")
+        video_path = os.path.join(settings.MEDIA_ROOT, 'videos', video_name)
+        if os.path.exists(video_path):
+            os.remove(video_path)
+            print(f"Video {video_name} deleted successfully.")
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            print(f"Video {video_name} not found.")
+            return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error deleting video {video_name}: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+ 
 
 #################################################################################################
 ####################################### Download Results ########################################
