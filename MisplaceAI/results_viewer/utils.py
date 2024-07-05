@@ -1,13 +1,10 @@
 # MisplaceAi/results_viewer/utils.py
-from PIL import Image
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import os
-from item_detector.utils import run_inference
-from placement_rules.utils import PlacementRules
 from PIL import Image, ImageDraw, ImageFont
-
-import cv2
+import os
+from django.conf import settings
+ 
 
 def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects):
     """Visualize misplaced objects with annotations."""
@@ -61,27 +58,37 @@ def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
 
 
 
-
-
  
 
 def visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objects, frame_number):
     """Visualize misplaced objects with annotations on a PIL image."""
+
+    # Create a drawing context for the image
     draw = ImageDraw.Draw(image_pil)
+    
+    # Get the dimensions of the image
     width, height = image_pil.size
 
+    # Create a list of class names for misplaced objects
     misplaced_names = [obj["class_name"] for obj in misplaced_objects]
 
-    # Draw frame number on the top-left corner with a larger font size
-    frame_text = f"Frame {frame_number}"
-    font_size = 300  # Set a larger font size
+    # Load a font using absolute path to the static directory
+    font_size = 40  # Set the font size (increase if needed)
+    font_path = os.path.join(settings.BASE_DIR, 'core/static/core/fonts/Arial.ttf')  # Path to the font file
     try:
-        font = ImageFont.truetype("arial.ttf", font_size)
+        font = ImageFont.truetype(font_path, font_size)
+        print("Font loaded successfully.")
     except IOError:
-        font = ImageFont.load_default()  # Fallback to default font
+        print("Font file not found. Using default font.")
+        font = ImageFont.load_default()
 
+    # Draw frame number on the top-left corner
+    frame_text = f"Frame {frame_number}"
+    text_width, text_height = draw.textsize(frame_text, font=font)
+    draw.rectangle([(0, 0), (text_width + 20, text_height + 20)], fill="black")
     draw.text((10, 10), frame_text, fill="yellow", font=font)
 
+    # Iterate over all detected objects to draw their annotations
     for obj in detected_objects:
         ymin, xmin, ymax, xmax = [
             obj["ymin"] * height,
@@ -91,7 +98,26 @@ def visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objec
         ]
 
         color = "green" if obj["class_name"] not in misplaced_names else "red"
-        draw.rectangle([xmin, ymin, xmax, ymax], outline=color, width=2)
-        draw.text((xmin, ymin), f"{'Misplaced: ' if obj['class_name'] in misplaced_names else ''}{obj['class_name']}", fill=color, font=font)
+        draw.rectangle([xmin, ymin, xmax, ymax], outline=color, width=3)
+
+        text = f"{'Misplaced: ' if obj['class_name'] in misplaced_names else ''}{obj['class_name']}"
+        text_width, text_height = draw.textsize(text, font=font)
+        
+        # Check available space above and below the bounding box
+        space_above = ymin - text_height - 10
+        space_below = height - ymax - text_height - 10
+
+        if space_above > 0:
+            # Place the label above the bounding box
+            draw.rectangle([(xmin, ymin - text_height - 10), (xmin + text_width + 10, ymin)], fill="black")
+            draw.text((xmin + 5, ymin - text_height - 5), text, fill=color, font=font)
+        elif space_below > 0:
+            # Place the label below the bounding box
+            draw.rectangle([(xmin, ymax), (xmin + text_width + 10, ymax + text_height + 10)], fill="black")
+            draw.text((xmin + 5, ymax + 5), text, fill=color, font=font)
+        else:
+            # Place the label inside the bounding box as a fallback
+            draw.rectangle([(xmin, ymin), (xmin + text_width + 10, ymin + text_height + 10)], fill="black")
+            draw.text((xmin + 5, ymin + 5), text, fill=color, font=font)
 
     return image_pil

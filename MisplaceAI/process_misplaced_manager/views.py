@@ -207,47 +207,32 @@ def display_video_results(request, video_id):
 
 
 def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay):
-    print("Starting object detection for video:", video_path)
     cap = cv2.VideoCapture(video_path)
-    print("Video capture object created")
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    print("Frame width:", frame_width)
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    print("Frame height:", frame_height)
     fps = int(cap.get(cv2.CAP_PROP_FPS))
-    print("FPS:", fps)
-
     misplaced_objects_all_frames = []
-    print("Misplaced objects list created")
     detected_objects_all_frames = []
-    print("Detected objects list created")
-
     frame_count = 0
     annotated_frame_count = 1  # Start frame count from 1 for annotated frames
     frame_interval_frames = frame_interval * fps
     annotated_frames = []
 
     while cap.isOpened():
-        print(f"Processing frame {frame_count}")
         ret, frame = cap.read()
-        print("Frame read")
         if not ret:
             break
 
         if frame_count % frame_interval_frames == 0:
-            print("Frame read successfully")
             image_np = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            print("Frame converted to RGB")
             
             # Convert the frame to PIL image
             image_pil = Image.fromarray(image_np)
 
             detected_objects = run_inference(detection_model, category_index, image_pil)
-            print(f"Detected objects in frame {frame_count}: {detected_objects}")
 
             placement_rules = PlacementRules()
             misplaced_objects = placement_rules.check_placement(detected_objects)
-            print(f"Misplaced objects in frame {frame_count}: {misplaced_objects}")
 
             detected_objects_all_frames.append(detected_objects)
             misplaced_objects_all_frames.append(misplaced_objects)
@@ -269,7 +254,6 @@ def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay)
     annotated_clip = ImageSequenceClip(annotated_frames, fps=1/frame_delay)
     annotated_clip.write_videofile(output_video_path, fps=fps, codec='libx264', audio_codec='aac')
 
-    print("Finished processing video:", output_video_path)
     return detected_objects_all_frames, misplaced_objects_all_frames, output_video_path
 
 
