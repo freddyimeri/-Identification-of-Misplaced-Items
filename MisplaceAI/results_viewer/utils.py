@@ -1,13 +1,27 @@
-# MisplaceAi/results_viewer/utils.py
+# MisplaceAI/results_viewer/utils.py
+
+# This file contains utility functions for the results_viewer app.
+# These functions handle visualization tasks such as annotating images with misplaced objects.
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image, ImageDraw, ImageFont
 import os
 from django.conf import settings
- 
 
 def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects):
-    """Visualize misplaced objects with annotations."""
+    """
+    Visualize misplaced objects with annotations on an image.
+
+    Args:
+        image_path (str): Path to the image file.
+        detected_objects (list): List of detected objects with their bounding box coordinates and class names.
+        misplaced_objects (list): List of misplaced objects with their class names.
+
+    Returns:
+        str: Path to the annotated image.
+    """
+    # Open the image file
     image = Image.open(image_path)
     width, height = image.size
 
@@ -16,10 +30,12 @@ def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
 
     ax = plt.gca()
 
+    # List of class names for misplaced objects
     misplaced_names = [obj["class_name"] for obj in misplaced_objects]
     print(f"Misplaced object names: {misplaced_names}")  # Debugging
 
     for obj in detected_objects:
+        # Get the bounding box coordinates
         ymin, xmin, ymax, xmax = [
             obj["ymin"] * height,
             obj["xmin"] * width,
@@ -27,6 +43,7 @@ def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
             obj["xmax"] * width,
         ]
 
+        # Draw the bounding box around the object
         rect = patches.Rectangle(
             (xmin, ymin),
             xmax - xmin,
@@ -37,6 +54,7 @@ def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
         )
         ax.add_patch(rect)
 
+        # Annotate the object
         ax.text(
             xmin,
             ymin,
@@ -48,28 +66,35 @@ def visualize_misplaced_objects(image_path, detected_objects, misplaced_objects)
 
     plt.axis("off")
 
+    # Define the output path for the annotated image
     output_image_path = os.path.join("media", os.path.splitext(os.path.basename(image_path))[0] + "_annotated.png")
+    # Save the annotated image
     plt.savefig(output_image_path, bbox_inches='tight', pad_inches=0.0)
     plt.close()
 
     print(f"Output image saved at: {output_image_path}")  # Debugging
     return output_image_path
 
-
-
-
- 
-
 def visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objects, frame_number):
-    """Visualize misplaced objects with annotations on a PIL image."""
+    """
+    Visualize misplaced objects with annotations on a PIL image.
 
+    Args:
+        image_pil (PIL.Image.Image): PIL image object.
+        detected_objects (list): List of detected objects with their bounding box coordinates and class names.
+        misplaced_objects (list): List of misplaced objects with their class names.
+        frame_number (int): Frame number for the annotated image.
+
+    Returns:
+        PIL.Image.Image: Annotated PIL image object.
+    """
     # Create a drawing context for the image
     draw = ImageDraw.Draw(image_pil)
     
     # Get the dimensions of the image
     width, height = image_pil.size
 
-    # Create a list of class names for misplaced objects
+    # List of class names for misplaced objects
     misplaced_names = [obj["class_name"] for obj in misplaced_objects]
 
     # Load a font using absolute path to the static directory
@@ -97,6 +122,7 @@ def visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objec
             obj["xmax"] * width,
         ]
 
+        # Determine the color of the bounding box and text based on whether the object is misplaced
         color = "green" if obj["class_name"] not in misplaced_names else "red"
         draw.rectangle([xmin, ymin, xmax, ymax], outline=color, width=3)
 
