@@ -9,7 +9,7 @@ from .models import UploadedImage, UploadedVideo, UserVideoFramePreference, Dete
 from .serializers import UploadedImageSerializer, UploadedVideoSerializer
 from item_detector.utils import run_inference, load_model, create_category_index_from_labelmap
 from placement_rules.utils import PlacementRules
-from results_viewer.utils import visualize_misplaced_objects, visualize_video_misplaced_objects, visualize_pil_misplaced_objects
+from results_viewer.utils import visualize_misplaced_objects, visualize_pil_misplaced_objects
 from django.core.files.base import ContentFile
 import base64
 import os
@@ -203,6 +203,7 @@ def display_video_results(request, video_id):
     except Exception as e:
         print(f"Error processing video results: {e}")
         return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+ 
 
 
 def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay):
@@ -222,6 +223,7 @@ def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay)
     print("Detected objects list created")
 
     frame_count = 0
+    annotated_frame_count = 1  # Start frame count from 1 for annotated frames
     frame_interval_frames = frame_interval * fps
     annotated_frames = []
 
@@ -250,10 +252,13 @@ def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay)
             detected_objects_all_frames.append(detected_objects)
             misplaced_objects_all_frames.append(misplaced_objects)
 
-            # Annotate the frame with bounding boxes and labels
-            annotated_image_pil = visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objects)
+            # Annotate the frame with bounding boxes, labels, and annotated frame number
+            annotated_image_pil = visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objects, annotated_frame_count)
             annotated_image_np = np.array(annotated_image_pil)
             annotated_frames.append(annotated_image_np)
+
+            # Increment the annotated frame count
+            annotated_frame_count += 1
 
         frame_count += 1
 
@@ -261,8 +266,8 @@ def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay)
 
     # Create a video with a specified delay between each frame
     output_video_path = os.path.join(settings.MEDIA_ROOT, 'videos', os.path.basename(video_path).replace('.mp4', '_annotated.mp4'))
-    annotated_clip = ImageSequenceClip([np.array(frame) for frame in annotated_frames], fps=1/frame_delay)
-    annotated_clip.write_videofile(output_video_path, codec='libx264', audio_codec='aac')
+    annotated_clip = ImageSequenceClip(annotated_frames, fps=1/frame_delay)
+    annotated_clip.write_videofile(output_video_path, fps=fps, codec='libx264', audio_codec='aac')
 
     print("Finished processing video:", output_video_path)
     return detected_objects_all_frames, misplaced_objects_all_frames, output_video_path
