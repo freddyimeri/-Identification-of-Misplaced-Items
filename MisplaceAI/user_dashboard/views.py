@@ -1,5 +1,9 @@
 # MisplaceAI/user_dashboard/views.py
 
+# This file defines the views for the user_dashboard app.
+# Views handle the logic for different endpoints, providing appropriate responses
+# based on the request and the business logic. This includes viewing and updating user information.
+
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -10,22 +14,33 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 
 class UserDashboardView(generics.RetrieveAPIView):
+    """
+    View for retrieving the current user's information.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        # Return the current authenticated user
         return self.request.user
 
 class UserUpdateView(generics.UpdateAPIView):
+    """
+    View for updating the current user's information.
+    """
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        # Return the current authenticated user
         return self.request.user
-    
+
 class UpdateEmailView(APIView):
+    """
+    View for updating the current user's email address.
+    """
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
@@ -46,6 +61,9 @@ class UpdateEmailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateUsernameView(APIView):
+    """
+    View for updating the current user's username.
+    """
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
@@ -66,6 +84,9 @@ class UpdateUsernameView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CurrentUserEmailView(APIView):
+    """
+    View for retrieving the current user's email address.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -73,14 +94,19 @@ class CurrentUserEmailView(APIView):
         return Response({'email': user.email}, status=status.HTTP_200_OK)
 
 class CurrentUserUsernameView(APIView):
+    """
+    View for retrieving the current user's username.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         user = request.user
         return Response({'username': user.username}, status=status.HTTP_200_OK)
 
-
 class UpdatePasswordView(APIView):
+    """
+    View for updating the current user's password.
+    """
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
