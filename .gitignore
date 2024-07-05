@@ -17,3 +17,16 @@ uploads/
 MisplaceAI/rules/migrations/0001_initial.py
 MisplaceAI/rules/migrations/__pycache__/0001_initial.cpython-310.pyc
 MisplaceAI/models
+MisplaceAI/rules/__pycache__/views.cpython-310.pyc
+MisplaceAI/rules/__pycache__/urls.cpython-310.pyc
+MisplaceAI/rules/__pycache__/urls.cpython-310.pyc
+MisplaceAI/authentication/__pycache__/views.cpython-310.pyc
+MisplaceAI/authentication/__pycache__/urls.cpython-310.pyc
+MisplaceAI/models
+MisplaceAI/rules/__pycache__/views.cpython-310.pyc
+MisplaceAI/rules/__pycache__/urls.cpython-310.pyc
+MisplaceAI/rules/__pycache__/models.cpython-310.pyc
+MisplaceAI/MisplaceAI/__pycache__/urls.cpython-310.pyc
+MisplaceAI/MisplaceAI/__pycache__/settings.cpython-310.pyc
+MisplaceAI/authentication/__pycache__/views.cpython-310.pyc
+MisplaceAI/authentication/__pycache__/urls.cpython-310.pyc

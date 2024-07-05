@@ -3,8 +3,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../../styles/main.css';
 import '../../../styles/buttons/uploadButton.css';
-import UploadButton from '../../common/buttons/UploadButton';
-import TakePhotoButton from '../../common/buttons/TakePhotoButton';
+import UploadButton from '../../Common/buttons/UploadButton';
+import TakePhotoButton from '../../Common/buttons/TakePhotoButton';
 
 const ImageUploadForm = ({ handleFileChange, handleSubmit, handleCameraClick, handleGalleryClick, isLoading }) => {
 

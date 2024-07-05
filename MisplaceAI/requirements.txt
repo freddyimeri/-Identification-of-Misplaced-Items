@@ -8,3 +8,5 @@ django-cors-headers==3.10.0
 djangorestframework-simplejwt==4.6.0
 channels==3.0.3
 moviepy==1.0.3
+pytest==6.2.5
+pytest-django==4.4.0
