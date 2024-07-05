@@ -12,6 +12,8 @@ class UploadedImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedImage
         fields = ['id', 'image', 'uploaded_at', 'user']
+        read_only_fields = ['uploaded_at']
+
 
 class UploadedVideoSerializer(serializers.ModelSerializer):
     class Meta:
