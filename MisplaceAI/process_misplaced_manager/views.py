@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import UploadedImage, UploadedVideo, UserVideoFramePreference,DetectionLimitSetting, DailyDetectionLimit
+from .models import UploadedImage, UploadedVideo, UserVideoFramePreference, DetectionLimitSetting, DailyDetectionLimit
 from .serializers import UploadedImageSerializer, UploadedVideoSerializer
 from item_detector.utils import run_inference, load_model, create_category_index_from_labelmap
 from placement_rules.utils import PlacementRules
@@ -17,7 +17,7 @@ from PIL import Image, ExifTags
 import logging
 import cv2
 from django.conf import settings
-from django.http import JsonResponse,  HttpResponse, Http404
+from django.http import JsonResponse, HttpResponse, Http404
 import numpy as np  
 from moviepy.editor import VideoFileClip, ImageSequenceClip
 from .utils import increment_detection_count
@@ -146,9 +146,11 @@ def upload_video(request):
         print("No video file provided in request")
         return Response({'error': 'No video file provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-    frame_interval = int(request.data.get('frame_interval', 1))
+    frame_interval = int(request.data.get('frames_jump', 1))
+    frame_delay = int(request.data.get('frame_delay', 1))
     user_video_frame_preference, created = UserVideoFramePreference.objects.get_or_create(user=request.user)
     user_video_frame_preference.frame_interval = frame_interval
+    user_video_frame_preference.frame_delay = frame_delay
     user_video_frame_preference.save()
 
     serializer = UploadedVideoSerializer(data={'video': request.FILES['video'], 'user': request.user.id, 'user_video_frame_preference': user_video_frame_preference.id})
@@ -168,11 +170,14 @@ def display_video_results(request, video_id):
     try:
         video = get_object_or_404(UploadedVideo, id=video_id)
         video_path = video.video.path
+        user_video_frame_preference = get_object_or_404(UserVideoFramePreference, user=video.user)
+        frame_interval = user_video_frame_preference.frame_interval
+        frame_delay = user_video_frame_preference.frame_delay
 
         print("Processing video at path:", video_path)
-        frame_interval = video.user_video_frame_preference.frame_interval if video.user_video_frame_preference else 1
-        detected_objects, misplaced_objects, output_video_path = process_video_for_misplaced_objects(video_path, frame_interval)
-        
+        print(f"Frame interval: {frame_interval}, Frame delay: {frame_delay}")
+        detected_objects, misplaced_objects, output_video_path = process_video_for_misplaced_objects(video_path, frame_interval, frame_delay)
+
         # Delete the original uploaded video
         if os.path.exists(video_path):
             os.remove(video_path)
@@ -192,7 +197,7 @@ def display_video_results(request, video_id):
         return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def process_video_for_misplaced_objects(video_path, frame_interval):
+def process_video_for_misplaced_objects(video_path, frame_interval, frame_delay):
     print("Starting object detection for video:", video_path)
     cap = cv2.VideoCapture(video_path)
     print("Video capture object created")
@@ -246,9 +251,9 @@ def process_video_for_misplaced_objects(video_path, frame_interval):
 
     cap.release()
 
-    # Create a video with a 1-second delay between each frame
+    # Create a video with a specified delay between each frame
     output_video_path = os.path.join(settings.MEDIA_ROOT, 'videos', os.path.basename(video_path).replace('.mp4', '_annotated.mp4'))
-    annotated_clip = ImageSequenceClip([np.array(frame) for frame in annotated_frames], fps=1)
+    annotated_clip = ImageSequenceClip([np.array(frame) for frame in annotated_frames], fps=1/frame_delay)
     annotated_clip.write_videofile(output_video_path, codec='libx264', audio_codec='aac')
 
     print("Finished processing video:", output_video_path)
@@ -369,8 +374,6 @@ def set_daily_limits(request):
         'daily_image_limit': limit_setting.daily_image_limit,
         'daily_video_limit': limit_setting.daily_video_limit
     })
-
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

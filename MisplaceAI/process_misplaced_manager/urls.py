@@ -5,7 +5,8 @@ from .views import (
     UploadedImageViewSet, UploadedVideoViewSet,
     normal_detection, 
     display_results, 
-    display_video_results,upload_video,
+    display_video_results, 
+    upload_video,
     download_image, 
     delete_image,
     delete_video,
@@ -32,11 +33,8 @@ urlpatterns = [
     path('delete-image/<str:image_name>/', delete_image, name='delete_image_by_name'),
     path('delete-video/<str:video_name>/', delete_video, name='delete_video'),
     path('download_video/<str:file_path>/', download_media, name='download_media'),
-
     path('daily-limits/', get_daily_limits, name='get_daily_limits'),  
     path('set-daily-limits/', set_daily_limits, name='set_daily_limits'),
     path('check-daily-limit/', check_daily_limit, name='check_daily_limit'),
-
     path('increment-detection/', increment_detection, name='increment_detection'),
-
 ]

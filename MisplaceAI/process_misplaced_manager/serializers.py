@@ -1,13 +1,17 @@
 # MisplaceAI/process_misplaced_manager/serializers.py
 
 from rest_framework import serializers
-from .models import UploadedImage, UploadedVideo
+from .models import UploadedImage, UploadedVideo, UserVideoFramePreference
+
+class UserVideoFramePreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserVideoFramePreference
+        fields = ['frame_interval', 'frame_delay']
 
 class UploadedImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedImage
         fields = ['id', 'image', 'uploaded_at', 'user']
-
 
 class UploadedVideoSerializer(serializers.ModelSerializer):
     class Meta:
