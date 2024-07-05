@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, LoginSerializer
 from django.contrib.auth.models import User
-from django.contrib.auth import login
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -48,3 +47,13 @@ class AdminLoginView(APIView):
                 'is_authenticated': True
             }, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid username or password or you do not have the necessary permissions to access this page.'}, status=status.HTTP_400_BAD_REQUEST)
+
+class LogoutView(APIView):
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

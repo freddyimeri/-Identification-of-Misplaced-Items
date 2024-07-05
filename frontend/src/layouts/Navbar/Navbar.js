@@ -2,17 +2,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/main.css';
+import { logout } from '../../services/auth';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const isAuthenticated = !!localStorage.getItem('isAuthenticated');
     const isAdmin = !!localStorage.getItem('isAdmin');
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('isAdmin');
+    const handleLogout = async () => {
+        await logout();
         navigate('/');
         window.location.reload(); // Refresh to update Navbar
     };

@@ -1,5 +1,6 @@
 // src/App.js
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './layouts/Navbar/Navbar';
 import HomePage from './pages/Home/Home';
@@ -21,9 +22,14 @@ import ManageDailyLimit from './pages/Admin/ManageDailyLimit';
 import Error500 from './pages/Error/Error500/Error500';
 import ProtectedRoute from './firewall/ProtectedRoute';
 import RouteProtection from './firewall/RouteProtection';
+import { initializeTokenRefresh } from './services/api'; // Import the initializeTokenRefresh function
 
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    initializeTokenRefresh(); // Initialize token refresh timer on app load
+  }, []);
 
   return (
     <div className="App">

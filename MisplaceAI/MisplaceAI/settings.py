@@ -87,14 +87,9 @@ ROOT_URLCONF = 'MisplaceAI.urls'
 
 
 SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False# Do not expire the session when the browser closes
-
-
-# Optionally, secure the session cookie (recommended for production)
-SESSION_COOKIE_SECURE = False  # Set to True if using HTTPS
-
-# Save the session cookie on every request (optional, based on your needs)
-SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False # Do not expire the session when the browser closes
+SESSION_COOKIE_SECURE = False   # Set to True if using HTTPS
+SESSION_SAVE_EVERY_REQUEST = True # Save the session cookie on every request (optional, based on your needs)
 
 # Configuration of the session engine 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -135,6 +130,7 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
+CORS_ALLOW_ALL_ORIGINS = True
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
