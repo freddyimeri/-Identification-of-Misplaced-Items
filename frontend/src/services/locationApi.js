@@ -1,3 +1,4 @@
+// src/services/locationApi.js
 import api, { getCsrfToken } from './api';
 
 export const addLocation = async (locationData) => {

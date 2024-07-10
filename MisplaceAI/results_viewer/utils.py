@@ -98,7 +98,7 @@ def visualize_pil_misplaced_objects(image_pil, detected_objects, misplaced_objec
     misplaced_names = [obj["class_name"] for obj in misplaced_objects]
 
     # Load a font using absolute path to the static directory
-    font_size = 40  # Set the font size (increase if needed)
+    font_size = 25  # Set the font size (increase if needed)
     font_path = os.path.join(settings.BASE_DIR, 'core/static/core/fonts/Arial.ttf')  # Path to the font file
     try:
         font = ImageFont.truetype(font_path, font_size)

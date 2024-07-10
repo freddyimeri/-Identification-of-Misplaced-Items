@@ -7,18 +7,19 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.models import User
 from .models import Location, Item, Rule
 from .serializers import LocationSerializer, ItemSerializer, RuleSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import permission_classes
 
+ 
 class UserListView(APIView):
     """
     View to list all users. Only accessible by authenticated users.
     """
     permission_classes = [IsAuthenticated]
-
     def get(self, request, *args, **kwargs):
         # Retrieve all user objects from the database
         users = User.objects.all()
@@ -27,12 +28,13 @@ class UserListView(APIView):
         # Return the serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+ 
 class AdminManageItemView(APIView):
     """
     View to manage items. Only accessible by authenticated users.
     """
-    permission_classes = [IsAuthenticated]
-
+    @permission_classes([IsAuthenticated])
     def get(self, request, *args, **kwargs):
         # Retrieve all item objects from the database, ordered by name
         items = Item.objects.all().order_by('name')
@@ -40,7 +42,8 @@ class AdminManageItemView(APIView):
         serializer = ItemSerializer(items, many=True)
         # Return the serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
+    @permission_classes([IsAdminUser])
     def post(self, request, *args, **kwargs):
         # Deserialize the incoming data into an ItemSerializer
         serializer = ItemSerializer(data=request.data)
@@ -53,6 +56,7 @@ class AdminManageItemView(APIView):
         # Return validation errors with a 400 Bad Request status
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @permission_classes([IsAdminUser])
     def put(self, request, item_id, *args, **kwargs):
         # Retrieve the existing item object from the database
         item = get_object_or_404(Item, id=item_id)
@@ -66,7 +70,8 @@ class AdminManageItemView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         # Return validation errors with a 400 Bad Request status
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+   
+    @permission_classes([IsAdminUser])
     def delete(self, request, item_id, *args, **kwargs):
         # Retrieve the existing item object from the database
         item = get_object_or_404(Item, id=item_id)
@@ -123,6 +128,7 @@ class AdminManageLocationView(APIView):
         # Return a 204 No Content status to indicate successful deletion
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# misplaceAI/rules/views.py
 class AdminManageRuleView(APIView):
     """
     View to manage rules. Only accessible by authenticated users.

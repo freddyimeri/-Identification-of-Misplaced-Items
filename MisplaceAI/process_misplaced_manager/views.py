@@ -41,14 +41,11 @@ class UploadedImageViewSet(viewsets.ModelViewSet):
     serializer_class = UploadedImageSerializer  # Serializer class for uploaded images
     permission_classes = [IsAuthenticated]  # Only authenticated users can access
 
-# API view for normal detection on uploaded images
+# API view for normal detection on uploaded imagesm to detect misplaced items
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def normal_detection(request):
     """Handle image upload, run object detection, and check for misplaced objects."""
-    print("Received request for normal detection")
-    print("Request data:", request.data)
-    print("Request FILES:", request.FILES)
     try:
         if 'capturedImageData' in request.data:
             # Process base64 encoded image data
