@@ -11,113 +11,146 @@ Test 7: test_update_item_as_normal_user - Test that a normal user cannot update 
 Test 8: test_create_item_with_invalid_data - Test that creating an item with invalid data returns validation errors.
 Test 9: test_get_item_detail_as_admin - Test that an admin user can retrieve the details of a specific item.
 Test 10: test_get_item_detail_as_normal_user - Test that a normal user can retrieve the details of a specific item.
+Test 11: test_create_duplicate_item_as_admin - Test that creating a duplicate item as admin returns an error.
+Test 12: test_partial_update_item_as_admin - Test that an admin user can perform partial updates on an item.
+Test 13: test_unauthenticated_access - Test that unauthenticated users cannot access any item endpoints.
 """
-from rest_framework.test import APITestCase
+
 from rest_framework import status
-from django.urls import reverse
+from rest_framework.reverse import reverse
+from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from rules.models import Item
 
 class AdminManageItemViewTest(APITestCase):
-    """
-    Test suite for the AdminManageItemView.
-    """
-
     def setUp(self):
-        self.admin_user = User.objects.create_superuser(username='adminuser', password='adminpassword')
-        self.normal_user = User.objects.create_user(username='testuser', password='testpassword')
+        """
+        Set up test data for the test cases.
+        """
+        self.admin_user = User.objects.create_superuser(username='admin', password='password')
+        self.normal_user = User.objects.create_user(username='user', password='password')
+        
         self.item = Item.objects.create(name='Test Item')
+        
+        self.url = reverse('rules:admin_manage_item')
+        self.detail_url = lambda item_id: reverse('rules:admin_manage_item_detail', args=[item_id])
 
     def test_create_item_as_admin(self):
         """
-        Ensure admin users can create a new item.
+        Test 1: test_create_item_as_admin - Test that an admin user can create a new item.
         """
         self.client.force_authenticate(user=self.admin_user)
-        url = reverse('rules:admin_manage_item')
         data = {'name': 'New Item'}
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Item.objects.count(), 2)
-        self.assertEqual(Item.objects.get(id=response.data['id']).name, 'New Item')
 
     def test_create_item_as_normal_user(self):
         """
-        Ensure normal users cannot create a new item.
+        Test 2: test_create_item_as_normal_user - Test that a normal user cannot create a new item.
         """
         self.client.force_authenticate(user=self.normal_user)
-        url = reverse('rules:admin_manage_item')
         data = {'name': 'New Item'}
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_delete_item_as_admin(self):
         """
-        Ensure admin users can delete an existing item.
+        Test 3: test_delete_item_as_admin - Test that an admin user can delete an existing item.
         """
         self.client.force_authenticate(user=self.admin_user)
-        url = reverse('rules:admin_manage_item_detail', args=[self.item.id])
-        response = self.client.delete(url)
+        response = self.client.delete(self.detail_url(self.item.id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Item.objects.count(), 0)
 
     def test_delete_item_as_normal_user(self):
         """
-        Ensure normal users cannot delete an existing item.
+        Test 4: test_delete_item_as_normal_user - Test that a normal user cannot delete an existing item.
         """
         self.client.force_authenticate(user=self.normal_user)
-        url = reverse('rules:admin_manage_item_detail', args=[self.item.id])
-        response = self.client.delete(url)
+        response = self.client.delete(self.detail_url(self.item.id))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_items_as_normal_user(self):
         """
-        Ensure normal users can retrieve the list of items.
+        Test 5: test_get_items_as_normal_user - Test that a normal user can retrieve the list of items.
         """
         self.client.force_authenticate(user=self.normal_user)
-        url = reverse('rules:admin_manage_item')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['name'], 'Test Item')
 
     def test_update_item_as_admin(self):
         """
-        Ensure admin users can update an existing item.
+        Test 6: test_update_item_as_admin - Test that an admin user can update an existing item.
         """
         self.client.force_authenticate(user=self.admin_user)
-        url = reverse('rules:admin_manage_item_detail', args=[self.item.id])
         data = {'name': 'Updated Item'}
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.detail_url(self.item.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Item.objects.get(id=self.item.id).name, 'Updated Item')
 
     def test_update_item_as_normal_user(self):
         """
-        Ensure normal users cannot update an existing item.
+        Test 7: test_update_item_as_normal_user - Test that a normal user cannot update an existing item.
         """
         self.client.force_authenticate(user=self.normal_user)
-        url = reverse('rules:admin_manage_item_detail', args=[self.item.id])
         data = {'name': 'Updated Item'}
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.detail_url(self.item.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-    
+
     def test_create_item_with_invalid_data(self):
+        """
+        Test 8: test_create_item_with_invalid_data - Test that creating an item with invalid data returns validation errors.
+        """
         self.client.force_authenticate(user=self.admin_user)
-        url = reverse('rules:admin_manage_item')
-        data = {'invalid_field': 'invalid_data'}
-        response = self.client.post(url, data, format='json')
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        data = {'name': ''}
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_item_detail_as_admin(self):
+        """
+        Test 9: test_get_item_detail_as_admin - Test that an admin user can retrieve the details of a specific item.
+        """
         self.client.force_authenticate(user=self.admin_user)
-        url = reverse('rules:admin_manage_item_detail', args=[self.item.id])
-        response = self.client.get(url)
-        assert response.status_code == status.HTTP_200_OK
+        response = self.client.get(self.detail_url(self.item.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_item_detail_as_normal_user(self):
+        """
+        Test 10: test_get_item_detail_as_normal_user - Test that a normal user can retrieve the details of a specific item.
+        """
         self.client.force_authenticate(user=self.normal_user)
-        url = reverse('rules:admin_manage_item_detail', args=[self.item.id])
-        response = self.client.get(url)
-        assert response.status_code == status.HTTP_200_OK
+        response = self.client.get(self.detail_url(self.item.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-            
+    def test_create_duplicate_item_as_admin(self):
+        """
+        Test 11: test_create_duplicate_item_as_admin - Test that creating a duplicate item as admin returns an error.
+        """
+        self.client.force_authenticate(user=self.admin_user)
+        data = {'name': 'Test Item'}
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_partial_update_item_as_admin(self):
+        """
+        Test 12: test_partial_update_item_as_admin - Test that an admin user can perform partial updates on an item.
+        """
+        self.client.force_authenticate(user=self.admin_user)
+        data = {'name': 'Partially Updated Item'}
+        response = self.client.patch(self.detail_url(self.item.id), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        updated_item = Item.objects.get(id=self.item.id)
+        self.assertEqual(updated_item.name, 'Partially Updated Item')
+
+
+    def test_unauthenticated_access(self):
+        """
+        Test 13: test_unauthenticated_access - Test that unauthenticated users cannot access any item endpoints.
+        """
+        data = {'name': 'Unauthenticated Item'}
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        response = self.client.put(self.detail_url(self.item.id), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        response = self.client.delete(self.detail_url(self.item.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

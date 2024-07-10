@@ -22,12 +22,20 @@ class UserListView(APIView):
         serializer = UserSerializer(users, many=True)
         # Return the serialized data with a 200 OK status
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
 
 class AdminManageItemView(APIView):
+    """
+    View to manage items. Only accessible by authenticated users.
+    """
     # Only authenticated users can access this view
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieve a list of items for the authenticated user.
+        """
         # Retrieve all items from the database, ordered by name
         items = Item.objects.all().order_by('name')
         # Serialize the item objects
@@ -37,6 +45,9 @@ class AdminManageItemView(APIView):
 
     @method_decorator(admin_required)
     def post(self, request, *args, **kwargs):
+        """
+        Create a new item.
+        """
         # Deserialize the request data into an ItemSerializer
         serializer = ItemSerializer(data=request.data)
         # Check if the data is valid
@@ -50,6 +61,9 @@ class AdminManageItemView(APIView):
 
     @method_decorator(admin_required)
     def put(self, request, item_id, *args, **kwargs):
+        """
+        Update an existing item.
+        """
         # Retrieve the existing item or return 404 if not found
         item = get_object_or_404(Item, id=item_id)
         # Deserialize the request data into an ItemSerializer
@@ -62,9 +76,24 @@ class AdminManageItemView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         # Return the errors with a 400 Bad Request status
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @method_decorator(admin_required)
+    def patch(self, request, item_id, *args, **kwargs):
+        """
+        Partially update an existing item.
+        """
+        item = get_object_or_404(Item, id=item_id)
+        serializer = ItemSerializer(item, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @method_decorator(admin_required)
     def delete(self, request, item_id, *args, **kwargs):
+        """
+        Delete an existing item.
+        """
         # Retrieve the existing item or return 404 if not found
         item = get_object_or_404(Item, id=item_id)
         # Delete the item from the database
@@ -72,53 +101,71 @@ class AdminManageItemView(APIView):
         # Return a 204 No Content status to indicate successful deletion
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
 class AdminManageLocationView(APIView):
+    """
+    View to manage locations. Only accessible by authenticated users.
+    """
     # Only authenticated users can access this view
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-        # Retrieve all locations from the database, ordered by name
-        locations = Location.objects.all().order_by('name')
-        # Serialize the location objects
-        serializer = LocationSerializer(locations, many=True)
-        # Return the serialized data with a 200 OK status
+    def get(self, request, location_id=None, *args, **kwargs):
+        """
+        Retrieve a list of locations or a specific location.
+        """
+        if location_id:
+            # Retrieve a specific location
+            location = get_object_or_404(Location, id=location_id)
+            serializer = LocationSerializer(location)
+        else:
+            # Retrieve all locations
+            locations = Location.objects.all().order_by('name')
+            serializer = LocationSerializer(locations, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @method_decorator(admin_required)
     def post(self, request, *args, **kwargs):
-        # Deserialize the request data into a LocationSerializer
+        """
+        Create a new location.
+        """
         serializer = LocationSerializer(data=request.data)
-        # Check if the data is valid
         if serializer.is_valid():
-            # Save the new location to the database
             serializer.save()
-            # Return the serialized data with a 201 Created status
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # Return the errors with a 400 Bad Request status
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @method_decorator(admin_required)
     def put(self, request, location_id, *args, **kwargs):
-        # Retrieve the existing location or return 404 if not found
+        """
+        Update an existing location.
+        """
         location = get_object_or_404(Location, id=location_id)
-        # Deserialize the request data into a LocationSerializer
         serializer = LocationSerializer(location, data=request.data)
-        # Check if the data is valid
         if serializer.is_valid():
-            # Save the updated location to the database
             serializer.save()
-            # Return the serialized data with a 200 OK status
             return Response(serializer.data, status=status.HTTP_200_OK)
-        # Return the errors with a 400 Bad Request status
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @method_decorator(admin_required)
+    def patch(self, request, location_id, *args, **kwargs):
+        """
+        Partially update an existing location.
+        """
+        location = get_object_or_404(Location, id=location_id)
+        serializer = LocationSerializer(location, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @method_decorator(admin_required)
     def delete(self, request, location_id, *args, **kwargs):
-        # Retrieve the existing location or return 404 if not found
+        """
+        Delete an existing location.
+        """
         location = get_object_or_404(Location, id=location_id)
-        # Delete the location from the database
         location.delete()
-        # Return a 204 No Content status to indicate successful deletion
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
