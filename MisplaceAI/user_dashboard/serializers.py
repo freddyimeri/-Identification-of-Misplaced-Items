@@ -8,6 +8,9 @@
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 
 class UserSerializer(serializers.ModelSerializer):
     """
@@ -42,6 +45,11 @@ class UserUpdateEmailSerializer(serializers.Serializer):
     """
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+    
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("This email is already in use.")
+        return value
 
 class UserUpdateUsernameSerializer(serializers.Serializer):
     """
@@ -50,6 +58,14 @@ class UserUpdateUsernameSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
     password = serializers.CharField(write_only=True)
 
+    def validate_username(self, value):
+        """
+        Check that the username is at least 3 characters long.
+        """
+        if len(value) < 3:
+            raise serializers.ValidationError("Username must be at least 3 characters long.")
+        return value
+
 class UserUpdatePasswordSerializer(serializers.Serializer):
     """
     Serializer for updating user password.
@@ -57,3 +73,13 @@ class UserUpdatePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(write_only=True)
     new_password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
+
+    def validate_new_password(self, value):
+        """
+        Validate the format of the new password using Django's built-in validators.
+        """
+        try:
+            validate_password(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return value

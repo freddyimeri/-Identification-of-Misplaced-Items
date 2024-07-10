@@ -12,6 +12,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from rest_framework.exceptions import NotAuthenticated
+
 
 class UserDashboardView(generics.RetrieveAPIView):
     """
@@ -59,6 +63,8 @@ class UpdateEmailView(APIView):
             return Response({'message': 'Email updated successfully'}, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
 
 class UpdateUsernameView(APIView):
     """
@@ -77,11 +83,18 @@ class UpdateUsernameView(APIView):
             if not user.check_password(password):
                 return Response({'error': 'Password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
 
+            if User.objects.filter(username=new_username).exists():
+                return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
             user.username = new_username
             user.save()
             return Response({'message': 'Username updated successfully'}, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
 
 class CurrentUserEmailView(APIView):
     """
@@ -102,6 +115,12 @@ class CurrentUserUsernameView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
         return Response({'username': user.username}, status=status.HTTP_200_OK)
+    
+
+
+
+
+
 
 class UpdatePasswordView(APIView):
     """
@@ -110,6 +129,10 @@ class UpdatePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
+        # Check if the user is authenticated
+        if not request.user.is_authenticated:
+            raise NotAuthenticated('Authentication credentials were not provided.')
+
         user = request.user
         serializer = UserUpdatePasswordSerializer(data=request.data)
 
@@ -124,6 +147,11 @@ class UpdatePasswordView(APIView):
             if new_password != confirm_password:
                 return Response({'error': 'New passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
             
+            try:
+                validate_password(new_password, user)
+            except ValidationError as e:
+                return Response({'new_password': e.messages}, status=status.HTTP_400_BAD_REQUEST)
+
             user.set_password(new_password)
             user.save()
             return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
