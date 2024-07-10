@@ -13,11 +13,21 @@ from .serializers import RegisterSerializer, LoginSerializer
 from django.contrib.auth.models import User
 
 class RegisterView(generics.CreateAPIView):
-    """
-    View for user registration.
-    """
-    queryset = User.objects.all()  # Queryset of all users
-    serializer_class = RegisterSerializer  # Serializer class for user registration
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(APIView):
     """

@@ -13,10 +13,25 @@ export const login = async (credentials) => {
 
 // Register function for new users
 export const register = async (userData) => {
-    const data = await obtainToken('/api/auth/register/', userData);
-    localStorage.setItem('isAuthenticated', true);
-    return data;
+    try {
+        const data = await obtainToken('/api/auth/register/', userData);
+        localStorage.setItem('isAuthenticated', true);
+        return data;
+    } catch (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code outside of the range of 2xx
+            console.error('Registration failed:', error.response.data);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received:', error.request);
+        } else {
+            // Something happened in setting up the request that triggered an error
+            console.error('Error in registration request setup:', error.message);
+        }
+        throw error;
+    }
 };
+
 
 // Admin login function
 export const adminLogin = async (credentials) => {

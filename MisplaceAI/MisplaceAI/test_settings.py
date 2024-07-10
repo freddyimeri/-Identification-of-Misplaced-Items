@@ -1,3 +1,5 @@
+# MisplaceAi/MisplaceAI/test_settings.py
+
 from .settings import *
 
 # Database configuration for testing
