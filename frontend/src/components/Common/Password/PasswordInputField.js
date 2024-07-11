@@ -14,9 +14,10 @@ const PasswordInputField = ({ label, value, onChange, showRequirements }) => {
 
     return (
         <div className="form-group position-relative">
-            <label>{label}</label>
+            <label htmlFor="password-input">{label}</label>
             <div className="input-group">
                 <input
+                    id="password-input"
                     type={showPassword ? 'text' : 'password'}
                     className="form-control"
                     value={value}

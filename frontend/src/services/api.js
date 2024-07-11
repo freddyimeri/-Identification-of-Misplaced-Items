@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
-import { logout } from './auth'; // Importing the consolidated logout
+import { logout } from './auth';
 
 const getCsrfToken = () => {
     const cookies = document.cookie.split(';');
@@ -28,7 +28,8 @@ let isRefreshing = false;
 
 const setRefreshTimer = (expiryTime) => {
     const now = Math.floor(Date.now() / 1000);
-    const timeToRefresh = (expiryTime - now - 60) * 1000; // Set timer to 1 minute before expiry
+    // Set timer to 1 minute before expiry
+    const timeToRefresh = (expiryTime - now - 60) * 1000;
     setTimeout(() => {
         if (!isRefreshing) {
             refreshToken();

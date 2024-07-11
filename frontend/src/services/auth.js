@@ -2,7 +2,7 @@
 
 import api, { obtainToken, setRefreshTimer } from './api';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
-import { jwtDecode } from 'jwt-decode'; // Corrected import statement
+import { jwtDecode } from 'jwt-decode';
 
 // Login function for regular users
 export const login = async (credentials) => {
