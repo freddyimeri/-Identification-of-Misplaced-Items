@@ -1,11 +1,11 @@
 # MisplaceAI/user_dashboard/tests/test_user_dashboard.py
 
 """
-Test 1: Ensure an authenticated user can retrieve their dashboard information.
-Test 2: Ensure an unauthenticated user cannot retrieve dashboard information.
-Test 3: Ensure an authenticated user can retrieve their full profile details.
-Test 4: Ensure retrieving the dashboard information includes the user's email.
-Test 5: Ensure retrieving the dashboard information includes the user's first name and last name.
+Test ID-> UD1: Ensure an authenticated user can retrieve their dashboard information.
+Test ID-> UD2: Ensure an unauthenticated user cannot retrieve dashboard information.
+Test ID-> UD3: Ensure an authenticated user can retrieve their full profile details.
+Test ID-> UD4: Ensure retrieving the dashboard information includes the user's email.
+Test ID-> UD5: Ensure retrieving the dashboard information includes the user's first name and last name.
 """
 
 from rest_framework.test import APITestCase
@@ -25,7 +25,7 @@ class UserDashboardViewTest(APITestCase):
 
     def test_user_dashboard_view_authenticated(self):
         """
-        Test 1: Ensure an authenticated user can retrieve their dashboard information.
+        Test ID-> UD1: Ensure an authenticated user can retrieve their dashboard information.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-dashboard')
@@ -35,7 +35,7 @@ class UserDashboardViewTest(APITestCase):
 
     def test_user_dashboard_view_unauthenticated(self):
         """
-        Test 2: Ensure an unauthenticated user cannot retrieve dashboard information.
+        Test ID-> UD2: Ensure an unauthenticated user cannot retrieve dashboard information.
         """
         url = reverse('user-dashboard')
         response = self.client.get(url)
@@ -43,7 +43,7 @@ class UserDashboardViewTest(APITestCase):
 
     def test_user_dashboard_view_full_profile(self):
         """
-        Test 3: Ensure an authenticated user can retrieve their full profile details.
+        Test ID-> UD3: Ensure an authenticated user can retrieve their full profile details.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-dashboard')
@@ -56,7 +56,7 @@ class UserDashboardViewTest(APITestCase):
 
     def test_user_dashboard_includes_email(self):
         """
-        Test 4: Ensure retrieving the dashboard information includes the user's email.
+        Test ID-> UD4: Ensure retrieving the dashboard information includes the user's email.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-dashboard')
@@ -67,7 +67,7 @@ class UserDashboardViewTest(APITestCase):
 
     def test_user_dashboard_includes_name(self):
         """
-        Test 5: Ensure retrieving the dashboard information includes the user's first name and last name.
+        Test ID-> UD5: Ensure retrieving the dashboard information includes the user's first name and last name.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-dashboard')

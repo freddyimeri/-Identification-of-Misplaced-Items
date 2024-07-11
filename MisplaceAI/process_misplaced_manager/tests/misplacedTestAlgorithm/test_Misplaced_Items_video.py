@@ -1,20 +1,20 @@
-#MisplaceAI\process_misplaced_manager\tests\misplacedTestAlgorithm\test_Misplaced_Items_video.py
+# MisplaceAI/process_misplaced_manager/tests/misplacedTestAlgorithm/test_Misplaced_Items_video.py
 
 """
 This file contains tests for video detection functionality in the MisplaceAI application.
 It includes tests to:
-1. Verify that a specific item ('potted plant') is detected as misplaced in an uploaded video.
-2. Ensure that the uploaded video can be deleted successfully.
-3. Check that the length of the processed video is as expected (30 seconds).
+Test ID-> MV1: Verify that a specific item ('potted plant') is detected as misplaced in an uploaded video.
+Test ID-> MV2: Ensure that the uploaded video can be deleted successfully.
+Test ID-> MV3: Check that the length of the processed video is as expected (30 seconds).
 """
 
-import os  # Importing the os module for interacting with the operating system
-from django.urls import reverse  # Importing reverse to generate URL for a given view
-from rest_framework import status  # Importing status to use HTTP status codes
-from rest_framework.test import APITestCase  # Importing APITestCase to create API test cases
-from django.contrib.auth.models import User  # Importing User model to create test users
-from process_misplaced_manager.models import DetectionLimitSetting, DailyDetectionLimit  # Importing models for setting detection limits
-from moviepy.editor import VideoFileClip  # Importing VideoFileClip to handle video files
+import os
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from django.contrib.auth.models import User
+from process_misplaced_manager.models import DetectionLimitSetting, DailyDetectionLimit
+from moviepy.editor import VideoFileClip
 
 class TestVideoAlgorithmAccuracy(APITestCase):
     def setUp(self):
@@ -59,7 +59,7 @@ class TestVideoAlgorithmAccuracy(APITestCase):
 
     def test_potted_plant_misplaced_detection(self):
         """
-        Test that the potted plant is detected as misplaced in the uploaded video.
+        Test ID-> MV1: Verify that a specific item ('potted plant') is detected as misplaced in an uploaded video.
         """
         # Get the path to the test video
         test_video_path = self.test_video_path
@@ -103,7 +103,7 @@ class TestVideoAlgorithmAccuracy(APITestCase):
 
     def test_video_deletion(self):
         """
-        Test that the uploaded video is deleted successfully.
+        Test ID-> MV2: Ensure that the uploaded video can be deleted successfully.
         """
         # Get the path to the test video
         test_video_path = self.test_video_path
@@ -142,7 +142,7 @@ class TestVideoAlgorithmAccuracy(APITestCase):
 
     def test_processed_video_length(self):
         """
-        Test that the length of the processed video is as expected.
+        Test ID-> MV3: Check that the length of the processed video is as expected (30 seconds).
         """
         # Get the path to the test video
         test_video_path = self.test_video_path

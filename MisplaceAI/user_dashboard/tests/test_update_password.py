@@ -1,15 +1,13 @@
 # MisplaceAI/user_dashboard/tests/test_update_password.py
 
-
 """
-Test 1: Ensure an authenticated user can update their password.
-Test 2: Ensure an unauthenticated user cannot update their password.
-Test 3: Ensure password updates with the correct current password.
-Test 4: Ensure password updates fail with the wrong current password.
-Test 5: Ensure password updates fail when new passwords do not match.
-Test 6: Ensure password updates fail with invalid new password format.
+Test ID-> UP1: Ensure an authenticated user can update their password.
+Test ID-> UP2: Ensure an unauthenticated user cannot update their password.
+Test ID-> UP3: Ensure password updates with the correct current password.
+Test ID-> UP4: Ensure password updates fail with the wrong current password.
+Test ID-> UP5: Ensure password updates fail when new passwords do not match.
+Test ID-> UP6: Ensure password updates fail with invalid new password format.
 """
-
 
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -22,7 +20,7 @@ class UpdatePasswordViewTest(APITestCase):
 
     def test_update_password_view_authenticated(self):
         """
-        Test 1: Ensure an authenticated user can update their password.
+        Test ID-> UP1: Ensure an authenticated user can update their password.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-password')
@@ -36,7 +34,7 @@ class UpdatePasswordViewTest(APITestCase):
 
     def test_update_password_view_unauthenticated(self):
         """
-        Test 2: Ensure an unauthenticated user cannot update their password.
+        Test ID-> UP2: Ensure an unauthenticated user cannot update their password.
         """
         url = reverse('user-update-password')
         data = {
@@ -47,10 +45,9 @@ class UpdatePasswordViewTest(APITestCase):
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-
     def test_update_password_with_correct_current_password(self):
         """
-        Test 3: Ensure password updates with the correct current password.
+        Test ID-> UP3: Ensure password updates with the correct current password.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-password')
@@ -64,7 +61,7 @@ class UpdatePasswordViewTest(APITestCase):
 
     def test_update_password_with_wrong_current_password(self):
         """
-        Test 4: Ensure password updates fail with the wrong current password.
+        Test ID-> UP4: Ensure password updates fail with the wrong current password.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-password')
@@ -80,7 +77,7 @@ class UpdatePasswordViewTest(APITestCase):
 
     def test_update_password_with_mismatched_new_passwords(self):
         """
-        Test 5: Ensure password updates fail when new passwords do not match.
+        Test ID-> UP5: Ensure password updates fail when new passwords do not match.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-password')
@@ -96,7 +93,7 @@ class UpdatePasswordViewTest(APITestCase):
 
     def test_update_password_with_invalid_new_password_format(self):
         """
-        Test 6: Ensure password updates fail with invalid new password format.
+        Test ID-> UP6: Ensure password updates fail with invalid new password format.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-password')

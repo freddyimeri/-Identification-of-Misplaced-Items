@@ -2,18 +2,18 @@
 
 
 """
-Test 1: test_create_location_as_admin - Test that an admin user can create a new location.
-Test 2: test_create_location_as_normal_user - Test that a normal user cannot create a new location.
-Test 3: test_delete_location_as_admin - Test that an admin user can delete an existing location.
-Test 4: test_delete_location_as_normal_user - Test that a normal user cannot delete an existing location.
-Test 5: test_get_locations_as_normal_user - Test that a normal user can retrieve the list of locations.
-Test 6: test_update_location_as_admin - Test that an admin user can update an existing location.
-Test 7: test_update_location_as_normal_user - Test that a normal user cannot update an existing location.
-Test 8: test_create_location_with_invalid_data - Test that creating a location with invalid data returns validation errors.
-Test 9: test_get_location_detail_as_admin - Test that an admin user can retrieve the details of a specific location.
-Test 10: test_get_location_detail_as_normal_user - Test that a normal user can retrieve the details of a specific location.
-Test 11: test_partial_update_location_as_admin - Test that an admin user can perform partial updates on a location.
-Test 12: test_partial_update_location_as_normal_user - Test that a normal user cannot perform partial updates on a location.
+Test ID-> LT1: test_create_location_as_admin - Test that an admin user can create a new location.
+Test ID-> LT2: test_create_location_as_normal_user - Test that a normal user cannot create a new location.
+Test ID-> LT3: test_delete_location_as_admin - Test that an admin user can delete an existing location.
+Test ID-> LT4: test_delete_location_as_normal_user - Test that a normal user cannot delete an existing location.
+Test ID-> LT5: test_get_locations_as_normal_user - Test that a normal user can retrieve the list of locations.
+Test ID-> LT6: test_update_location_as_admin - Test that an admin user can update an existing location.
+Test ID-> LT7: test_update_location_as_normal_user - Test that a normal user cannot update an existing location.
+Test ID-> LT8: test_create_location_with_invalid_data - Test that creating a location with invalid data returns validation errors.
+Test ID-> LT9: test_get_location_detail_as_admin - Test that an admin user can retrieve the details of a specific location.
+Test ID-> LT10: test_get_location_detail_as_normal_user - Test that a normal user can retrieve the details of a specific location.
+Test ID-> LT11: test_partial_update_location_as_admin - Test that an admin user can perform partial updates on a location.
+Test ID-> LT12: test_partial_update_location_as_normal_user - Test that a normal user cannot perform partial updates on a location.
 """
 
 
@@ -40,7 +40,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_create_location_as_admin(self):
         """
-        Test 1: Ensure admin users can create a new location.
+        Test ID-> LT1: Ensure admin users can create a new location.
         """
         self.client.force_authenticate(user=self.admin_user)
         data = {'name': 'New Location'}
@@ -51,7 +51,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_create_location_as_normal_user(self):
         """
-        Test 2: Ensure normal users cannot create a new location.
+        Test ID-> LT2: Ensure normal users cannot create a new location.
         """
         self.client.force_authenticate(user=self.normal_user)
         data = {'name': 'New Location'}
@@ -60,7 +60,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_delete_location_as_admin(self):
         """
-        Test 3: Ensure admin users can delete an existing location.
+        Test ID-> LT3: Ensure admin users can delete an existing location.
         """
         self.client.force_authenticate(user=self.admin_user)
         url = self.detail_url(self.location.id)
@@ -70,7 +70,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_delete_location_as_normal_user(self):
         """
-        Test 4: Ensure normal users cannot delete an existing location.
+        Test ID-> LT4: Ensure normal users cannot delete an existing location.
         """
         self.client.force_authenticate(user=self.normal_user)
         url = self.detail_url(self.location.id)
@@ -79,7 +79,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_get_locations_as_normal_user(self):
         """
-        Test 5: Ensure normal users can retrieve the list of locations.
+        Test ID-> LT5: Ensure normal users can retrieve the list of locations.
         """
         self.client.force_authenticate(user=self.normal_user)
         response = self.client.get(self.url)
@@ -89,7 +89,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_update_location_as_admin(self):
         """
-        Test 6: Ensure admin users can update an existing location.
+        Test ID-> LT6: Ensure admin users can update an existing location.
         """
         self.client.force_authenticate(user=self.admin_user)
         url = self.detail_url(self.location.id)
@@ -100,7 +100,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_update_location_as_normal_user(self):
         """
-        Test 7: Ensure normal users cannot update an existing location.
+        Test ID-> LT7: Ensure normal users cannot update an existing location.
         """
         self.client.force_authenticate(user=self.normal_user)
         url = self.detail_url(self.location.id)
@@ -110,7 +110,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_create_location_with_invalid_data(self):
         """
-        Test 8: Ensure creating a location with invalid data returns validation errors.
+        Test ID-> LT8: Ensure creating a location with invalid data returns validation errors.
         """
         self.client.force_authenticate(user=self.admin_user)
         data = {'invalid_field': 'invalid_data'}
@@ -119,7 +119,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_get_location_detail_as_admin(self):
         """
-        Test 9: Ensure admin users can retrieve the details of a specific location.
+        Test ID-> LT9: Ensure admin users can retrieve the details of a specific location.
         """
         self.client.force_authenticate(user=self.admin_user)
         url = self.detail_url(self.location.id)
@@ -129,7 +129,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_get_location_detail_as_normal_user(self):
         """
-        Test 10: Ensure normal users can retrieve the details of a specific location.
+        Test ID-> LT10: Ensure normal users can retrieve the details of a specific location.
         """
         self.client.force_authenticate(user=self.normal_user)
         url = self.detail_url(self.location.id)
@@ -139,7 +139,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_partial_update_location_as_admin(self):
         """
-        Test 11: Ensure admin users can perform partial updates on a location.
+        Test ID-> LT11: Ensure admin users can perform partial updates on a location.
         """
         self.client.force_authenticate(user=self.admin_user)
         url = self.detail_url(self.location.id)
@@ -150,7 +150,7 @@ class AdminManageLocationViewTest(APITestCase):
 
     def test_partial_update_location_as_normal_user(self):
         """
-        Test 12: Ensure normal users cannot perform partial updates on a location.
+        Test ID-> LT12: Ensure normal users cannot perform partial updates on a location.
         """
         self.client.force_authenticate(user=self.normal_user)
         url = self.detail_url(self.location.id)

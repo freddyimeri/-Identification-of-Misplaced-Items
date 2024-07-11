@@ -4,9 +4,9 @@
 This file tests the accuracy of the misplaced item detection algorithm by uploading images
 containing various items and verifying if the system correctly identifies items that are 
 misplaced according to predefined rules. It includes three tests:
-1. Verifying that a remote is detected as misplaced in the image 'test1.jpg'.
-2. Verifying that a handbag is detected as misplaced in the image 'test2.jpg'.
-3. Verifying that no items are detected as misplaced in the image 'test3.jpg'.
+Test ID-> MI1: Verify that a remote is detected as misplaced in the image 'test1.jpg'.
+Test ID-> MI2: Verify that a handbag is detected as misplaced in the image 'test2.jpg'.
+Test ID-> MI3: Verify that no items are detected as misplaced in the image 'test3.jpg'.
 Additionally, it ensures that the uploaded images are deleted after the tests.
 """
 
@@ -78,7 +78,7 @@ class TestAlgorithmAccuracy(APITestCase):
 
     def test_remote_misplaced_detection(self):
         """
-        Test that the remote is detected as misplaced in the uploaded image 'test1.jpg'.
+        Test ID-> MI1: Verify that a remote is detected as misplaced in the image 'test1.jpg'.
         """
         test_image_path = self.test_image_paths['test1.jpg']
         
@@ -122,7 +122,7 @@ class TestAlgorithmAccuracy(APITestCase):
 
     def test_handbag_misplaced_detection(self):
         """
-        Test that the handbag is detected as misplaced in the uploaded image 'test2.jpg'.
+        Test ID-> MI2: Verify that a handbag is detected as misplaced in the image 'test2.jpg'.
         """
         test_image_path = self.test_image_paths['test2.jpg']
         
@@ -166,7 +166,7 @@ class TestAlgorithmAccuracy(APITestCase):
 
     def test_no_misplaced_items_detection(self):
         """
-        Test that no items are detected as misplaced in the uploaded image 'test3.jpg'.
+        Test ID-> MI3: Verify that no items are detected as misplaced in the image 'test3.jpg'.
         """
         test_image_path = self.test_image_paths['test3.jpg']
         

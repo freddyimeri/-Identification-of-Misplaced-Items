@@ -1,10 +1,10 @@
 # MisplaceAI/user_dashboard/tests/test_current_user_email.py
 
 """
-Test 1: Ensure an authenticated user can retrieve their current email.
-Test 2: Ensure an unauthenticated user cannot retrieve their current email.
-Test 3: Ensure the email retrieval returns the correct email format.
-Test 4: Ensure an authenticated user with a different email can retrieve their current email.
+Test ID-> E1: Ensure an authenticated user can retrieve their current email.
+Test ID-> E2: Ensure an unauthenticated user cannot retrieve their current email.
+Test ID-> E3: Ensure the email retrieval returns the correct email format.
+Test ID-> E4: Ensure an authenticated user with a different email can retrieve their current email.
 """
 
 from rest_framework.test import APITestCase
@@ -19,7 +19,7 @@ class CurrentUserEmailViewTest(APITestCase):
 
     def test_current_user_email_view_authenticated(self):
         """
-        Test 1: Ensure an authenticated user can retrieve their current email.
+        Test ID-> E1: Ensure an authenticated user can retrieve their current email.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-current-email')
@@ -29,16 +29,15 @@ class CurrentUserEmailViewTest(APITestCase):
 
     def test_current_user_email_view_unauthenticated(self):
         """
-        Test 2: Ensure an unauthenticated user cannot retrieve their current email.
+        Test ID-> E2: Ensure an unauthenticated user cannot retrieve their current email.
         """
         url = reverse('user-current-email')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
- 
 
     def test_email_retrieval_correct_format(self):
         """
-        Test 3: Ensure the email retrieval returns the correct email format.
+        Test ID-> E3: Ensure the email retrieval returns the correct email format.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-current-email')
@@ -48,7 +47,7 @@ class CurrentUserEmailViewTest(APITestCase):
 
     def test_current_user_email_view_different_user(self):
         """
-        Test 4: Ensure an authenticated user with a different email can retrieve their current email.
+        Test ID-> E4: Ensure an authenticated user with a different email can retrieve their current email.
         """
         self.client.force_authenticate(user=self.user2)
         url = reverse('user-current-email')

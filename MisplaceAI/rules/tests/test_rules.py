@@ -1,18 +1,18 @@
 # misplaceAI/rules/tests/test_rules.py
 
 """
-Test 1: test_create_rule - Test that a rule can be created with valid data by the owner.
-Test 2: test_create_rule_with_invalid_data - Test that creating a rule with invalid data fails.
-Test 3: test_create_rule_without_association - Test that creating a rule without locations fails.
-Test 4: test_delete_rule_as_non_owner - Test that a non-owner cannot delete a rule.
-Test 5: test_delete_rule_as_owner - Test that the owner can delete their rule.
-Test 6: test_get_rule_detail_as_non_owner - Test that a non-owner cannot access the details of a rule.
-Test 7: test_get_rule_detail_as_owner - Test that the owner can access the details of their rule.
-Test 8: test_get_rules_as_non_owner - Test that a non-owner cannot access the list of rules of the owner.
-Test 9: test_get_rules_as_owner - Test that the owner can access the list of their rules.
-Test 10: test_rule_association_with_multiple_locations - Test that a rule can be associated with multiple locations.
-Test 11: test_update_rule_as_non_owner - Test that a non-owner cannot update a rule.
-Test 12: test_update_rule_as_owner - Test that the owner can update their rule.
+Test ID-> RT1: test_create_rule - Test that a rule can be created with valid data by the owner.
+Test ID-> RT2: test_create_rule_with_invalid_data - Test that creating a rule with invalid data fails.
+Test ID-> RT3: test_create_rule_without_association - Test that creating a rule without locations fails.
+Test ID-> RT4: test_delete_rule_as_non_owner - Test that a non-owner cannot delete a rule.
+Test ID-> RT5: test_delete_rule_as_owner - Test that the owner can delete their rule.
+Test ID-> RT6: test_get_rule_detail_as_non_owner - Test that a non-owner cannot access the details of a rule.
+Test ID-> RT7: test_get_rule_detail_as_owner - Test that the owner can access the details of their rule.
+Test ID-> RT8: test_get_rules_as_non_owner - Test that a non-owner cannot access the list of rules of the owner.
+Test ID-> RT9: test_get_rules_as_owner - Test that the owner can access the list of their rules.
+Test ID-> RT10: test_rule_association_with_multiple_locations - Test that a rule can be associated with multiple locations.
+Test ID-> RT11: test_update_rule_as_non_owner - Test that a non-owner cannot update a rule.
+Test ID-> RT12: test_update_rule_as_owner - Test that the owner can update their rule.
 """
 
 from rest_framework import status
@@ -46,7 +46,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_create_rule(self):
         """
-        Test 1: test_create_rule - Test that a rule can be created with valid data by the owner.
+        Test ID-> RT1: test_create_rule - Test that a rule can be created with valid data by the owner.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -65,7 +65,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_create_rule_with_invalid_data(self):
         """
-        Test 2: test_create_rule_with_invalid_data - Test that creating a rule with invalid data fails.
+        Test ID-> RT2: test_create_rule_with_invalid_data - Test that creating a rule with invalid data fails.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -84,7 +84,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_create_rule_without_association(self):
         """
-        Test 3: test_create_rule_without_association - Test that creating a rule without locations fails.
+        Test ID-> RT3: test_create_rule_without_association - Test that creating a rule without locations fails.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -103,7 +103,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_delete_rule_as_non_owner(self):
         """
-        Test 4: test_delete_rule_as_non_owner - Test that a non-owner cannot delete a rule.
+        Test ID-> RT4: test_delete_rule_as_non_owner - Test that a non-owner cannot delete a rule.
         """
         # Authenticate as the non-owner
         self.client.force_authenticate(user=self.non_owner)
@@ -116,7 +116,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_delete_rule_as_owner(self):
         """
-        Test 5: test_delete_rule_as_owner - Test that the owner can delete their rule.
+        Test ID-> RT5: test_delete_rule_as_owner - Test that the owner can delete their rule.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -129,7 +129,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_get_rule_detail_as_non_owner(self):
         """
-        Test 6: test_get_rule_detail_as_non_owner - Test that a non-owner cannot access the details of a rule.
+        Test ID-> RT6: test_get_rule_detail_as_non_owner - Test that a non-owner cannot access the details of a rule.
         """
         # Authenticate as the non-owner
         self.client.force_authenticate(user=self.non_owner)
@@ -142,7 +142,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_get_rule_detail_as_owner(self):
         """
-        Test 7: test_get_rule_detail_as_owner - Test that the owner can access the details of their rule.
+        Test ID-> RT7: test_get_rule_detail_as_owner - Test that the owner can access the details of their rule.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -158,7 +158,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_get_rules_as_non_owner(self):
         """
-        Test 8: test_get_rules_as_non_owner - Test that a non-owner cannot access the list of rules of the owner.
+        Test ID-> RT8: test_get_rules_as_non_owner - Test that a non-owner cannot access the list of rules of the owner.
         """
         # Authenticate as the non-owner
         self.client.force_authenticate(user=self.non_owner)
@@ -174,7 +174,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_get_rules_as_owner(self):
         """
-        Test 9: test_get_rules_as_owner - Test that the owner can access the list of their rules.
+        Test ID-> RT9: test_get_rules_as_owner - Test that the owner can access the list of their rules.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -193,7 +193,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_rule_association_with_multiple_locations(self):
         """
-        Test 10: test_rule_association_with_multiple_locations - Test that a rule can be associated with multiple locations.
+        Test ID-> RT10: test_rule_association_with_multiple_locations - Test that a rule can be associated with multiple locations.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)
@@ -218,7 +218,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_update_rule_as_non_owner(self):
         """
-        Test 11: test_update_rule_as_non_owner - Test that a non-owner cannot update a rule.
+        Test ID-> RT11: test_update_rule_as_non_owner - Test that a non-owner cannot update a rule.
         """
         # Authenticate as the non-owner
         self.client.force_authenticate(user=self.non_owner)
@@ -241,7 +241,7 @@ class TestAdminManageRuleView(APITestCase):
 
     def test_update_rule_as_owner(self):
         """
-        Test 12: test_update_rule_as_owner - Test that the owner can update their rule.
+        Test ID-> RT12: test_update_rule_as_owner - Test that the owner can update their rule.
         """
         # Authenticate as the owner
         self.client.force_authenticate(user=self.owner)

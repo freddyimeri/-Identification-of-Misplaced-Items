@@ -1,15 +1,15 @@
 # MisplaceAI/user_dashboard/tests/test_update_email.py
 
 """
-Test 1: Ensure an authenticated user can update their email.
-Test 2: Ensure an unauthenticated user cannot update their email.
-Test 3: Ensure email updates with the correct password.
-Test 4: Ensure email updates fail with the incorrect password.
-Test 5: Ensure invalid email format returns an error.
-Test 6: Ensure updating to an already used email returns an error.
-Test 7: Ensure an email update request without a password fails.
-Test 8: Ensure an email update request with an empty email field fails.
-Test 9: Ensure an email update request with an empty password field fails.
+Test ID-> UE1: Ensure an authenticated user can update their email.
+Test ID-> UE2: Ensure an unauthenticated user cannot update their email.
+Test ID-> UE3: Ensure email updates with the correct password.
+Test ID-> UE4: Ensure email updates fail with the incorrect password.
+Test ID-> UE5: Ensure invalid email format returns an error.
+Test ID-> UE6: Ensure updating to an already used email returns an error.
+Test ID-> UE7: Ensure an email update request without a password fails.
+Test ID-> UE8: Ensure an email update request with an empty email field fails.
+Test ID-> UE9: Ensure an email update request with an empty password field fails.
 """
 
 from rest_framework.test import APITestCase
@@ -24,7 +24,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_view_authenticated(self):
         """
-        Test 1: Ensure an authenticated user can update their email.
+        Test ID-> UE1: Ensure an authenticated user can update their email.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -34,7 +34,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_view_unauthenticated(self):
         """
-        Test 2: Ensure an unauthenticated user cannot update their email.
+        Test ID-> UE2: Ensure an unauthenticated user cannot update their email.
         """
         url = reverse('user-update-email')
         data = {'email': 'newemail@example.com', 'password': 'testpassword'}
@@ -43,7 +43,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_with_correct_password(self):
         """
-        Test 3: Ensure email updates with the correct password.
+        Test ID-> UE3: Ensure email updates with the correct password.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -53,7 +53,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_with_wrong_password(self):
         """
-        Test 4: Ensure email updates fail with the incorrect password.
+        Test ID-> UE4: Ensure email updates fail with the incorrect password.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -63,7 +63,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_with_invalid_email(self):
         """
-        Test 5: Ensure invalid email format returns an error.
+        Test ID-> UE5: Ensure invalid email format returns an error.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -73,7 +73,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_to_existing_email(self):
         """
-        Test 6: Ensure updating to an already used email returns an error.
+        Test ID-> UE6: Ensure updating to an already used email returns an error.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -83,7 +83,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_without_password(self):
         """
-        Test 7: Ensure an email update request without a password fails.
+        Test ID-> UE7: Ensure an email update request without a password fails.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -93,7 +93,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_with_empty_email_field(self):
         """
-        Test 8: Ensure an email update request with an empty email field fails.
+        Test ID-> UE8: Ensure an email update request with an empty email field fails.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
@@ -103,7 +103,7 @@ class UpdateEmailViewTest(APITestCase):
 
     def test_update_email_with_empty_password_field(self):
         """
-        Test 9: Ensure an email update request with an empty password field fails.
+        Test ID-> UE9: Ensure an email update request with an empty password field fails.
         """
         self.client.force_authenticate(user=self.user)
         url = reverse('user-update-email')
