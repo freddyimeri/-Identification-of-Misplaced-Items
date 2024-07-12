@@ -1,8 +1,7 @@
-/* src/components/UserProfile/EditableInfoForm.js */
+// src/components/UserProfile/EditableInfoForm.js
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FormField from '../Common/Form/FormField';
 import PasswordInputField from '../Common/Password/PasswordInputField';
 import SubmitButton from '../Common/buttons/SubmitButton';
 import CancelButton from '../Common/buttons/CancelButton';
@@ -19,14 +18,18 @@ const EditableInfoForm = ({ label, type, onSubmit, onCancel, loading, error }) =
     };
 
     return (
-        <form onSubmit={handleSubmit} >
-            <FormField
-                label={label}
-                type={type}
-                value={newInfo}
-                onChange={(e) => setNewInfo(e.target.value)}
-                required
-            />
+        <form onSubmit={handleSubmit} role="form">
+            <div className="form-group">
+                <label htmlFor="new-info-input">New {label}</label>
+                <input
+                    id="new-info-input"
+                    type={type}
+                    className="form-control"
+                    value={newInfo}
+                    onChange={(e) => setNewInfo(e.target.value)}
+                    required
+                />
+            </div>
             <PasswordInputField
                 label="Password"
                 value={password}

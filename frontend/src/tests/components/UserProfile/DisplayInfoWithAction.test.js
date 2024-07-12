@@ -1,5 +1,8 @@
+// src/tests/components/UserProfile/DisplayInfoWithAction.test.js
+
 /**
- * Test 1: renders title, info, and action button - Ensures the title, info, and action button are rendered.
+ * Test ID-> DIWA1: Ensure the DisplayInfoWithAction component renders correctly.
+ * Test ID-> DIWA2: Ensure the onActionClick callback is triggered when the button is clicked.
  */
 
 import React from 'react';
@@ -9,19 +12,36 @@ import sinon from 'sinon';
 import DisplayInfoWithAction from '../../../components/UserProfile/DisplayInfoWithAction';
 
 describe('DisplayInfoWithAction Component', () => {
-    it('renders title, info, and action button', () => {
-        render(
-            <DisplayInfoWithAction
-                title="Email"
-                info="user@example.com"
-                buttonLabel="Change Email"
-                onActionClick={() => { }}
-            />
-        );
+    it('renders the DisplayInfoWithAction component correctly', () => {
+        // Test ID-> DIWA1
+        const props = {
+            title: 'Test Title',
+            info: 'Test Info',
+            buttonLabel: 'Test Button',
+            onActionClick: () => { },
+        };
 
-        expect(screen.getByText('Email')).to.exist;
-        expect(screen.getByText('user@example.com')).to.exist;
-        expect(screen.getByText('Change Email')).to.exist;
+        render(<DisplayInfoWithAction {...props} />);
+
+        expect(screen.getByText(/Test Title/i)).to.exist;
+        expect(screen.getByText(/Test Info/i)).to.exist;
+        expect(screen.getByText(/Test Button/i)).to.exist;
     });
 
+    it('triggers onActionClick callback when button is clicked', () => {
+        // Test ID-> DIWA2
+        const onActionClickSpy = sinon.spy();
+        const props = {
+            title: 'Test Title',
+            info: 'Test Info',
+            buttonLabel: 'Test Button',
+            onActionClick: onActionClickSpy,
+        };
+
+        render(<DisplayInfoWithAction {...props} />);
+
+        fireEvent.click(screen.getByText(/Test Button/i));
+
+        expect(onActionClickSpy.calledOnce).to.be.true;
+    });
 });

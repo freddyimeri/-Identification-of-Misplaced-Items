@@ -1,7 +1,7 @@
 // src/pages/VideoDetection/VideoDetectionPage.js
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { uploadVideo, getVideoResults, deleteVideo, downloadMedia } from '../../services/processMisplacedManagerApi';
 import { checkDailyLimit, incrementDetection } from '../../services/dailyLimitApi';
 import '../../styles/main.css';
@@ -18,10 +18,10 @@ const VideoDetectionPage = () => {
     const [frameDelay, setFrameDelay] = useState(1);
     const [result, setResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [videoName, setVideoName] = useState(null);
+    // const [videoName, setVideoName] = useState(null);
     const [annotatedVideoName, setAnnotatedVideoName] = useState(null);
     const [limitInfo, setLimitInfo] = useState({ remaining: 0, limit: 0 });
-    const navigate = useNavigate();
+
     const location = useLocation();
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -107,7 +107,7 @@ const VideoDetectionPage = () => {
                     const videoResults = await getVideoResults(uploadResponse.id);
                     console.log('Video results:', videoResults);
                     setResult(videoResults);
-                    setVideoName(uploadResponse.video.split('/').pop()); // Extract original video name from the response
+                    // setVideoName(uploadResponse.video.split('/').pop()); // Extract original video name from the response
                     setAnnotatedVideoName(videoResults.output_video_url.split('/').pop()); // Extract annotated video name from the results
                     await incrementDetection('video'); // Increment the detection count
                     const data = await checkDailyLimit('video'); // Fetch updated limit info

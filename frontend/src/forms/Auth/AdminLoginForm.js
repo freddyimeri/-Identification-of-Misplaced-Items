@@ -1,4 +1,5 @@
 // src/forms/Auth/AdminLoginForm.js
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminLogin } from '../../services/auth';  // Import the adminLogin function
@@ -33,12 +34,14 @@ const AdminLoginForm = () => {
             <FormField
                 label="Username"
                 type="text"
+                id="username-input"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
             />
             <PasswordInputField
                 label="Password"
+                id="password-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />

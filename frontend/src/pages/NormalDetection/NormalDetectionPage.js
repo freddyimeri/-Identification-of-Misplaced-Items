@@ -1,7 +1,7 @@
 // src/pages/NormalDetection/NormalDetectionPage.js
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
 import { normalDetection, downloadImage, deleteImageByName } from '../../services/processMisplacedManagerApi';
 import { checkDailyLimit, incrementDetection } from '../../services/dailyLimitApi';
@@ -20,7 +20,6 @@ const NormalDetectionPage = () => {
     const [detectionComplete, setDetectionComplete] = useState(false);
     const [imageName, setImageName] = useState(null);
     const [limitInfo, setLimitInfo] = useState({ remaining: 0, limit: 0 });
-    const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
@@ -94,10 +93,6 @@ const NormalDetectionPage = () => {
         } else {
             alert('Please select an image to upload.');
         }
-    };
-
-    const handleImageClick = () => {
-        setShowModal(true);
     };
 
     const handleCloseModal = () => {

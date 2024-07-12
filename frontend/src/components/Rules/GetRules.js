@@ -7,11 +7,16 @@ import '../../styles/dashboard.css';
 
 const GetRules = ({ onEditRule, onDeleteRule, refresh }) => {
     const [rules, setRules] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchRules = async () => {
-            const data = await getRules();
-            setRules(data);
+            try {
+                const data = await getRules();
+                setRules(data);
+            } catch (err) {
+                setError('Error fetching rules');
+            }
         };
 
         fetchRules();
@@ -27,6 +32,7 @@ const GetRules = ({ onEditRule, onDeleteRule, refresh }) => {
             <div className="card card-wide">
                 <div className="card-body">
                     <h2 className="card-title">Rules List</h2>
+                    {error && <p className="text-danger">{error}</p>}
                     <ul className="list-group">
                         <li className="list-group-header">
                             <span>Items</span>

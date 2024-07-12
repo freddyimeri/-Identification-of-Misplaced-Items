@@ -1,7 +1,16 @@
+// src/components/Locations/GetLocations.js
+
 import React, { useEffect, useState } from 'react';
 import { getLocations } from '../../services/locationApi';
 import '../../styles/main.css';
 
+/**
+ * Component to display a list of locations.
+ * 
+ * @param {Function} onEditLocation - Callback to edit a location.
+ * @param {Function} onDeleteLocation - Callback to delete a location.
+ * @param {boolean} refresh - Flag to trigger the re-fetch of locations.
+ */
 const GetLocations = ({ onEditLocation, onDeleteLocation, refresh }) => {
     const [locations, setLocations] = useState([]);
 

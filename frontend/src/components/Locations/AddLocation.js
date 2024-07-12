@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import { addLocation } from '../../services/locationApi';
 import '../../styles/main.css';
 
+/**
+ * Component to add a new location.
+ * 
+ * @param {Function} onLocationAdded - Callback to be triggered after a location is added.
+ */
 const AddLocation = ({ onLocationAdded }) => {
     const [locationName, setLocationName] = useState('');
 
@@ -18,9 +23,10 @@ const AddLocation = ({ onLocationAdded }) => {
             <h3>Add Location</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Name</label>
+                    <label htmlFor="location-name">Name</label>
                     <input
                         type="text"
+                        id="location-name"
                         className="form-control"
                         value={locationName}
                         onChange={(e) => setLocationName(e.target.value)}

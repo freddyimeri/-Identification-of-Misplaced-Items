@@ -1,4 +1,5 @@
 // src/components/UserProfile/ChangeInfoSection.js
+
 import React, { useState } from 'react';
 import DisplayInfoWithAction from './DisplayInfoWithAction';
 import EditableInfoForm from './EditableInfoForm';
@@ -29,6 +30,8 @@ const ChangeInfoSection = ({ title, infoLabel, currentInfo, onUpdateInfo }) => {
             />
             {showForm && (
                 <EditableInfoForm
+                    label={infoLabel} // Pass the infoLabel to ensure consistency
+                    type="text" // Adjust this if needed
                     onSubmit={handleSubmit}
                     onCancel={handleCancel}
                 />

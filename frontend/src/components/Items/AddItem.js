@@ -1,4 +1,5 @@
 // src/components/Items/AddItem.js
+
 import React, { useState } from 'react';
 import { addItem } from '../../services/itemApi';
 import '../../styles/main.css';
@@ -18,8 +19,9 @@ const AddItem = ({ onItemAdded }) => {
             <div className="card-body">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Name</label>
+                        <label htmlFor="item-name">Name</label>
                         <input
+                            id="item-name"
                             type="text"
                             className="form-control"
                             value={itemName}

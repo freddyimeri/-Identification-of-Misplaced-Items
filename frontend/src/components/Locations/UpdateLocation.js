@@ -28,8 +28,9 @@ const UpdateLocation = ({ location, onUpdateCompleted }) => {
             {error && <p className="text-danger">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Name</label>
+                    <label htmlFor="location-name">Name</label>
                     <input
+                        id="location-name"
                         type="text"
                         className="form-control"
                         value={locationName}
